@@ -12,7 +12,7 @@ FW_MIN = 5.0         # relación empuje/peso mínima [-]
 
 # --- Supuestos de vuelo ---
 CD = 0.5             # coeficiente de arrastre del cohete [-]
-F_MEDIO = 800.0      # empuje medio (perfil rectangular) [N]
+F_MEDIO = 1600.0     # empuje medio [N]: salida del riel a 30 m/s (LASC FLT 4.3.4) con 3.2 m guiados
 RHO0 = 1.225         # densidad del aire [kg/m3] (nivel del mar: conservador)
 H_ESC = 8500.0       # altura de escala [m]
 MARGEN = 0.20        # margen sobre el impulso [-]
