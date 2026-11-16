@@ -71,13 +71,13 @@ $$\bar F \ge (F/W)_{min}\; m_0\, g = 5 \times 10 \times 9.81 = 490\ \text{N}$$
 
 Es un valor usado en cohetería amateur para salir del riel con velocidad suficiente. El criterio físico más preciso es la **velocidad de salida del riel**, que depende del largo del riel (ver paso 3).
 
-> Con un riel de 2 m y salida a 20 m/s, el mínimo sube a ≈1100 N ($F/W$ ≈ 11). El largo del riel es un dato pendiente.
+Se revisa cuando haya que elegir el empuje del motor. El largo del riel es un dato pendiente.
 
 **S1.3 · Por qué 150 mm importa tanto**
 
 El arrastre crece con el área frontal, que crece con $D^2$. Pasar de 100 a 150 mm multiplica el área por 2.25.
 
-> Con 100 mm el impulso necesario era 1558 N·s; con 150 mm es 1826 N·s (+17 %).
+> Área frontal: $\pi(0.15)^2/4$ = 0.0177 m², contra 0.0079 m² con 100 mm. A igual velocidad, el arrastre es 2.25 veces mayor.
 
 </td>
 </tr>
@@ -136,9 +136,11 @@ Es la "eficiencia" del propelente: a mayor $I_{sp}$, menos masa para el mismo im
 
 Sale del modelo termoquímico del motor de 38 mm, que trabajaba a baja presión y con una tobera pequeña. Un motor más grande con una tobera bien diseñada suele entregar más.
 
-> $I_{sp}$ = 95 / 104 / 120 s → $m_p$ = 2.35 / 2.15 / 1.86 kg (paso 5).
+Cada kg de propelente entrega $I_{sp}\,g_0$ N·s de impulso:
 
-Usar un valor bajo hace que el motor cargue propelente de más, que es el lado seguro para el apogeo.
+> $I_{sp}$ = 95 / 104 / 120 s → 932 / 1020 / 1177 N·s por kg.
+
+Usar un valor bajo hace que, para el mismo impulso, se calcule más propelente del necesario. Es el lado seguro para llegar al apogeo.
 
 </td>
 </tr>
@@ -158,9 +160,9 @@ Al colar el propelente fundido quedan burbujas de aire atrapadas. Por eso el gra
 
 Depende de la técnica de colado (temperatura, vacío, vibración). Debe medirse pesando y midiendo granos de prueba.
 
-> 90 % → $V_p$ = 1297 cm³ (+5.6 %); 98 % → 1191 cm³ (−3 %).
+> Con 90 % ($\rho_p$ = 1657 kg/m³), la misma masa ocupa un 5.6 % más de volumen.
 
-Un grano menos denso ocupa más volumen y obliga a un motor más largo.
+Un grano menos denso obliga a un motor más largo.
 
 </td>
 </tr>
@@ -192,7 +194,7 @@ En la **meseta** (1.5–3.8 MPa), $n \approx 0$: la velocidad casi no depende de
 
 Los ejemplos suponen 1.5–3.8 MPa. Ventaja: con $n \approx 0$ el motor es muy estable, porque un pico de presión no acelera la combustión.
 
-> Se verifica en el modelo de cámara. Si la presión sale de la meseta, $r$ cambia y hay que rehacer los tiempos de combustión.
+> Todavía no se puede comprobar: requiere conocer la presión de la cámara, que depende del diseño del motor. Si la presión sale de la meseta, $r$ cambia.
 
 **SP.4 · Datos de laboratorio**
 
@@ -262,7 +264,11 @@ $$v_b = \sqrt{2\,g\,(h_{ap} - h_b)}$$
 
 La energía solo se conserva si no hay arrastre. Con aire, parte de la energía cinética se pierde durante la subida. Por eso el cohete real debe apagarse **más rápido** de lo que dice esta ecuación.
 
-> Con aire (paso 4): $v_b$ = 166 m/s, un 19 % más que sin aire.
+**¿Se puede despreciar el aire?** Estimación rápida del arrastre a 140 m/s, con un coeficiente típico $C_d \approx 0.5$, la densidad del aire a nivel del mar (1.225 kg/m³) y el área frontal del paso 1:
+
+$$F_D \approx \tfrac12 \rho v^2 C_d A = \tfrac12 (1.225)(140)^2(0.5)(0.0177) \approx 106\ \text{N}$$
+
+> 106 N es del mismo orden que el peso del cohete (98 N): el aire **no** se puede despreciar.
 
 Este resultado es una **cota inferior**: sirve para conocer el orden de magnitud, no para diseñar.
 
@@ -290,9 +296,15 @@ Unidades: $\sqrt{(\text{m/s}^2)\cdot\text{m}} = \sqrt{\text{m}^2/\text{s}^2} = \
 
 No conocemos $h_b$ sin conocer el motor, así que lo tomamos como cero. En realidad el cohete sube mientras quema.
 
-> Simulación (paso 4): $h_b$ ≈ 190 m → $v_b = \sqrt{2 \cdot 9.81 \cdot 810}$ = 126 m/s, un 10 % menos.
+Sensibilidad con valores posibles de $h_b$:
 
-Este supuesto **sobrestima** $v_b$, mientras que S2.1 la **subestima**. Los dos errores se compensan en parte.
+| $h_b$ | $v_b$ |
+|---|---|
+| 0 m | 140 m/s |
+| 100 m | 133 m/s |
+| 200 m | 125 m/s |
+
+Este supuesto **sobrestima** $v_b$, mientras que S2.1 la **subestima**. Los dos errores van en sentidos opuestos.
 
 **S2.4 · Gravedad constante**
 
@@ -365,7 +377,15 @@ $$I = \int_0^{t_b} F(t)\,dt = \bar F\,t_b$$
 
 **Idea física: 2ª ley de Newton integrada en el tiempo**
 
-Mientras el motor funciona actúan el empuje hacia arriba y el peso hacia abajo. Su suma, acumulada en el tiempo, cambia la cantidad de movimiento (masa × velocidad):
+Mientras el motor funciona actúan dos fuerzas: el empuje $F(t)$ hacia arriba y el peso $m_0 g$ hacia abajo. La 2ª ley de Newton dice que la fuerza neta cambia la cantidad de movimiento (masa × velocidad):
+
+$$F(t) - m_0\,g = \frac{d(m_0\,v)}{dt}$$
+
+Se integran los dos lados desde el despegue ($t$ = 0, $v$ = 0) hasta el apagado ($t = t_b$, $v = v_b$):
+
+$$\int_0^{t_b} F\,dt \;-\; m_0\,g\,t_b \;=\; m_0\,v_b - 0$$
+
+La integral es la definición de impulso $I$, así que queda:
 
 $$\underbrace{I}_{\text{impulso del motor}} - \underbrace{m_0\,g\,t_b}_{\text{lo que quita la gravedad}} = \underbrace{m_0\,v_b}_{\text{cantidad de movimiento final}}$$
 
@@ -378,9 +398,7 @@ $$\underbrace{I}_{\text{impulso del motor}} - \underbrace{m_0\,g\,t_b}_{\text{lo
 
 **S3.1 · Masa constante igual a $m_0$**
 
-En realidad la masa baja de 10 kg a unos 8.2 kg mientras se quema el propelente. Usar $m_0$ sobreestima la cantidad de movimiento y la pérdida por gravedad.
-
-> Con la masa media (9.1 kg): $I$ = 1434 N·s, un 10 % menos.
+Se usa $m_0$ para poder sacar la masa de la derivada en $d(m_0 v)/dt$. En realidad la masa baja mientras se quema el propelente. Cuánto baja se estima con el resultado de este mismo paso (ver S3.5, última fila).
 
 **S3.2 · Sin aire y $h_b \approx 0$**
 
@@ -393,9 +411,23 @@ Se heredan del paso 2. No incluir arrastre **subestima** el impulso; tomar $h_b$
 
 **Despeje sin depender de un paso posterior**
 
-La ecuación tiene dos incógnitas, $I$ y $t_b$. Pero $t_b = I/\bar F$, así que si se elige el empuje medio queda una sola:
+La ecuación tiene dos incógnitas, $I$ y $t_b$. Hace falta una relación más entre ellas, y sale de la **definición de empuje medio**: es el empuje constante que, actuando durante el mismo tiempo $t_b$, da el mismo impulso que el empuje real:
 
-$$I = m_0 v_b + m_0 g\,\frac{I}{\bar F} \quad\Longrightarrow\quad \boxed{I = \frac{m_0\,v_b}{1 - \dfrac{m_0\,g}{\bar F}}}$$
+$$\bar F \equiv \frac{1}{t_b}\int_0^{t_b} F\,dt = \frac{I}{t_b} \quad\Longrightarrow\quad t_b = \frac{I}{\bar F}$$
+
+Es la misma idea que la velocidad media: distancia total dividida por tiempo total.
+
+Si se elige $\bar F$, se reemplaza $t_b$ en la ecuación de cantidad de movimiento:
+
+$$I - m_0 g\,\frac{I}{\bar F} = m_0 v_b$$
+
+Se saca $I$ como factor común:
+
+$$I\left(1 - \frac{m_0 g}{\bar F}\right) = m_0 v_b$$
+
+Y se divide entre el paréntesis:
+
+$$\boxed{I = \frac{m_0\,v_b}{1 - \dfrac{m_0\,g}{\bar F}}}$$
 
 - $m_0 g/\bar F$: fracción del empuje que se gasta en sostener el peso. Es el inverso de la relación empuje/peso.
 - $1 - m_0 g/\bar F$: fracción del empuje que **sí acelera** al cohete.
@@ -407,7 +439,7 @@ $$I = m_0 v_b + m_0 g\,\frac{I}{\bar F} \quad\Longrightarrow\quad \boxed{I = \fr
 
 **S3.3 · Por qué hacer este paso si el 4 es más exacto**
 
-Es una **verificación independiente**. Si la simulación diera, por ejemplo, 5000 N·s, esta estimación delataría un error en el código. Un resultado numérico sin un orden de magnitud de referencia no se puede auditar.
+Esta fórmula da un orden de magnitud con cuentas a mano. Sirve como referencia: cualquier cálculo más detallado que se haga después tiene que dar un valor del mismo orden; si no, hay un error.
 
 </td>
 </tr>
@@ -438,7 +470,7 @@ Se elige $\bar F$ = **800 N**: cumple con un riel de 3 m a 20 m/s, y da una rela
 
 El largo del riel **aún no está definido**. Con un riel de 2 m harían falta ≈1100 N.
 
-Además, en el motor real el empuje no se elige: sale de la geometría del grano y de la presión. Este valor solo sirve para empezar. En cada ejemplo se verifica que el empuje real supere $\bar F_{min}$.
+Además, en el motor real el empuje no se elige: sale de la geometría del grano y de la presión, que todavía no están diseñadas. Por eso este valor es provisional, y el empuje real tendrá que cumplir $\bar F \ge \bar F_{min}$.
 
 **Sensibilidad de este paso a $\bar F$**
 
@@ -474,7 +506,19 @@ Unidades: kg·m/s = N·s, porque 1 N = 1 kg·m/s².
 | $h_b \approx 0$ | lo sube (sobrestima) |
 | Masa constante $m_0$ | lo sube (sobrestima) |
 
-Dos supuestos empujan hacia arriba y uno hacia abajo. Por eso 1596 queda **entre** el vuelo sin aire (1386, simulado) y el vuelo con aire (1826, paso 4).
+Dos supuestos suben el resultado y uno lo baja. El que lo baja (el aire) no es despreciable, como mostró S2.1. Por eso 1596 N·s es solo un **orden de magnitud**, y hace falta un cálculo que incluya el aire.
+
+**S3.5 · Corrección por masa variable**
+
+Con el $I$ obtenido se estima cuánto propelente se quema. Como $I_{sp} = F/(\dot m\, g_0)$, integrando en el tiempo queda $I = m_p\,I_{sp}\,g_0$:
+
+$$m_p \approx \frac{1596}{104 \times 9.81} = 1.56\ \text{kg}$$
+
+La masa va de 10 kg a 8.44 kg; la media es 9.22 kg. Repitiendo el cálculo con la masa media:
+
+> $I = 9.22 \times 140 \,/\, (1 - 9.22 \times 9.81/800)$ = 1455 N·s, un 9 % menos.
+
+Usar $m_0$ **sobrestima** el impulso.
 
 </td>
 </tr>
@@ -549,11 +593,11 @@ $$m(t)\,\frac{dv}{dt} = \underbrace{F}_{\text{empuje}} - \underbrace{F_D}_{\text
 
 Se supone que el cohete sube en línea recta. En la práctica el riel se inclina unos grados por seguridad y el viento desvía la trayectoria, así que el apogeo real es algo menor.
 
-> No cuantificado aquí: se cubre con el margen del 20 % del paso 5.
+> No se cuantifica aquí. Es una de las razones para agregar un margen al impulso.
 
 **S4.2 · Empuje constante (perfil rectangular)**
 
-El empuje real varía: el BATES sube y baja ≈7.5 %, y hay un arranque y una cola. Lo que importa para el apogeo es el impulso total, no su forma.
+El empuje real varía durante la combustión: hay un arranque, una zona de empuje casi constante y una cola. Lo que importa para el apogeo es el impulso total, no su forma.
 
 > $\bar F$ = 600 / 800 / 1200 N → $I$ = 1840 / 1826 / 1812 N·s (±1 %).
 
@@ -579,7 +623,7 @@ $$m_p = \frac{I}{I_{sp}\,g_0}$$
 
 Valor del modelo termoquímico previo. Es conservador: con una buena tobera el KNSB puede dar más. En este paso solo influye en cuán rápido se aliviana el cohete.
 
-> $I_{sp}$ = 120 s → $I_{req}$ = 1836 N·s (+0.5 %). Influye mucho más en $m_p$ (paso 5).
+> $I_{sp}$ = 120 s → $I_{req}$ = 1836 N·s (+0.5 %). Influye mucho más en la masa de propelente, $m_p = I/(I_{sp}\,g_0)$.
 
 </td>
 </tr>
@@ -647,7 +691,7 @@ Un método numérico solo vale si el resultado no depende del paso de tiempo. Se
 
 **Validación con el paso 3**
 
-Simulación **sin aire**: 1386 N·s. La estimación a mano (1596) queda entre este valor y el vuelo con aire, como predice el balance de errores del paso 3. El código es coherente.
+Simulación **sin aire** ($C_d$ = 0): 1386 N·s. La estimación a mano del paso 3 (1596) es mayor, como se esperaba: sus supuestos de masa constante y $h_b$ = 0 la suben (S3.5 y S2.3). Corrigiendo solo la masa, el paso 3 daba 1455 N·s, ya cerca de 1386. El código es coherente con el cálculo a mano.
 
 </td>
 </tr>
@@ -658,6 +702,7 @@ Simulación **sin aire**: 1386 N·s. La estimación a mano (1596) queda entre es
 
 | $C_d$ | $I_{req}$ [N·s] | $v_{max}$ [m/s] | $m_p$ [kg] | $t_b$ [s] |
 |---|---|---|---|---|
+| 0 (sin aire) | 1386 | 132 | 1.36 | 1.73 |
 | 0.4 | 1723 | 159 | 1.69 | 2.15 |
 | **0.5** | **1826** | **166** | **1.79** | **2.28** |
 | 0.6 | 1936 | 173 | 1.90 | 2.42 |
@@ -673,7 +718,8 @@ Simulación **sin aire**: 1386 N·s. La estimación a mano (1596) queda entre es
 **Qué enseña la tabla**
 
 - **El aire cuesta +32 %:** sin aire bastan 1386 N·s; con aire hacen falta 1826.
-- **$v_{max}$ = 166 m/s, no 140:** el cohete debe salir más rápido porque el aire lo frena durante la subida libre.
+- **$v_{max}$ = 166 m/s, no 140:** el cohete debe salir más rápido porque el aire lo frena durante la subida libre (confirma S2.1).
+- **Sin aire, $v_{max}$ = 132 m/s, no 140:** el cohete sube ≈190 m mientras quema, así que necesita menos velocidad (confirma S2.3).
 - **El supuesto más incierto ($C_d$) mueve poco el resultado:** un error razonable en $C_d$ no compromete el diseño.
 
 </td>
