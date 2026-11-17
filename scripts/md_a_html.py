@@ -113,7 +113,9 @@ for sec in secciones:
 
 # --- cabecera del documento ---
 cab_lineas = cabecera.strip().splitlines()
-intro_md = "\n".join(l for l in cab_lineas[1:] if not l.startswith("Ecuaciones:") and not l.startswith("Cálculo:"))
+titulo_doc = cab_lineas[0].lstrip("# ").strip()
+nombre_tab = titulo_doc.split("—")[0].strip() + " · Atlas X"
+intro_md = "\n".join(l for l in cab_lineas[1:] if not l.startswith("Ecuaciones:") and not l.startswith("**Versión web"))
 
 extra_css = ""
 
@@ -122,7 +124,7 @@ pagina = f"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Misión común Atlas X</title>
+<title>{html.escape(nombre_tab)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Grotesk:wght@500;600;700&display=swap">
@@ -136,7 +138,7 @@ window.MathJax = {{ tex: {{ inlineMath: [['$', '$']], displayMath: [['$$', '$$']
 <main class="doc">
 <header class="intro">
   <div class="eyebrow">Atlas X · Propulsión · Motor sólido KNSB</div>
-  <h1>Misión común: pasos 1 a 7</h1>
+  <h1>{html.escape(titulo_doc)}</h1>
   {md2h(intro_md)}
 </header>
 {"".join(out)}
