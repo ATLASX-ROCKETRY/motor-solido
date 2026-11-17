@@ -133,29 +133,79 @@ Estos números ya se calcularon y justificaron en [`00_mision_comun.md`](00_misi
 <tr>
 <td valign="top">
 
-#### 1. Masa del motor completo
+#### 1. La idea: repartir 10 kg
 
-La fracción de propelente se define como $\zeta = m_p / m_{motor}$. Si se conoce $\zeta$, se despeja la masa del motor.
+El cohete completo no puede pesar más de **10 kg**. Ese peso se reparte en tres partes:
+
+| Parte | Qué incluye | Masa | Estado |
+|---|---|---|---|
+| Propelente | El KNSB que se quema | 2.129 kg | Conocido (misión común, paso 5) |
+| Estructura del motor | Carcasa, tapas, tobera y liner | **¿?** | Depende del material: se estima en este paso |
+| Resto del cohete | Fuselaje, cono, aletas, paracaídas, aviónica | 4.95 kg | Estimado (misión común, paso 6) |
+| **Total** | | **≤ 10 kg** | Límite de la misión |
+
+$$10\ \text{kg} \;\ge\; \underbrace{2.129}_{\text{propelente}} \;+\; \underbrace{m_{estr}}_{\text{estructura}} \;+\; \underbrace{4.95}_{\text{resto}}$$
+
+Es como armar una maleta con un límite de peso: ya sabemos cuánto pesan la ropa (propelente) y los zapatos (resto del cohete), y hay que ver si la maleta vacía (estructura del motor) cabe en lo que sobra.
+
+#### 2. Masa del motor completo
+
+El espesor de la carcasa todavía no está calculado, así que la estructura no se puede pesar directamente. Se usa un atajo: la **fracción de propelente** $\zeta$, que dice qué parte del motor completo es propelente.
 
 ##### Ecuación
 
-$$m_{motor} = \frac{m_p}{\zeta}$$
+$$\zeta = \frac{m_p}{m_{motor}} \quad\Longrightarrow\quad m_{motor} = \frac{m_p}{\zeta}$$
+
+- $m_p$: masa de propelente.
+- $m_{motor}$: masa del motor completo (propelente + estructura).
+- $\zeta$ = 0.40: de cada 10 kg de motor, 4 kg son propelente y 6 kg son estructura (ver S6.1).
 
 ##### Cálculo
 
 $$m_{motor} = \frac{2.129\ \text{kg}}{0.40} = 5.32\ \text{kg}$$
 
-La estructura es lo que no es propelente:
+Comprobación: el 40 % de 5.32 kg es 2.129 kg de propelente ✓.
+
+La estructura es el motor completo menos el propelente:
 
 $$m_{estr} = m_{motor} - m_p = 5.32 - 2.129 = 3.19\ \text{kg}$$
 
-#### 2. Masa que queda para el resto del cohete
+> El motor completo pesa **5.32 kg**, de los cuales **3.19 kg** son acero, tapas, tobera y liner.
+
+#### 3. ¿Cabe todo en 10 kg?
+
+Se puede ver de dos maneras, y las dos dan lo mismo.
+
+##### Manera A: sumar todas las partes
+
+| Parte | Masa |
+|---|---|
+| Propelente | 2.129 kg |
+| Estructura del motor (acero) | 3.19 kg |
+| Resto del cohete | 4.95 kg |
+| **Total del cohete** | **10.27 kg** |
+| Límite | 10.00 kg |
+| **Exceso** | **0.27 kg de más** |
+
+##### Manera B: lo que queda para el resto del cohete
+
+Del límite de 10 kg se resta el motor completo:
 
 $$m_{resto,disp} = m_0 - m_{motor} = 10 - 5.32 = 4.68\ \text{kg}$$
 
-#### 3. Comparación con lo necesario
+El resto del cohete necesita 4.95 kg, pero solo le quedan 4.68 kg:
 
 $$\text{margen} = m_{resto,disp} - m_{resto} = 4.68 - 4.95 = -0.27\ \text{kg}$$
+
+##### Qué significa el −0.27 kg
+
+El **margen** es cuánta masa sobra (si es positivo) o cuánta falta (si es negativo):
+
+- **Margen positivo**, por ejemplo +0.5 kg: el cohete pesa menos de 10 kg y sobran 0.5 kg, que podrían usarse para una carga útil.
+- **Margen cero:** el cohete pesa exactamente 10 kg.
+- **Margen negativo**, como aquí: el cohete **se pasa** del límite.
+
+> **−0.27 kg significa que faltan 0.27 kg:** el cohete completo pesaría 10.27 kg, es decir, 0.27 kg más de lo permitido. Es el mismo exceso de la manera A.
 
 </td>
 <td valign="top">
@@ -184,9 +234,9 @@ Se repite el cálculo del margen con otros valores de $\zeta$: el rango típico 
 <tr>
 <td valign="top">
 
-#### 4. Qué significa el resultado
+#### 4. Cuánto puede pesar la estructura como máximo
 
-El margen es **negativo**: con $\zeta$ = 0.40 el cohete pesaría 10.27 kg y **no cabe en el presupuesto**.
+Con $\zeta$ = 0.40 el cohete **no cabe en el presupuesto**. La pregunta siguiente es: ¿cuánto tendría que pesar la estructura para que sí quepa?
 
 Para que quepa, el motor debe tener al menos la fracción mínima de la misión común, $\zeta_{min}$ = 0.422. Expresado como masa, la estructura no puede superar:
 
@@ -196,6 +246,8 @@ $$m_{estr,max} = m_0 - m_{resto} - m_p = 10 - 4.95 - 2.129 = 2.92\ \text{kg}$$
 |---|---|---|
 | Estructura del motor | 3.19 kg | **2.92 kg** |
 | Diferencia | | 0.27 kg de más |
+
+Esos 0.27 kg son exactamente el exceso del bloque 3: si la estructura pesara 2.92 kg en vez de 3.19 kg, el cohete pesaría justo 10 kg.
 
 </td>
 <td valign="top">
