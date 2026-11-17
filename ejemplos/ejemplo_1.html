@@ -140,6 +140,32 @@ tr.sel td { background: var(--acento-suave); font-weight: 600; }
 .paso { scroll-margin-top: 16px; }
 th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); font-size: .8rem; font-weight: 600; }
 .nota > p > em:only-child { color: var(--tenue); }
+
+/* ---- Redacción organizada: títulos, espaciado, tablas y recuadros ---- */
+.res, .nota { gap: 14px; line-height: 1.65; }
+.res h4, .nota h4 { margin: 0; font-family: var(--font-display); font-size: 1.02rem; line-height: 1.3; }
+.res h4 { color: var(--acento); }
+.nota h4 { color: var(--nota-tinta); font-size: .98rem; }
+.res h4:not(:first-child), .nota h4:not(:first-child) { margin-top: 10px; padding-top: 14px; border-top: 1px dashed var(--linea); }
+.nota h4:not(:first-child) { border-top-color: var(--nota-borde); }
+.res h5, .nota h5 { margin: 4px 0 -6px; font-family: var(--font-dato); font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--tenue); }
+.res ul, .res ol, .nota ul, .nota ol { gap: 6px; }
+.res li > p, .nota li > p { margin: 0; }
+.res strong, .nota strong { font-weight: 600; }
+.tabla { border: 1px solid var(--linea); border-radius: 6px; }
+.tabla table { margin: 0; }
+th { background: var(--papel); border-bottom: 1px solid var(--linea); padding: 8px 10px; }
+td { padding: 7px 10px; }
+tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--papel) 55%, transparent); }
+tbody tr:last-child td { border-bottom: 0; }
+td strong { color: var(--acento); }
+.nota .tabla { background: var(--hoja); border-color: var(--nota-borde); }
+.nota th { background: color-mix(in srgb, var(--nota) 60%, var(--hoja)); }
+.nota blockquote, .res blockquote { font-family: var(--font-texto); font-size: .9rem; line-height: 1.5; padding: 10px 14px; border-left: 3px solid var(--acento); border-radius: 0 6px 6px 0; }
+.nota blockquote { border-left-color: var(--nota-borde); }
+.nota blockquote strong, .res blockquote strong { color: var(--tinta); }
+.paso-cab .aclara { color: var(--tinta); }
+.paso-cab .aclara p { margin: 0; }
 </style>
 </head>
 <body>
@@ -147,10 +173,11 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <header class="intro">
   <div class="eyebrow">Atlas X · Propulsión · Motor sólido KNSB</div>
   <h1>Ejemplo 1 — Grano BATES y carcasa de acero AISI 304</h1>
-  <p>Aplica las ecuaciones de <a href="../docs/01_mision_a_geometria.md"><code>docs/01_mision_a_geometria.md</code></a> y <a href="../docs/02_numero_de_granos.md"><code>docs/02_numero_de_granos.md</code></a> a la misión común: presupuesto de masa con acero y geometría del grano BATES.</p>
-<p>Cálculo: <code>python3 scripts/ejemplo1_bates.py</code>. Todas las cuentas de este ejemplo son fórmulas escritas en cada paso; el script solo las evalúa. <strong>No hay valores simulados en este ejemplo.</strong></p>
+  <p>Este ejemplo toma los resultados de la misión común y diseña la geometría de un motor con grano BATES y carcasa de acero inoxidable AISI 304. Aplica las ecuaciones de <a href="../docs/01_mision_a_geometria.md"><code>docs/01_mision_a_geometria.md</code></a> y <a href="../docs/02_numero_de_granos.md"><code>docs/02_numero_de_granos.md</code></a>.</p>
+<p>Cálculo: <code>python3 scripts/ejemplo1_bates.py</code>. Todas las cuentas son fórmulas escritas en cada paso; el script solo las evalúa para que los números se puedan reproducir. <strong>En este ejemplo no hay valores simulados.</strong></p>
 </header>
-<section class="leyenda" aria-label="Cómo leer"><div><b>Resolución</b><span>Qué se calcula, con qué ecuación, qué significa cada término y el resultado.</span></div><div class="l-nota"><b>Suposición y análisis</b><span>Cada simplificación o dato supuesto, por qué se acepta y cuánto cambia el resultado si no se cumple. Solo usa lo calculado hasta ese paso.</span></div></section><nav class="flujo" aria-label="Secuencia"><a href="#datos-de-entrada">Datos de entrada</a><i>→</i><a href="#paso-6">Paso 6 (presupuesto con acero)</a><i>→</i><a href="#paso-8">Paso 8 (geometría BATES)</a><i>→</i><a href="#paso-9">Paso 9 (neutralidad)</a><i>→</i><a href="#paso-10">Paso 10 (alma requerida)</a><i>→</i><a href="#paso-11">Paso 11 (núcleo y segmentos)</a><i>→</i><a href="#paso-12">Paso 12 (tubo del motor)</a><i>→</i><a href="#resumen-del-ejemplo">Resumen del ejemplo</a></nav><article class="paso" id="datos-de-entrada"><div class="paso-cab"><div class="eyebrow">Datos de entrada</div><h2>Datos de entrada — De la misión común y del material</h2><p class="pregunta"><strong>Pregunta:</strong> ¿con qué datos empieza este ejemplo?</p></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><p><strong>De la misión común</strong> (<a href="00_mision_comun.md"><code>00_mision_comun.md</code></a>)</p>
+<section class="leyenda" aria-label="Cómo leer"><div><b>Resolución</b><span>Qué se calcula, con qué ecuación, qué significa cada término y el resultado.</span></div><div class="l-nota"><b>Suposición y análisis</b><span>Cada simplificación o dato supuesto, por qué se acepta y cuánto cambia el resultado si no se cumple. Solo usa lo calculado hasta ese paso.</span></div></section><nav class="flujo" aria-label="Secuencia"><a href="#datos-de-entrada">Datos de entrada</a><i>→</i><a href="#paso-6">Paso 6 (presupuesto con acero)</a><i>→</i><a href="#paso-8">Paso 8 (geometría BATES)</a><i>→</i><a href="#paso-9">Paso 9 (neutralidad)</a><i>→</i><a href="#paso-10">Paso 10 (alma requerida)</a><i>→</i><a href="#paso-11">Paso 11 (núcleo y segmentos)</a><i>→</i><a href="#paso-12">Paso 12 (tubo del motor)</a><i>→</i><a href="#resumen-del-ejemplo">Resumen del ejemplo</a></nav><article class="paso" id="datos-de-entrada"><div class="paso-cab"><div class="eyebrow">Datos de entrada</div><h2>Datos de entrada — De la misión común y del material</h2><p class="pregunta"><strong>Pregunta:</strong> ¿con qué datos empieza este ejemplo y de dónde sale cada uno?</p><div class="aclara"><p><strong>Qué se obtiene:</strong> la lista de valores heredados de la misión común y las propiedades del acero que se usarán más adelante.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>Valores que llegan de la misión común</h4>
+<p>Estos números ya se calcularon y justificaron en <a href="00_mision_comun.md"><code>00_mision_comun.md</code></a>. Aquí solo se reúnen, con el paso donde se obtuvo cada uno.</p>
 <div class="tabla"><table>
 <thead>
 <tr>
@@ -163,21 +190,21 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <tbody>
 <tr>
 <td>$m_0$</td>
-<td>Masa al despegue</td>
+<td>Masa al despegue, con el motor cargado</td>
 <td>10 kg</td>
 <td>1</td>
+</tr>
+<tr>
+<td>$\bar F$</td>
+<td>Empuje medio del motor</td>
+<td>1600 N</td>
+<td>3</td>
 </tr>
 <tr>
 <td>$I_{dis}$</td>
 <td>Impulso de diseño</td>
 <td>2172 N·s</td>
 <td>5</td>
-</tr>
-<tr>
-<td>$\bar F$</td>
-<td>Empuje medio</td>
-<td>1600 N</td>
-<td>3</td>
 </tr>
 <tr>
 <td>$t_{b,dis}$</td>
@@ -192,18 +219,6 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>5</td>
 </tr>
 <tr>
-<td>$\rho_p$</td>
-<td>Densidad del grano (KNSB)</td>
-<td>1749 kg/m³</td>
-<td>Propelente</td>
-</tr>
-<tr>
-<td>$V_p$</td>
-<td>Volumen de propelente</td>
-<td>1217 cm³</td>
-<td>7</td>
-</tr>
-<tr>
 <td>$m_{resto}$</td>
 <td>Masa del resto del cohete</td>
 <td>4.95 kg</td>
@@ -215,44 +230,68 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>0.422</td>
 <td>6</td>
 </tr>
+<tr>
+<td>$\rho_p$</td>
+<td>Densidad del grano de KNSB</td>
+<td>1749 kg/m³</td>
+<td>Propelente</td>
+</tr>
+<tr>
+<td>$V_p$</td>
+<td>Volumen de propelente</td>
+<td>1217 cm³</td>
+<td>7</td>
+</tr>
 </tbody>
-</table></div></div><div class="nota"><p><strong>SD.1 · Se heredan, no se recalculan</strong></p>
-<p>Estos valores ya tienen sus suposiciones analizadas en la misión común. Si cambia alguno, hay que rehacer este ejemplo.</p>
-<ul>
-<li>El más importante para este ejemplo es $t_{b,dis}$ = 1.36 s: obliga a un motor de combustión corta (paso 10).</li>
-</ul></div></div><div class="fila"><div class="res"><p><strong>Material de la carcasa: acero inoxidable AISI 304</strong></p>
+</table></div></div><div class="nota"><h4>SD.1 · Los valores se heredan, no se recalculan</h4>
+<p><strong>Qué se supone.</strong> Que los resultados de la misión común son correctos.</p>
+<p><strong>Por qué se acepta.</strong> Cada uno tiene sus propias suposiciones analizadas en ese documento.</p>
+<p><strong>Qué pasa si cambia alguno.</strong> Hay que rehacer este ejemplo desde el paso donde se use.</p>
+<blockquote>
+<p>El dato que más condiciona este ejemplo es $t_{b,dis}$ = 1.36 s: obliga a un motor que queme rápido (paso 10).</p>
+</blockquote></div></div><div class="fila"><div class="res"><h4>Material de la carcasa: acero inoxidable AISI 304</h4>
 <div class="tabla"><table>
 <thead>
 <tr>
 <th>Propiedad</th>
+<th>Símbolo</th>
 <th>Valor</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Límite elástico $\sigma_y$ (recocido)</td>
+<td>Límite elástico (recocido)</td>
+<td>$\sigma_y$</td>
 <td>~205 MPa</td>
 </tr>
 <tr>
-<td>Resistencia última $\sigma_u$</td>
+<td>Resistencia última</td>
+<td>$\sigma_u$</td>
 <td>~515 MPa</td>
 </tr>
 <tr>
 <td>Densidad</td>
+<td>$\rho_{acero}$</td>
 <td>~8000 kg/m³</td>
 </tr>
 <tr>
-<td>Resistencia específica $\sigma_y/\rho$</td>
+<td>Resistencia específica</td>
+<td>$\sigma_y/\rho$</td>
 <td>~26 kN·m/kg</td>
 </tr>
 </tbody>
 </table></div>
-<p>En este ejemplo el material solo entra en el <strong>presupuesto de masa</strong> (paso 6). Su resistencia se usa más adelante, para calcular el espesor de pared.</p></div><div class="nota"><p><strong>SD.2 · Propiedades típicas</strong></p>
-<p>Son valores de catálogo para acero 304 recocido. El límite elástico real depende del proveedor y del estado del material (recocido o trabajado en frío).</p>
+<p><strong>Dónde se usa cada propiedad:</strong></p>
 <ul>
-<li><strong>Qué hacer:</strong> usar el certificado del material que se compre.</li>
-<li><strong>Resistencia específica:</strong> dice cuánta resistencia se obtiene por cada kilo. El acero 304 tiene unas 4 veces menos que el aluminio 6061 (~102 kN·m/kg). Por eso, a igual presión, una carcasa de acero pesa más.</li>
-</ul></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>datos de la misión común y propiedades del acero 304.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el paso 6 revisa si un motor de acero cabe en el presupuesto de 10 kg.</p></div></div></article><article class="paso" id="paso-6"><div class="paso-cab"><div class="eyebrow">Paso 6</div><h2>Presupuesto de masa con carcasa de acero</h2><p class="pregunta"><strong>Pregunta:</strong> si el motor es de acero, ¿cabe el cohete completo en 10 kg?</p><p class="viene"><strong>Viene de:</strong> $m_p$ = 2.129 kg, $m_{resto}$ = 4.95 kg y $\zeta_{min}$ = 0.422 (misión común, pasos 5 y 6).</p></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><p><strong>Variables</strong></p>
+<li><strong>En este ejemplo</strong>, el material solo entra en el presupuesto de masa (paso 6).</li>
+<li><strong>Más adelante</strong>, el límite elástico servirá para calcular el espesor de la pared de la carcasa.</li>
+</ul></div><div class="nota"><h4>SD.2 · Propiedades de catálogo</h4>
+<p><strong>Qué se supone.</strong> Valores típicos de catálogo para acero 304 recocido.</p>
+<p><strong>Por qué se acepta.</strong> Son suficientes para una primera estimación.</p>
+<p><strong>Qué pasa si no se cumple.</strong> El límite elástico real depende del proveedor y del estado del material (recocido o trabajado en frío). Hay que usar el certificado del material que se compre.</p>
+<blockquote>
+<p><strong>Resistencia específica:</strong> dice cuánta resistencia se obtiene por cada kilo. El acero 304 tiene unas 4 veces menos que el aluminio 6061 (~102 kN·m/kg). Por eso, a igual presión, una carcasa de acero pesa más.</p>
+</blockquote></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>valores de la misión común y propiedades del acero 304.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el paso 6 revisa si un motor con carcasa de acero cabe en el presupuesto de 10 kg.</p></div></div></article><article class="paso" id="paso-6"><div class="paso-cab"><div class="eyebrow">Paso 6</div><h2>Presupuesto de masa con carcasa de acero</h2><p class="pregunta"><strong>Pregunta:</strong> si la carcasa es de acero, ¿el cohete completo pesa 10 kg o menos?</p><p class="viene"><strong>Viene de:</strong> $m_p$ = 2.129 kg, $m_{resto}$ = 4.95 kg y $\zeta_{min}$ = 0.422 (misión común, pasos 5 y 6).</p><div class="aclara"><p><strong>Qué se obtiene:</strong> el margen de masa con acero y la masa máxima que puede tener la estructura del motor.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>Variables</h4>
 <div class="tabla"><table>
 <thead>
 <tr>
@@ -264,12 +303,12 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <tbody>
 <tr>
 <td>$\zeta$</td>
-<td>Fracción de propelente: $m_p/m_{motor}$</td>
+<td>Fracción de propelente: qué parte del motor completo es propelente</td>
 <td>—</td>
 </tr>
 <tr>
 <td>$m_{motor}$</td>
-<td>Masa del motor completo</td>
+<td>Masa del motor completo, cargado</td>
 <td>kg</td>
 </tr>
 <tr>
@@ -283,55 +322,88 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>kg</td>
 </tr>
 </tbody>
-</table></div></div><div class="nota sin"><p class="vacia"><em>Fila de definiciones: no hay suposiciones.</em></p></div></div><div class="fila"><div class="res"><p><strong>Masa del motor</strong></p>
-<p>Por definición de fracción de propelente:</p>
-<p>$$m_{motor} = \frac{m_p}{\zeta} = \frac{2.129}{0.40} = 5.32\ \text{kg}$$</p>
+</table></div></div><div class="nota sin"><p class="vacia"><em>Fila de definiciones: no hay suposiciones.</em></p></div></div><div class="fila"><div class="res"><h4>1. Masa del motor completo</h4>
+<p>La fracción de propelente se define como $\zeta = m_p / m_{motor}$. Si se conoce $\zeta$, se despeja la masa del motor.</p>
+<h5>Ecuación</h5>
+<p>$$m_{motor} = \frac{m_p}{\zeta}$$</p>
+<h5>Cálculo</h5>
+<p>$$m_{motor} = \frac{2.129\ \text{kg}}{0.40} = 5.32\ \text{kg}$$</p>
+<p>La estructura es lo que no es propelente:</p>
 <p>$$m_{estr} = m_{motor} - m_p = 5.32 - 2.129 = 3.19\ \text{kg}$$</p>
-<p><strong>Masa disponible para el resto del cohete</strong></p>
+<h4>2. Masa que queda para el resto del cohete</h4>
 <p>$$m_{resto,disp} = m_0 - m_{motor} = 10 - 5.32 = 4.68\ \text{kg}$$</p>
-<p><strong>Comparación con lo necesario</strong></p>
-<p>$$\text{margen} = m_{resto,disp} - m_{resto} = 4.68 - 4.95 = -0.27\ \text{kg}$$</p></div><div class="nota"><p><strong>S6.1 · $\zeta$ = 0.40 para acero</strong></p>
-<p>Todavía no se conoce el espesor de la carcasa, así que se supone una fracción de propelente típica de motores amateur de acero, que suele estar entre 0.35 y 0.45.</p>
-<ul>
-<li><strong>Por qué se acepta:</strong> permite estimar la masa antes de diseñar la carcasa.</li>
-<li><strong>Cuándo se verifica:</strong> en la etapa de carcasa, cuando se calcule el espesor de pared con la presión máxima.</li>
-</ul>
-<p><strong>Por qué estos valores en la tabla:</strong> el rango típico del acero (0.35 a 0.45) y 0.50, que sería un motor de acero muy bien optimizado.</p>
+<h4>3. Comparación con lo necesario</h4>
+<p>$$\text{margen} = m_{resto,disp} - m_{resto} = 4.68 - 4.95 = -0.27\ \text{kg}$$</p></div><div class="nota"><h4>S6.1 · $\zeta$ = 0.40 para un motor de acero</h4>
+<p><strong>Qué se supone.</strong> Una fracción de propelente de 0.40: de cada 10 kg de motor, 4 kg son propelente y 6 kg son estructura.</p>
+<p><strong>Por qué se acepta.</strong> El espesor de la carcasa todavía no se conoce. Los motores amateur de acero suelen tener $\zeta$ entre 0.35 y 0.45, y 0.40 está en el medio.</p>
+<p><strong>Cuándo se verifica.</strong> En la etapa de carcasa, cuando se calcule el espesor de pared con la presión máxima.</p>
+<h5>Sensibilidad</h5>
+<p>Se repite el cálculo del margen con otros valores de $\zeta$: el rango típico del acero (0.35 a 0.45) y 0.50, que sería un motor de acero muy optimizado.</p>
 <div class="tabla"><table>
 <thead>
 <tr>
 <th>$\zeta$</th>
-<th>Margen de masa</th>
+<th>Masa del motor</th>
+<th>Margen</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>0.35</td>
+<td>6.08 kg</td>
 <td>−1.03 kg</td>
 </tr>
 <tr>
 <td><strong>0.40</strong></td>
+<td><strong>5.32 kg</strong></td>
 <td><strong>−0.27 kg</strong></td>
 </tr>
 <tr>
 <td>0.45</td>
+<td>4.73 kg</td>
 <td>+0.32 kg</td>
 </tr>
 <tr>
 <td>0.50</td>
+<td>4.26 kg</td>
 <td>+0.79 kg</td>
 </tr>
 </tbody>
-</table></div></div></div><div class="fila"><div class="res"><p><strong>Qué significa el resultado</strong></p>
-<p>El margen es <strong>negativo</strong>: con $\zeta$ = 0.40, el cohete pesaría 10.27 kg y <strong>no cabe en el presupuesto</strong>.</p>
-<p>Para que quepa, el motor debe lograr $\zeta \ge \zeta_{min}$ = 0.422 (misión común, paso 6). Es decir, la estructura del motor no puede pesar más de:</p>
+</table></div></div></div><div class="fila"><div class="res"><h4>4. Qué significa el resultado</h4>
+<p>El margen es <strong>negativo</strong>: con $\zeta$ = 0.40 el cohete pesaría 10.27 kg y <strong>no cabe en el presupuesto</strong>.</p>
+<p>Para que quepa, el motor debe tener al menos la fracción mínima de la misión común, $\zeta_{min}$ = 0.422. Expresado como masa, la estructura no puede superar:</p>
 <p>$$m_{estr,max} = m_0 - m_{resto} - m_p = 10 - 4.95 - 2.129 = 2.92\ \text{kg}$$</p>
-<p>Con $\zeta$ = 0.40 se estimaron 3.19 kg: sobran unos 0.27 kg de acero.</p></div><div class="nota"><p><strong>S6.2 · Requisito derivado para la carcasa</strong></p>
-<p>Este paso no descarta el acero: deja un <strong>objetivo</strong> para la etapa de carcasa.</p>
+<div class="tabla"><table>
+<thead>
+<tr>
+<th></th>
+<th>Estimado con $\zeta$ = 0.40</th>
+<th>Máximo permitido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Estructura del motor</td>
+<td>3.19 kg</td>
+<td><strong>2.92 kg</strong></td>
+</tr>
+<tr>
+<td>Diferencia</td>
+<td></td>
+<td>0.27 kg de más</td>
+</tr>
+</tbody>
+</table></div></div><div class="nota"><h4>S6.2 · Requisito para la etapa de carcasa</h4>
+<p>Este resultado <strong>no descarta el acero</strong>. Deja un objetivo concreto:</p>
 <blockquote>
 <p>La estructura del motor debe pesar <strong>2.92 kg o menos</strong>.</p>
 </blockquote>
-<p>Si no se logra, las salidas son tres: aligerar el resto del cohete, aceptar un apogeo menor o cambiar de material (ejemplo 2).</p></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>con $\zeta$ = 0.40 el presupuesto <strong>no cierra</strong> (−0.27 kg). La estructura del motor debe pesar <strong>≤ 2.92 kg</strong>.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el material ya dejó su requisito. Los pasos 8 a 12 diseñan la geometría del grano, que no depende del material.</p></div></div></article><article class="paso" id="paso-8"><div class="paso-cab"><div class="eyebrow">Paso 8</div><h2>Geometría de un segmento BATES</h2><p class="pregunta"><strong>Pregunta:</strong> ¿cómo se describe un segmento BATES y cómo cambia mientras quema?</p><p class="viene"><strong>Viene de:</strong> las ecuaciones de <a href="../docs/01_mision_a_geometria.md"><code>docs/01_mision_a_geometria.md</code></a>, paso 8.</p></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><p><strong>Variables</strong></p>
+<p><strong>Si no se logra, hay tres salidas:</strong></p>
+<ol>
+<li>Aligerar el resto del cohete (fuselaje, aletas, recuperación).</li>
+<li>Aceptar un apogeo menor que 1000 m.</li>
+<li>Cambiar a un material más liviano (ejemplo 2: aluminio).</li>
+</ol></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>con $\zeta$ = 0.40 el presupuesto <strong>no cierra</strong> (sobran 0.27 kg). La estructura del motor debe pesar <strong>2.92 kg o menos</strong>.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el material ya dejó su requisito. Los pasos 8 a 12 diseñan la geometría del grano, que no depende del material.</p></div></div></article><article class="paso" id="paso-8"><div class="paso-cab"><div class="eyebrow">Paso 8</div><h2>Geometría de un segmento BATES</h2><p class="pregunta"><strong>Pregunta:</strong> ¿cómo se describe un segmento BATES y cómo cambia su forma mientras quema?</p><p class="viene"><strong>Viene de:</strong> las ecuaciones del paso 8 de <a href="../docs/01_mision_a_geometria.md"><code>docs/01_mision_a_geometria.md</code></a>.</p><div class="aclara"><p><strong>Qué se obtiene:</strong> las ecuaciones del área que quema, del volumen y del alma, en función de las medidas del grano.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>Variables</h4>
 <div class="tabla"><table>
 <thead>
 <tr>
@@ -362,6 +434,11 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>—</td>
 </tr>
 <tr>
+<td>$k$</td>
+<td>Fracción del núcleo: $d_0/D$</td>
+<td>—</td>
+</tr>
+<tr>
 <td>$x$</td>
 <td>Espesor ya quemado desde el encendido</td>
 <td>mm</td>
@@ -381,56 +458,80 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>Volumen de propelente de un segmento</td>
 <td>cm³</td>
 </tr>
-<tr>
-<td>$k$</td>
-<td>Fracción del núcleo: $d_0/D$</td>
-<td>—</td>
-</tr>
 </tbody>
-</table></div></div><div class="nota sin"><p class="vacia"><em>Fila de definiciones: no hay suposiciones.</em></p></div></div><div class="fila"><div class="res"><p><strong>Cómo quema un segmento</strong></p>
-<p>Cada segmento es un cilindro con un hueco central. Quema por la superficie del núcleo y por sus dos caras planas. La superficie exterior no quema, porque está protegida por el liner.</p>
-<p>Cuando se ha quemado un espesor $x$, el núcleo creció y el segmento se acortó:</p>
+</table></div></div><div class="nota sin"><p class="vacia"><em>Fila de definiciones: no hay suposiciones.</em></p></div></div><div class="fila"><div class="res"><h4>1. Cómo quema un segmento</h4>
+<p>Cada segmento es un cilindro con un hueco en el centro. Quema por tres superficies:</p>
+<ul>
+<li><strong>El núcleo:</strong> la cara interior del hueco.</li>
+<li><strong>Las dos caras planas:</strong> los anillos de cada extremo.</li>
+</ul>
+<p>La superficie exterior <strong>no quema</strong>, porque está cubierta por el liner.</p>
+<p>Cuando se ha quemado un espesor $x$, el núcleo se agrandó y el segmento se acortó:</p>
 <p>$$d(x) = d_0 + 2x \qquad L(x) = L_0 - 2x$$</p>
 <ul>
-<li>$d_0 + 2x$: el núcleo crece $x$ por cada lado.</li>
-<li>$L_0 - 2x$: cada cara retrocede $x$, y son dos.</li>
+<li>$d_0 + 2x$: el núcleo crece $x$ por cada lado del diámetro.</li>
+<li>$L_0 - 2x$: cada cara retrocede $x$, y son dos caras.</li>
 </ul>
-<p><strong>Área de quemado</strong> de $N$ segmentos:</p>
+<h4>2. Área de quemado</h4>
+<p>Es la suma de la superficie del núcleo y de las dos caras, multiplicada por el número de segmentos:</p>
 <p>$$A_b(x) = N\left[\underbrace{\pi\,d\,L}_{\text{núcleo}} + \underbrace{2 \cdot \frac{\pi}{4}\left(D^2 - d^2\right)}_{\text{dos caras}}\right]$$</p>
 <ul>
-<li>El núcleo es un cilindro: perímetro × largo.</li>
-<li>Cada cara es un anillo: área del círculo exterior menos la del hueco.</li>
-</ul></div><div class="nota"><p><strong>S8.1 · Regresión uniforme</strong></p>
-<p>Toda la superficie retrocede a la misma velocidad $r$.</p>
-<ul>
-<li><strong>Por qué se acepta:</strong> la presión es casi uniforme en la cámara y el propelente es homogéneo.</li>
-<li><strong>Cuándo falla:</strong> si el gas que pasa por el núcleo va muy rápido, acelera la combustión en la parte de atrás (combustión erosiva). Se controla con el flujo másico $G$ (paso 11).</li>
-</ul>
-<p><strong>S8.2 · Caras sin inhibir</strong></p>
-<p>Se supone que las dos caras de cada segmento queman libremente, que es lo que define un grano BATES.</p></div></div><div class="fila"><div class="res"><p><strong>Volumen de un segmento y alma</strong></p>
+<li><strong>Núcleo:</strong> es un cilindro, así que su área es perímetro ($\pi d$) por largo ($L$).</li>
+<li><strong>Cada cara:</strong> es un anillo, así que su área es el círculo exterior menos el hueco.</li>
+</ul></div><div class="nota"><h4>S8.1 · Toda la superficie retrocede igual</h4>
+<p><strong>Qué se supone.</strong> Que todas las superficies retroceden a la misma velocidad $r$.</p>
+<p><strong>Por qué se acepta.</strong> La presión es casi la misma en toda la cámara y el propelente es homogéneo.</p>
+<p><strong>Qué pasa si no se cumple.</strong> Si el gas que pasa por el núcleo va muy rápido, acelera la combustión en la parte de atrás del motor (<strong>combustión erosiva</strong>). Se controla con el flujo másico $G$, que se revisa en el paso 11.</p>
+<h4>S8.2 · Las caras queman libremente</h4>
+<p><strong>Qué se supone.</strong> Que las dos caras de cada segmento están descubiertas y queman.</p>
+<p><strong>Por qué se acepta.</strong> Es lo que define a un grano BATES y lo que permite que su área sea pareja (paso 9).</p></div></div><div class="fila"><div class="res"><h4>3. Volumen de un segmento</h4>
+<p>Es el área del anillo multiplicada por el largo:</p>
 <p>$$V_{seg} = \frac{\pi}{4}\left(D^2 - d_0^2\right) L_0$$</p>
-<p>Es el área del anillo multiplicada por el largo.</p>
+<h4>4. Alma</h4>
+<p>El fuego empieza en el núcleo y avanza hacia la pared exterior. <strong>El alma es la distancia que tiene que recorrer:</strong></p>
 <p>$$w = \frac{D - d_0}{2}$$</p>
-<p>El fuego empieza en el núcleo y avanza hacia la pared. <strong>El alma es la distancia que debe recorrer</strong>: desde la superficie del núcleo hasta la pared. Cuando $x = w$, el propelente se acabó.</p></div><div class="nota"><p><strong>S8.3 · Las caras no se acaban antes</strong></p>
-<p>El segmento también se acorta desde las caras. Para que el grano termine por el alma radial y no por el largo, debe cumplirse $L_0/2 \gt  w$.</p>
+<p>Cuando el espesor quemado llega a $x = w$, el núcleo alcanzó la pared y el propelente se acabó.</p></div><div class="nota"><h4>S8.3 · El segmento termina por el alma, no por el largo</h4>
+<p><strong>Qué se supone.</strong> Que el propelente se acaba cuando el fuego llega a la pared, y no antes por el lado de las caras.</p>
+<p><strong>Condición para que se cumpla.</strong> El segmento se acorta $2x$, así que debe ser $L_0/2 \gt  w$.</p>
 <blockquote>
-<p>Se verifica en el paso 11 con las medidas finales.</p>
-</blockquote></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>ecuaciones de $A_b(x)$, $V_{seg}$ y $w$ en función de $D$, $d_0$, $L_0$ y $N$.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el paso 9 usa $A_b(x)$ para elegir el largo $L_0$ que hace que el empuje sea parejo.</p></div></div></article><article class="paso" id="paso-9"><div class="paso-cab"><div class="eyebrow">Paso 9</div><h2>Neutralidad: el largo de cada segmento</h2><p class="pregunta"><strong>Pregunta:</strong> ¿qué largo debe tener cada segmento para que el área de quemado, y con ella el empuje, se mantenga lo más pareja posible?</p><p class="viene"><strong>Viene de:</strong> $A_b(x)$ del paso 8.</p></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><p><strong>Por qué importa que el área sea pareja</strong></p>
-<p>El gas que produce el motor es proporcional al área que quema: $\dot m = \rho_p\,r\,A_b$. Si el área sube y baja, la presión y el empuje también. Un motor con área pareja (<strong>neutro</strong>) tiene presión casi constante, y su carcasa no necesita aguantar picos.</p>
-<p><strong>Los dos efectos que compiten</strong></p>
-<ul>
-<li>El <strong>núcleo crece</strong> al quemar, así que su área aumenta.</li>
-<li>Las <strong>caras se achican</strong>: el anillo pierde área por dentro y el segmento se acorta.</li>
-</ul>
-<p><strong>Condición:</strong> se pide que el área al inicio ($x$ = 0) sea igual al área al final ($x = w$, cuando $d = D$ y las caras desaparecen):</p>
-<p>$$\pi d_0 L_0 + \frac{\pi}{2}\left(D^2 - d_0^2\right) = \pi D\left(L_0 - D + d_0\right)$$</p>
+<p>Se verifica en el paso 11, con las medidas finales.</p>
+</blockquote></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>ecuaciones de $A_b(x)$, $V_{seg}$ y $w$ en función de $D$, $d_0$, $L_0$ y $N$.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el paso 9 usa $A_b(x)$ para elegir el largo $L_0$ que hace que el empuje sea parejo.</p></div></div></article><article class="paso" id="paso-9"><div class="paso-cab"><div class="eyebrow">Paso 9</div><h2>Neutralidad: el largo de cada segmento</h2><p class="pregunta"><strong>Pregunta:</strong> ¿qué largo debe tener cada segmento para que el área que quema, y con ella el empuje, se mantenga pareja?</p><p class="viene"><strong>Viene de:</strong> la ecuación de $A_b(x)$ del paso 8.</p><div class="aclara"><p><strong>Qué se obtiene:</strong> una relación entre $L_0$, $D$ y $d_0$.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>1. Por qué importa que el área sea pareja</h4>
+<p>El gas que produce el motor es proporcional al área que quema:</p>
+<p>$$\dot m = \rho_p\,r\,A_b$$</p>
+<p>Si el área sube y baja, la presión y el empuje también lo hacen. Un motor con área pareja se llama <strong>neutro</strong>: tiene presión casi constante, y su carcasa no necesita resistir picos.</p>
+<h4>2. Los dos efectos que compiten</h4>
+<div class="tabla"><table>
+<thead>
+<tr>
+<th>Superficie</th>
+<th>Qué le pasa al quemar</th>
+<th>Efecto en el área</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Núcleo</td>
+<td>Se agranda</td>
+<td>Aumenta</td>
+</tr>
+<tr>
+<td>Caras</td>
+<td>El anillo se achica y el segmento se acorta</td>
+<td>Disminuye</td>
+</tr>
+</tbody>
+</table></div>
+<h4>3. Condición de neutralidad</h4>
+<p>Se pide que el área al inicio ($x$ = 0) sea igual al área al final ($x = w$). Al final, el núcleo llegó a la pared ($d = D$) y las caras desaparecieron:</p>
+<p>$$\underbrace{\pi d_0 L_0 + \frac{\pi}{2}\left(D^2 - d_0^2\right)}_{\text{área al inicio}} = \underbrace{\pi D\left(L_0 - D + d_0\right)}_{\text{área al final}}$$</p>
 <p>Despejando $L_0$:</p>
-<p>$$\boxed{L_0 = \frac{3D + d_0}{2}}$$</p></div><div class="nota"><p><strong>S9.1 · Igualar inicio y final</strong></p>
-<p>Es la forma estándar de diseñar un BATES. No hace el área perfectamente constante: sube un poco en el medio y vuelve a bajar.</p>
-<ul>
-<li><strong>Cuánto varía:</strong> se calcula en el paso 11 con las medidas reales.</li>
-<li><strong>Por qué se acepta:</strong> con una regla sencilla se logra una variación pequeña, de pocos por ciento.</li>
-</ul></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>$L_0 = (3D + d_0)/2$.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>solo faltan $D$ y $d_0$. El paso 10 obtiene la primera restricción sobre ellos: el alma que exige el tiempo de combustión.</p></div></div></article><article class="paso" id="paso-10"><div class="paso-cab"><div class="eyebrow">Paso 10</div><h2>Alma requerida por el tiempo de combustión</h2><p class="pregunta"><strong>Pregunta:</strong> ¿qué espesor de propelente debe tener el grano para quemarse justo en el tiempo que exige la misión?</p><p class="viene"><strong>Viene de:</strong> $t_{b,dis}$ = 1.36 s (misión común, paso 5) y la ley de Vieille del KNSB (misión común, propelente).</p></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><p><strong>Variables</strong></p>
+<p>$$\boxed{L_0 = \frac{3D + d_0}{2}}$$</p></div><div class="nota"><h4>S9.1 · Igualar el inicio y el final</h4>
+<p><strong>Qué se supone.</strong> Que basta con igualar el área al inicio y al final para que el empuje sea parejo.</p>
+<p><strong>Por qué se acepta.</strong> Es la forma estándar de diseñar un BATES, con una regla sencilla.</p>
+<p><strong>Qué pasa en realidad.</strong> El área no queda perfectamente constante: sube un poco en el medio de la combustión y vuelve a bajar.</p>
+<blockquote>
+<p>Cuánto varía se calcula en el paso 11, con las medidas finales.</p>
+</blockquote></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>$L_0 = (3D + d_0)/2$.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>solo faltan $D$ y $d_0$. El paso 10 obtiene la primera condición sobre ellos: el alma que exige el tiempo de combustión.</p></div></div></article><article class="paso" id="paso-10"><div class="paso-cab"><div class="eyebrow">Paso 10</div><h2>Alma requerida por el tiempo de combustión</h2><p class="pregunta"><strong>Pregunta:</strong> ¿qué espesor de propelente debe tener el grano para quemarse justo en el tiempo que exige la misión?</p><p class="viene"><strong>Viene de:</strong> $t_{b,dis}$ = 1.36 s (misión común, paso 5) y la ley de Vieille del KNSB (misión común, propelente).</p><div class="aclara"><p><strong>Qué se obtiene:</strong> el alma $w$ que deben cumplir todas las opciones de geometría.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>Variables</h4>
 <div class="tabla"><table>
 <thead>
 <tr>
@@ -451,6 +552,11 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>MPa</td>
 </tr>
 <tr>
+<td>$a$, $n$</td>
+<td>Coeficiente y exponente de la ley de Vieille</td>
+<td>—</td>
+</tr>
+<tr>
 <td>$t_{b,dis}$</td>
 <td>Tiempo de combustión de diseño</td>
 <td>s</td>
@@ -461,19 +567,28 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>mm</td>
 </tr>
 </tbody>
-</table></div></div><div class="nota sin"><p class="vacia"><em>Fila de definiciones: no hay suposiciones.</em></p></div></div><div class="fila"><div class="res"><p><strong>Idea física</strong></p>
-<p>La superficie retrocede a una velocidad $r$ y tiene que recorrer el alma $w$. El tiempo que tarda es:</p>
+</table></div></div><div class="nota sin"><p class="vacia"><em>Fila de definiciones: no hay suposiciones.</em></p></div></div><div class="fila"><div class="res"><h4>1. Idea física</h4>
+<p>La superficie retrocede a una velocidad $r$ y tiene que recorrer el alma $w$. El tiempo que tarda es distancia entre velocidad:</p>
 <p>$$t_b = \frac{w}{r}$$</p>
-<p>Es como una vela: cuanto más gruesa, más dura encendida.</p>
-<p>Aquí el tiempo <strong>ya está decidido</strong>: la misión común pidió 1.36 s, porque el empuje de 1600 N lo fija la salida del riel. Entonces se despeja el alma:</p>
+<p>Es como una vela: cuanto más gruesa, más tiempo dura encendida.</p>
+<h4>2. Por qué aquí se despeja el alma</h4>
+<p>El tiempo <strong>ya está decidido</strong>. La cadena es:</p>
+<ol>
+<li>Para salir del riel a 30 m/s hace falta un empuje de 1600 N (misión común, paso 3).</li>
+<li>Con ese empuje, el impulso de 2172 N·s se entrega en 1.36 s (misión común, paso 5).</li>
+<li>Entonces el grano debe quemarse en 1.36 s, y lo que queda por decidir es su espesor:</li>
+</ol>
 <p>$$\boxed{w = r \cdot t_{b,dis}}$$</p>
-<p><strong>Velocidad de regresión</strong> con la ley de Vieille, a 2.5 MPa (dentro de la meseta):</p>
+<h4>3. Velocidad de regresión</h4>
+<p>Con la ley de Vieille del KNSB a 2.5 MPa, dentro de la meseta:</p>
 <p>$$r = a\,P^{\,n} = 7.852 \times 2.5^{-0.013} = 7.76\ \text{mm/s}$$</p>
-<p><strong>Sustitución</strong></p>
+<h4>4. Cálculo</h4>
 <p>$$w = 7.76\ \tfrac{\text{mm}}{\text{s}} \times 1.36\ \text{s} = 10.53\ \text{mm}$$</p>
-<p>Unidades: (mm/s) × s = mm.</p></div><div class="nota"><p><strong>S10.1 · El motor trabaja en la meseta</strong></p>
-<p>La presión de cámara todavía no se conoce: depende del área de quemado y de la garganta de la tobera. Se supone 2.5 MPa, dentro de la meseta del KNSB (1.5 a 3.8 MPa).</p>
-<p><strong>Por qué estos valores en la tabla:</strong> los dos extremos de la meseta y el valor supuesto.</p>
+<p>Unidades: (mm/s) × s = mm.</p></div><div class="nota"><h4>S10.1 · El motor trabaja dentro de la meseta</h4>
+<p><strong>Qué se supone.</strong> Una presión de cámara de 2.5 MPa, dentro de la meseta del KNSB (1.5 a 3.8 MPa).</p>
+<p><strong>Por qué se acepta.</strong> La presión real todavía no se conoce: depende del área de quemado y de la garganta de la tobera. En la meseta, la velocidad de regresión casi no cambia con la presión.</p>
+<h5>Sensibilidad</h5>
+<p>Se repite el cálculo en los dos extremos de la meseta y en el valor supuesto:</p>
 <div class="tabla"><table>
 <thead>
 <tr>
@@ -501,22 +616,66 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 </tbody>
 </table></div>
 <blockquote>
-<p>En toda la meseta el alma cambia menos de 0.1 mm: el resultado casi no depende de la presión.</p>
+<p>En toda la meseta el alma cambia <strong>menos de 0.1 mm</strong>: el resultado casi no depende de la presión.</p>
 </blockquote>
 <p>A 1.5 MPa se usa el tramo anterior de la tabla de Vieille ($a$ = 8.763, $n$ = −0.314), que da casi lo mismo.</p>
-<p><strong>Cuándo falla:</strong> si la presión real sale de la meseta, $r$ cambia mucho. El modelo de cámara debe comprobar que no sale.</p></div></div><div class="fila"><div class="res"><p><strong>Consecuencia para la forma del grano</strong></p>
-<p>Hay que acomodar 1217 cm³ de propelente con solo 10.5 mm de espesor. Es como envolver mucho volumen en una capa delgada: el grano tiene que ser un <strong>tubo de pared delgada y núcleo grande</strong>, repartido en varios segmentos.</p></div><div class="nota"><p><strong>S10.2 · Por qué el diseño anterior ya no sirve</strong></p>
-<p>El BATES de la versión anterior tenía 16.7 mm de alma: quemaba en 16.7 / 7.76 = 2.15 s con un empuje de ≈1000 N, por debajo de lo necesario para salir del riel a 30 m/s.</p></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>el grano debe tener un alma de <strong>w = 10.5 mm</strong>.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el paso 11 combina el alma con el volumen de propelente para elegir el núcleo, el diámetro y el número de segmentos.</p></div></div></article><article class="paso" id="paso-11"><div class="paso-cab"><div class="eyebrow">Paso 11</div><h2>Núcleo, diámetro y número de segmentos</h2><p class="pregunta"><strong>Pregunta:</strong> ¿qué combinación de diámetro, núcleo y número de segmentos tiene un alma de 10.5 mm y suma 1217 cm³ de propelente?</p><p class="viene"><strong>Viene de:</strong> $w$ = 10.53 mm (paso 10), $L_0 = (3D + d_0)/2$ (paso 9), $V_{seg}$ (paso 8) y $V_p$ = 1217 cm³ (misión común, paso 7).</p></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><p><strong>De la fracción de núcleo al diámetro</strong></p>
-<p>Con $d_0 = k\,D$, el alma queda $w = (D - kD)/2 = D(1 - k)/2$. Despejando el diámetro:</p>
-<p>$$D = \frac{2\,w}{1 - k}$$</p>
+<p><strong>Qué pasa si no se cumple.</strong> Si la presión sale de la meseta, $r$ cambia mucho y el tiempo de combustión también. El modelo de cámara debe comprobarlo.</p></div></div><div class="fila"><div class="res"><h4>5. Consecuencia para la forma del grano</h4>
+<p>Hay que acomodar <strong>1217 cm³</strong> de propelente con solo <strong>10.5 mm</strong> de espesor. Es como envolver mucho volumen en una capa delgada.</p>
+<p>Por eso el grano tiene que ser:</p>
 <ul>
-<li>Si el núcleo es más grande ($k$ alto), $1 - k$ es pequeño y el diámetro crece, aunque el alma sea la misma.</li>
+<li>un <strong>tubo de pared delgada</strong>, con un núcleo grande,</li>
+<li>repartido en <strong>varios segmentos</strong>.</li>
+</ul></div><div class="nota"><h4>S10.2 · Por qué el diseño anterior ya no sirve</h4>
+<p>En la versión anterior de este ejemplo, el BATES tenía 16.7 mm de alma.</p>
+<div class="tabla"><table>
+<thead>
+<tr>
+<th></th>
+<th>Diseño anterior</th>
+<th>Requisito actual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alma</td>
+<td>16.7 mm</td>
+<td>10.5 mm</td>
+</tr>
+<tr>
+<td>Tiempo de combustión</td>
+<td>16.7 / 7.76 = 2.15 s</td>
+<td>1.36 s</td>
+</tr>
+<tr>
+<td>Empuje medio aproximado</td>
+<td>≈ 1000 N</td>
+<td>1600 N</td>
+</tr>
+</tbody>
+</table></div>
+<p>Con ≈ 1000 N el cohete no sale del riel a 30 m/s.</p></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>el grano debe tener un alma de <strong>w = 10.5 mm</strong>.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el paso 11 combina el alma con el volumen de propelente para elegir el núcleo, el diámetro y el número de segmentos.</p></div></div></article><article class="paso" id="paso-11"><div class="paso-cab"><div class="eyebrow">Paso 11</div><h2>Núcleo, diámetro y número de segmentos</h2><p class="pregunta"><strong>Pregunta:</strong> ¿qué combinación de diámetro, núcleo y número de segmentos tiene un alma de 10.5 mm y suma 1217 cm³ de propelente?</p><p class="viene"><strong>Viene de:</strong> $w$ = 10.53 mm (paso 10), $L_0 = (3D + d_0)/2$ (paso 9), la ecuación de $V_{seg}$ (paso 8) y $V_p$ = 1217 cm³ (misión común, paso 7).</p><div class="aclara"><p><strong>Qué se obtiene:</strong> las medidas finales del grano y sus comprobaciones.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>1. Del tamaño del núcleo al diámetro</h4>
+<p>Si el núcleo es una fracción $k$ del diámetro, $d_0 = k\,D$, el alma queda:</p>
+<p>$$w = \frac{D - k\,D}{2} = \frac{D\,(1 - k)}{2}$$</p>
+<p>Despejando el diámetro:</p>
+<p>$$\boxed{D = \frac{2\,w}{1 - k}}$$</p>
+<ul>
+<li>Con un núcleo más grande ($k$ alto), $1 - k$ es pequeño y el diámetro crece, aunque el alma sea la misma.</li>
 </ul>
-<p>Con $D$ se obtienen en cascada $d_0 = kD$, $L_0 = (3D + d_0)/2$ y $V_{seg}$.</p>
-<p><strong>Número de segmentos</strong> (ruta B de <a href="../docs/02_numero_de_granos.md"><code>docs/02_numero_de_granos.md</code></a>):</p>
-<p>$$N = \frac{V_p}{V_{seg}}$$</p></div><div class="nota"><p><strong>S11.1 · Cambio de ruta respecto de docs/01</strong></p>
-<p>En <code>docs/01</code> se elegían $k$ y $N$, y el diámetro salía de la fórmula de raíz cúbica. Aquí el alma ya está fijada (paso 10), así que la ruta cambia: se elige $k$, sale $D$ del alma y $N$ del volumen.</p></div></div><div class="fila"><div class="res"><p><strong>Tabla de opciones</strong></p>
-<p>Se evalúan las ecuaciones anteriores para varios $k$, con $w$ = 10.53 mm. Ejemplo con $k$ = 0.70: $D = 2 \times 10.53 / 0.30 = 70.2$ mm, $d_0 = 49.1$ mm, $L_0 = (3 \times 70.2 + 49.1)/2 = 129.9$ mm.</p>
+<p>Con $D$ se calculan en cadena $d_0 = kD$, $L_0 = (3D + d_0)/2$ y $V_{seg}$.</p>
+<h4>2. Número de segmentos</h4>
+<p>Es el volumen total dividido entre el volumen de cada segmento (ruta B de <a href="../docs/02_numero_de_granos.md"><code>docs/02_numero_de_granos.md</code></a>):</p>
+<p>$$N = \frac{V_p}{V_{seg}}$$</p></div><div class="nota"><h4>S11.1 · Cambia el orden del cálculo respecto de docs/01</h4>
+<p><strong>Qué cambia.</strong> En <code>docs/01</code> se elegían $k$ y $N$, y el diámetro salía de la fórmula de raíz cúbica.</p>
+<p><strong>Por qué.</strong> Aquí el alma ya está fijada por el tiempo de combustión (paso 10). Entonces se elige $k$, el diámetro sale del alma y el número de segmentos sale del volumen.</p></div></div><div class="fila"><div class="res"><h4>3. Tabla de opciones</h4>
+<p>Se evalúan las ecuaciones anteriores para varios valores de $k$, siempre con $w$ = 10.53 mm.</p>
+<p><strong>Ejemplo de una fila</strong> ($k$ = 0.70):</p>
+<ul>
+<li>$D = 2 \times 10.53 / (1 - 0.70) = 70.2$ mm</li>
+<li>$d_0 = 0.70 \times 70.2 = 49.1$ mm</li>
+<li>$L_0 = (3 \times 70.2 + 49.1)/2 = 129.9$ mm</li>
+<li>$V_{seg} = \frac{\pi}{4}(70.2^2 - 49.1^2)(129.9) = 256$ cm³</li>
+<li>$N = 1217 / 256 = 4.75$, que se redondea a 5</li>
+</ul>
 <div class="tabla"><table>
 <thead>
 <tr>
@@ -525,7 +684,7 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <th>$d_0$</th>
 <th>$L_0$</th>
 <th>$V_{seg}$</th>
-<th>$N = V_p/V_{seg}$</th>
+<th>$N$</th>
 <th>Largo total</th>
 </tr>
 </thead>
@@ -576,97 +735,170 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>638 mm</td>
 </tr>
 </tbody>
-</table></div></div><div class="nota"><p><strong>S11.2 · Por qué estos valores de $k$ y cómo se elige</strong></p>
-<p>Se recorre el rango en que un BATES es práctico, de 0.50 a 0.75.</p>
+</table></div></div><div class="nota"><h4>S11.2 · Cómo se elige $k$</h4>
+<p><strong>Por qué estos valores.</strong> Se recorre el rango en que un BATES es práctico, de 0.50 a 0.75.</p>
+<p><strong>Qué muestra la tabla:</strong></p>
 <ul>
-<li><strong>Núcleo chico ($k$ ≤ 0.60):</strong> con un alma tan delgada salen 10 a 16 segmentos y más de 1 m de grano. Es difícil de fabricar y de cargar.</li>
-<li><strong>Núcleo muy grande ($k$ = 0.75):</strong> pocos segmentos, pero un diámetro de 84 mm, y con 4 segmentos sobra un 27 % de propelente.</li>
-<li><strong>$k$ ≈ 0.70:</strong> 5 segmentos de 70 mm. Es el mejor compromiso entre número de piezas, diámetro y largo.</li>
-</ul></div></div><div class="fila"><div class="res"><p><strong>Ajuste fino: exactamente 5 segmentos</strong></p>
-<p>Con $k$ = 0.70 salen 4.75 segmentos. Con 5 enteros sobraría un 5 % de propelente. Se ajusta $k$ para que 5 segmentos sumen exactamente $V_p$:</p>
+<li><strong>Núcleo chico ($k$ ≤ 0.60):</strong> con un alma tan delgada salen de 10 a 16 segmentos y más de 1 m de grano. Es difícil de fabricar y de cargar.</li>
+<li><strong>Núcleo muy grande ($k$ = 0.75):</strong> pocos segmentos, pero un diámetro de 84 mm. Además, con 4 segmentos enteros sobra un 27 % de propelente.</li>
+<li><strong>$k$ ≈ 0.70:</strong> 5 segmentos de unos 70 mm.</li>
+</ul>
+<blockquote>
+<p>Se elige <strong>$k$ ≈ 0.70</strong>: es el mejor compromiso entre número de piezas, diámetro y largo.</p>
+</blockquote></div></div><div class="fila"><div class="res"><h4>4. Ajuste fino a exactamente 5 segmentos</h4>
+<p>Con $k$ = 0.70 salen 4.75 segmentos. Si se usan 5 enteros sin cambiar nada, sobra un 5 % de propelente. Por eso se ajusta $k$ para que <strong>5 segmentos sumen exactamente $V_p$</strong>:</p>
 <p>$$5 \cdot V_{seg}(k) = V_p$$</p>
-<p>Esta ecuación no se despeja a mano: se resolvió por tanteo (bisección) con el script. El resultado es:</p>
+<p>Esta ecuación no se despeja a mano: se resolvió por tanteo (bisección) con el script.</p>
 <div class="tabla"><table>
 <thead>
 <tr>
 <th>Medida</th>
+<th>Símbolo</th>
 <th>Valor</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Fracción de núcleo $k$</td>
+<td>Fracción de núcleo</td>
+<td>$k$</td>
 <td>0.693</td>
 </tr>
 <tr>
-<td>Diámetro del grano $D$</td>
+<td>Diámetro del grano</td>
+<td>$D$</td>
 <td><strong>68.6 mm</strong></td>
 </tr>
 <tr>
-<td>Diámetro del núcleo $d_0$</td>
+<td>Diámetro del núcleo</td>
+<td>$d_0$</td>
 <td><strong>47.6 mm</strong></td>
 </tr>
 <tr>
-<td>Largo de cada segmento $L_0$</td>
+<td>Largo de cada segmento</td>
+<td>$L_0$</td>
 <td><strong>126.7 mm</strong></td>
 </tr>
 <tr>
-<td>Número de segmentos $N$</td>
+<td>Número de segmentos</td>
+<td>$N$</td>
 <td><strong>5</strong></td>
 </tr>
 <tr>
 <td>Volumen total</td>
+<td>$N \cdot V_{seg}$</td>
 <td>1217 cm³</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>Comprobaciones</strong></p>
-<ul>
-<li>Alma: $w = (68.6 - 47.6)/2 = 10.5$ mm ✓</li>
-<li>Tiempo: $t_b = 10.53/7.76 = 1.36$ s ✓</li>
-<li>Caras (S8.3): $L_0/2 = 63.4$ mm, mayor que $w$ ✓</li>
-</ul></div><div class="nota"><p><strong>S11.3 · El ajuste es numérico, no una simulación</strong></p>
-<p>La bisección solo busca el $k$ que cumple una ecuación escrita. Se puede verificar a mano: con $D$ = 68.62 mm, $d_0$ = 47.56 mm y $L_0$ = 126.70 mm,</p>
-<p>$$V_{seg} = \frac{\pi}{4}(68.62^2 - 47.56^2)(126.70) = 243.5\ \text{cm}^3$$</p>
-<p>y $5 \times 243.5 = 1217$ cm³ ✓.</p></div></div><div class="fila"><div class="res"><p><strong>Curva de área de quemado</strong> (paso 8 con las medidas finales)</p>
+<h4>5. Comprobaciones</h4>
 <div class="tabla"><table>
 <thead>
 <tr>
-<th>$x$</th>
-<th>0</th>
-<th>1.76</th>
-<th>3.51</th>
-<th>5.27</th>
-<th>7.02</th>
-<th>8.78</th>
-<th>10.53 mm</th>
+<th>Qué se comprueba</th>
+<th>Cálculo</th>
+<th>Resultado</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>$A_b$ [mm²]</td>
-<td>113 864</td>
-<td>115 316</td>
-<td>116 187</td>
-<td>116 477</td>
-<td>116 187</td>
-<td>115 316</td>
-<td>113 864</td>
+<td>Alma</td>
+<td>$(68.6 - 47.6)/2$</td>
+<td>10.5 mm ✓</td>
+</tr>
+<tr>
+<td>Tiempo de combustión</td>
+<td>$10.53 / 7.76$</td>
+<td>1.36 s ✓</td>
+</tr>
+<tr>
+<td>Termina por el alma (S8.3)</td>
+<td>$L_0/2 = 63.4$ mm $\gt  w$</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table></div></div><div class="nota"><h4>S11.3 · El ajuste es numérico, no una simulación</h4>
+<p><strong>Qué se hizo.</strong> La bisección solo busca el $k$ que cumple una ecuación escrita: prueba un valor, revisa si sobra o falta volumen y corrige.</p>
+<p><strong>Cómo comprobarlo a mano.</strong> Con $D$ = 68.62 mm, $d_0$ = 47.56 mm y $L_0$ = 126.70 mm:</p>
+<p>$$V_{seg} = \frac{\pi}{4}\left(68.62^2 - 47.56^2\right)(126.70) = 243.5\ \text{cm}^3$$</p>
+<blockquote>
+<p>$5 \times 243.5 = 1217$ cm³ ✓</p>
+</blockquote></div></div><div class="fila"><div class="res"><h4>6. Curva del área de quemado</h4>
+<p>Se evalúa la ecuación del paso 8 con las medidas finales, en 7 puntos desde el encendido hasta el final del alma:</p>
+<div class="tabla"><table>
+<thead>
+<tr>
+<th>Espesor quemado $x$</th>
+<th>Área de quemado $A_b$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 mm</td>
+<td>113 864 mm²</td>
+</tr>
+<tr>
+<td>1.76 mm</td>
+<td>115 316 mm²</td>
+</tr>
+<tr>
+<td>3.51 mm</td>
+<td>116 187 mm²</td>
+</tr>
+<tr>
+<td>5.27 mm</td>
+<td><strong>116 477 mm²</strong> (máxima)</td>
+</tr>
+<tr>
+<td>7.02 mm</td>
+<td>116 187 mm²</td>
+</tr>
+<tr>
+<td>8.78 mm</td>
+<td>115 316 mm²</td>
+</tr>
+<tr>
+<td>10.53 mm</td>
+<td>113 864 mm²</td>
 </tr>
 </tbody>
 </table></div>
+<p><strong>Qué muestra:</strong></p>
 <ul>
-<li>Empieza y termina con la misma área (condición del paso 9).</li>
+<li>Empieza y termina con la misma área, como exige el paso 9.</li>
 <li>Variación máxima: $(116\,477 - 113\,864)/113\,864$ = <strong>2.3 %</strong>. El grano es casi neutro.</li>
 </ul>
-<p><strong>Control cruzado del gasto de propelente</strong></p>
-<p>Con el área media, el propelente que se quema por segundo es $\dot m = \rho_p\,r\,\bar A_b$ = 1749 × 0.00776 × 0.1156 ≈ <strong>1.569 kg/s</strong>. Por otro camino, $m_p/t_b$ = 2.129/1.357 = <strong>1.569 kg/s</strong>. Coinciden: la geometría es coherente con la misión.</p></div><div class="nota"><p><strong>S11.4 · Flujo másico en el núcleo (preliminar)</strong></p>
-<p>Todo el gas de los 5 segmentos sale por el núcleo del último. Si va muy rápido, aparece combustión erosiva (S8.1). Se mide con el flujo másico:</p>
+<h4>7. Control cruzado del propelente quemado por segundo</h4>
+<p>Se calcula el gasto másico de dos maneras independientes:</p>
+<div class="tabla"><table>
+<thead>
+<tr>
+<th>Camino</th>
+<th>Cálculo</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Por la geometría</td>
+<td>$\rho_p\,r\,\bar A_b = 1749 \times 0.00776 \times 0.1156$</td>
+<td>1.569 kg/s</td>
+</tr>
+<tr>
+<td>Por la misión</td>
+<td>$m_p / t_b = 2.129 / 1.357$</td>
+<td>1.569 kg/s</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>Los dos caminos coinciden: la geometría es coherente con la misión.</p>
+</blockquote></div><div class="nota"><h4>S11.4 · Flujo másico en el núcleo (preliminar)</h4>
+<p><strong>Qué se revisa.</strong> Todo el gas de los 5 segmentos sale por el núcleo del último. Si va muy rápido, aparece combustión erosiva (S8.1). Se mide con el flujo másico: kilos de gas por segundo y por metro cuadrado de núcleo.</p>
 <p>$$G = \frac{\rho_p\,r\,A_{b,max}}{\frac{\pi}{4}d_0^2} = \frac{1749 \times 0.00776 \times 0.1165}{0.001776} \approx 890\ \text{kg/m}^2\text{s}$$</p>
 <blockquote>
-<p>890 &lt; 1400 kg/m²s (límite práctico): cumple con holgura, gracias al núcleo grande.</p>
+<p><strong>890 &lt; 1400 kg/m²s</strong> (límite práctico): cumple con holgura, gracias al núcleo grande.</p>
 </blockquote>
-<p>Es <strong>preliminar</strong>: supone $r$ de la meseta. Se confirma con el modelo de cámara.</p></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p><strong>5 segmentos</strong> de $D$ = <strong>68.6 mm</strong>, $d_0$ = <strong>47.6 mm</strong> y $L_0$ = <strong>126.7 mm</strong>. Alma de 10.5 mm, neutralidad de 2.3 % y $G$ = 890 kg/m²s.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el paso 12 calcula las medidas interiores del tubo que debe alojar los 5 segmentos.</p></div></div></article><article class="paso" id="paso-12"><div class="paso-cab"><div class="eyebrow">Paso 12</div><h2>Dimensiones del tubo del motor</h2><p class="pregunta"><strong>Pregunta:</strong> ¿qué diámetro interior y qué largo debe tener el tubo de la carcasa?</p><p class="viene"><strong>Viene de:</strong> $D$, $L_0$ y $N$ (paso 11).</p></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><p><strong>Variables</strong></p>
+<p><strong>Qué se supone.</strong> La velocidad de regresión de la meseta. Por eso el resultado es preliminar y se confirma con el modelo de cámara.</p></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p><strong>5 segmentos</strong> de $D$ = <strong>68.6 mm</strong>, $d_0$ = <strong>47.6 mm</strong> y $L_0$ = <strong>126.7 mm</strong>. Alma de 10.5 mm, variación de área de 2.3 % y flujo másico de 890 kg/m²s.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>el paso 12 calcula las medidas interiores del tubo que debe alojar los 5 segmentos.</p></div></div></article><article class="paso" id="paso-12"><div class="paso-cab"><div class="eyebrow">Paso 12</div><h2>Dimensiones del tubo del motor</h2><p class="pregunta"><strong>Pregunta:</strong> ¿qué diámetro interior y qué largo debe tener el tubo de la carcasa?</p><p class="viene"><strong>Viene de:</strong> $D$, $L_0$ y $N$ (paso 11).</p><div class="aclara"><p><strong>Qué se obtiene:</strong> las medidas interiores mínimas del tubo y la carga volumétrica.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>Variables</h4>
 <div class="tabla"><table>
 <thead>
 <tr>
@@ -683,12 +915,12 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 </tr>
 <tr>
 <td>$e_{liner}$</td>
-<td>Espesor del liner (tubo aislante entre grano y carcasa)</td>
+<td>Espesor del liner: tubo aislante entre el grano y la carcasa</td>
 <td>mm</td>
 </tr>
 <tr>
 <td>$\delta$</td>
-<td>Holgura radial para introducir los granos</td>
+<td>Holgura radial para poder introducir los granos</td>
 <td>mm</td>
 </tr>
 <tr>
@@ -698,24 +930,50 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 </tr>
 <tr>
 <td>$L_{granos}$</td>
-<td>Largo ocupado por los granos</td>
+<td>Largo que ocupan los granos dentro del tubo</td>
 <td>mm</td>
 </tr>
 </tbody>
-</table></div></div><div class="nota sin"><p class="vacia"><em>Fila de definiciones: no hay suposiciones.</em></p></div></div><div class="fila"><div class="res"><p><strong>Diámetro interior</strong></p>
+</table></div></div><div class="nota sin"><p class="vacia"><em>Fila de definiciones: no hay suposiciones.</em></p></div></div><div class="fila"><div class="res"><h4>1. Diámetro interior</h4>
+<p>Al diámetro del grano se suman el liner y la holgura, una vez por cada lado:</p>
 <p>$$D_{int} = D + 2\,e_{liner} + 2\,\delta = 68.6 + 2(1.0) + 2(0.25) = 71.1\ \text{mm}$$</p>
-<p><strong>Largo de los granos</strong></p>
+<h4>2. Largo de los granos</h4>
+<p>Cinco segmentos con cuatro separaciones entre ellos:</p>
 <p>$$L_{granos} = N\,L_0 + (N - 1)\,s = 5(126.7) + 4(2) = 642\ \text{mm}$$</p>
-<p>A esto se suman las tapas y la tobera, que se diseñan en la etapa de carcasa.</p>
-<p><strong>Carga volumétrica</strong> (cuánto del espacio interior es propelente):</p>
-<p>$$\frac{V_p}{\frac{\pi}{4}D^2 L_{granos}} = \frac{1217}{\frac{\pi}{4}(6.86)^2(64.2)} \approx 51\ \%$$</p></div><div class="nota"><p><strong>S12.1 · Liner de 1 mm, holgura de 0.25 mm y separación de 2 mm</strong></p>
-<p>Son valores típicos de motores amateur de este tamaño. Se ajustan cuando se elijan el liner y el tubo comercial.</p>
-<p><strong>S12.2 · Carga volumétrica baja</strong></p>
-<p>El 51 % es bajo para un BATES (suele ser 70–80 %). Es el precio del alma delgada: el núcleo grande deja mucho espacio vacío.</p>
+<p>A este largo se suman las tapas y la tobera, que se diseñan en la etapa de carcasa.</p>
+<h4>3. Carga volumétrica</h4>
+<p>Indica qué parte del espacio interior ocupa el propelente:</p>
+<p>$$\frac{V_p}{\frac{\pi}{4}D^2 L_{granos}} = \frac{1217\ \text{cm}^3}{\frac{\pi}{4}(6.86)^2(64.2)\ \text{cm}^3} \approx 51\ \%$$</p></div><div class="nota"><h4>S12.1 · Liner, holgura y separación</h4>
+<p><strong>Qué se supone.</strong></p>
+<div class="tabla"><table>
+<thead>
+<tr>
+<th>Medida</th>
+<th>Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Liner</td>
+<td>1.0 mm</td>
+</tr>
+<tr>
+<td>Holgura radial</td>
+<td>0.25 mm</td>
+</tr>
+<tr>
+<td>Separación entre segmentos</td>
+<td>2 mm</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Por qué se acepta.</strong> Son valores típicos de motores amateur de este tamaño. Se ajustan cuando se elijan el liner y el tubo comercial.</p>
+<h4>S12.2 · La carga volumétrica es baja</h4>
+<p>Un BATES suele tener entre 70 y 80 %. Este tiene <strong>51 %</strong>: es el precio del alma delgada, porque el núcleo grande deja mucho espacio vacío.</p>
 <ul>
-<li><strong>Consecuencia:</strong> el tubo es más largo y pesado de lo que sería con alma gruesa. Con acero, eso aprieta aún más el presupuesto del paso 6.</li>
-<li><strong>Ventaja:</strong> el núcleo grande da un flujo másico bajo (S11.4).</li>
-</ul></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>tubo de <strong>≥ 71.1 mm</strong> de diámetro interior y <strong>642 mm</strong> de largo de granos, más tapas.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>termina la geometría. El siguiente paso es el modelo de cámara: presión, garganta de la tobera y espesor de la carcasa.</p></div></div></article><section class="resumen" id="resumen-del-ejemplo"><h2>Resumen del ejemplo</h2><p>Ejemplo 1: grano BATES y carcasa de acero AISI 304. Todos los valores salen de fórmulas escritas en los pasos; ninguno es simulado.</p>
+<li><strong>Desventaja:</strong> el tubo es más largo y pesado. Con acero, eso aprieta aún más el presupuesto de masa del paso 6.</li>
+<li><strong>Ventaja:</strong> el núcleo grande mantiene bajo el flujo másico (S11.4).</li>
+</ul></div></div><div class="resultado"><div><b class="etq">Resultado</b><div class="valor"><p>tubo de <strong>71.1 mm</strong> de diámetro interior como mínimo y <strong>642 mm</strong> de largo de granos, más tapas y tobera.</p></div></div><div class="sig"><b class="etq">Con este resultado →</b><p>termina la geometría. El siguiente paso es el modelo de cámara: presión, garganta de la tobera y espesor de la carcasa.</p></div></div></article><section class="resumen" id="resumen-del-ejemplo"><h2>Resumen del ejemplo</h2><p>Grano BATES y carcasa de acero AISI 304. Todos los valores salen de fórmulas escritas en los pasos; ninguno es simulado.</p>
 <div class="tabla"><table>
 <thead>
 <tr>
@@ -746,13 +1004,13 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>10</td>
 </tr>
 <tr>
-<td>Segmentos</td>
+<td>Número de segmentos</td>
 <td>5</td>
 <td>11</td>
 </tr>
 <tr>
-<td>Diámetro del grano / núcleo</td>
-<td>68.6 mm / 47.6 mm</td>
+<td>Diámetro del grano y del núcleo</td>
+<td>68.6 mm y 47.6 mm</td>
 <td>11</td>
 </tr>
 <tr>
@@ -761,7 +1019,7 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 <td>11</td>
 </tr>
 <tr>
-<td>Neutralidad (variación de $A_b$)</td>
+<td>Variación del área de quemado</td>
 <td>2.3 %</td>
 <td>11</td>
 </tr>
@@ -772,7 +1030,7 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 </tr>
 <tr>
 <td>Diámetro interior del tubo</td>
-<td>≥ 71.1 mm</td>
+<td>71.1 mm como mínimo</td>
 <td>12</td>
 </tr>
 <tr>
@@ -787,11 +1045,11 @@ th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); fo
 </tr>
 </tbody>
 </table></div>
-<p><strong>Pendiente para la etapa de carcasa</strong></p>
+<p><strong>Pendiente para la etapa de carcasa:</strong></p>
 <ol>
-<li><strong>Modelo de cámara:</strong> presión y garganta de la tobera. Debe confirmar que la presión queda en la meseta (S10.1) y el flujo másico (S11.4).</li>
-<li><strong>Espesor de pared</strong> con $\sigma_y$ = 205 MPa y factor de seguridad de 1.5–2.</li>
-<li><strong>Masa real de la estructura:</strong> debe ser ≤ 2.92 kg para que el cohete quepa en 10 kg.</li>
+<li><strong>Modelo de cámara:</strong> calcular la presión y la garganta de la tobera. Debe confirmar que la presión queda dentro de la meseta (S10.1) y el flujo másico (S11.4).</li>
+<li><strong>Espesor de pared:</strong> con $\sigma_y$ = 205 MPa y un factor de seguridad de 1.5 a 2.</li>
+<li><strong>Masa real de la estructura:</strong> debe ser 2.92 kg o menos para que el cohete quepa en 10 kg.</li>
 </ol></section>
 </main>
 </body>

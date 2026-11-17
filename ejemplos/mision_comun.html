@@ -140,6 +140,32 @@ tr.sel td { background: var(--acento-suave); font-weight: 600; }
 .paso { scroll-margin-top: 16px; }
 th { text-transform: none; letter-spacing: 0; font-family: var(--font-texto); font-size: .8rem; font-weight: 600; }
 .nota > p > em:only-child { color: var(--tenue); }
+
+/* ---- Redacción organizada: títulos, espaciado, tablas y recuadros ---- */
+.res, .nota { gap: 14px; line-height: 1.65; }
+.res h4, .nota h4 { margin: 0; font-family: var(--font-display); font-size: 1.02rem; line-height: 1.3; }
+.res h4 { color: var(--acento); }
+.nota h4 { color: var(--nota-tinta); font-size: .98rem; }
+.res h4:not(:first-child), .nota h4:not(:first-child) { margin-top: 10px; padding-top: 14px; border-top: 1px dashed var(--linea); }
+.nota h4:not(:first-child) { border-top-color: var(--nota-borde); }
+.res h5, .nota h5 { margin: 4px 0 -6px; font-family: var(--font-dato); font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--tenue); }
+.res ul, .res ol, .nota ul, .nota ol { gap: 6px; }
+.res li > p, .nota li > p { margin: 0; }
+.res strong, .nota strong { font-weight: 600; }
+.tabla { border: 1px solid var(--linea); border-radius: 6px; }
+.tabla table { margin: 0; }
+th { background: var(--papel); border-bottom: 1px solid var(--linea); padding: 8px 10px; }
+td { padding: 7px 10px; }
+tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--papel) 55%, transparent); }
+tbody tr:last-child td { border-bottom: 0; }
+td strong { color: var(--acento); }
+.nota .tabla { background: var(--hoja); border-color: var(--nota-borde); }
+.nota th { background: color-mix(in srgb, var(--nota) 60%, var(--hoja)); }
+.nota blockquote, .res blockquote { font-family: var(--font-texto); font-size: .9rem; line-height: 1.5; padding: 10px 14px; border-left: 3px solid var(--acento); border-radius: 0 6px 6px 0; }
+.nota blockquote { border-left-color: var(--nota-borde); }
+.nota blockquote strong, .res blockquote strong { color: var(--tinta); }
+.paso-cab .aclara { color: var(--tinta); }
+.paso-cab .aclara p { margin: 0; }
 </style>
 </head>
 <body>
