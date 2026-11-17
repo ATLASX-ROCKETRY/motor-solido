@@ -16,7 +16,7 @@ Cada paso es una hoja dividida en dos columnas:
 
 Al final de cada paso se indica el **resultado** y qué permite calcular en el **paso siguiente**.
 
-**Secuencia:** Paso 1 (requisitos) → Propelente → Paso 2 (velocidad) → Paso 3 (impulso a mano) → Paso 4 (impulso simulado) → Paso 5 (margen y propelente) → Paso 6 (presupuesto de masa común) → Paso 7 (volumen de propelente)
+**Secuencia:** Paso 1 (requisitos) → Propelente → Paso 2 (velocidad) → Paso 3 (impulso a mano) → Paso 4 (impulso simulado) → Paso 5 (margen y propelente) → Resumen de estimaciones → Paso 6 (presupuesto de masa común) → Paso 7 (volumen de propelente)
 
 ---
 
@@ -87,6 +87,8 @@ Es una regla práctica de cohetería amateur, no una ley física. Lo que realmen
 
 El aire frena al cohete en proporción al área que empuja de frente: $A = \pi D^2/4$.
 
+**Por qué se comparan estos dos valores:** 100 mm es un fuselaje más delgado, típico de cohetes de este tamaño. Compararlo con 150 mm muestra cuánto arrastre extra trae la decisión del equipo.
+
 | Diámetro | Área frontal |
 |---|---|
 | 100 mm | 0.0079 m² (79 cm²) |
@@ -153,6 +155,7 @@ Sale del modelo termoquímico del motor de 38 mm de los apuntes, que trabajaba a
 
 - **Por qué se acepta:** es un valor bajo, así que si el motor real rinde más, sobra propelente. Es el lado seguro para llegar al apogeo.
 - **Qué significa en números:** cada kg de propelente entrega $I_{sp}\,g_0$ de impulso.
+- **Por qué estos tres valores:** 104 s es el valor de trabajo. 95 s representa un motor que rinde ≈10 % menos que el modelo; 120 s, uno con mejor tobera que rinde ≈15 % más. Así se ve el rango razonable.
 
 | $I_{sp}$ | Impulso por kg |
 |---|---|
@@ -318,7 +321,9 @@ Unidades: $\sqrt{(\text{m/s}^2)\cdot\text{m}} = \sqrt{\text{m}^2/\text{s}^2} = \
 La altura que gana el cohete mientras quema depende del motor, que todavía no conocemos. Por eso se toma como cero.
 
 - **Efecto:** en realidad el cohete sube mientras quema, así que necesita **menos** velocidad. Este supuesto **sobrestima** $v_b$.
-- **Sensibilidad:**
+- **Sensibilidad:** para ver cuánto importa este supuesto, se repite el cálculo con otros valores de $h_b$ en la misma fórmula $v_b = \sqrt{2g(h_{ap} - h_b)}$. Por ejemplo, con $h_b$ = 100 m:
+
+$$v_b = \sqrt{2 \times 9.81 \times (1000 - 100)} = \sqrt{17\,658} \approx 133\ \text{m/s}$$
 
 | $h_b$ | $v_b$ |
 |---|---|
@@ -326,13 +331,18 @@ La altura que gana el cohete mientras quema depende del motor, que todavía no c
 | 100 m | 133 m/s |
 | 200 m | 125 m/s |
 
+**Por qué 100 y 200 m:** si el motor quema entre 1 y 3 s y el cohete va en promedio a la mitad de 140 m/s (unos 70 m/s), sube entre 70 y 210 m. Esos valores cubren ese rango.
+
 Los supuestos S2.1 y S2.3 empujan el resultado en sentidos opuestos.
 
 **S2.4 · Gravedad constante**
 
-La gravedad disminuye con la altura: $g(h) = g_0\,[R/(R+h)]^2$, con $R$ = 6371 km.
+La ecuación de energía usa $m\,g\,h$ para la energía potencial. Esa forma solo es válida si $g$ es igual en todas las alturas del vuelo.
 
-> A 1000 m, $g$ = 0.9997 $g_0$: el efecto es despreciable (0.03 %).
+- **Para qué se revisa:** si $g$ cambiara apreciablemente entre el suelo y 1000 m, habría que usar una fórmula más complicada. Se comprueba para poder seguir usando la simple con confianza.
+- **Cómo se comprueba:** la gravedad disminuye con la distancia al centro de la Tierra: $g(h) = g_0\,[R/(R+h)]^2$, con $R$ = 6371 km.
+
+> A 1000 m, $g$ = 0.9997 $g_0$: cambia 0.03 %. Es despreciable, así que el supuesto es válido.
 
 </td>
 </tr>
@@ -535,7 +545,7 @@ $$F_{riel,min} = m_0\left(\frac{v_{riel}^2}{2\,L_{ef}} + g\right)$$
 - $v_{riel}^2/(2L_{ef})$: aceleración necesaria para llegar a $v_{riel}$ en el recorrido guiado.
 - $+\,g$: aceleración extra para vencer el peso.
 
-Con $v_{riel}$ = 30 m/s (LASC):
+Con $v_{riel}$ = 30 m/s (LASC). Como $L_{ef}$ todavía no se conoce, se calcula para varios valores: desde 4.0 m (todo el riel, el caso más favorable) hasta 3.0 m (guía delantera a 1 m de la cola):
 
 | Recorrido guiado $L_{ef}$ | $F_{riel,min}$ |
 |---|---|
@@ -563,9 +573,15 @@ Son dos supuestos ligados.
 - **Lo que exige LASC es el empuje en el riel**, durante los primeros ≈0.2 s. Un motor con un empuje inicial alto podría cumplir con un empuje medio menor. Aquí, al suponer empuje constante, ambos coinciden.
 - **El empuje real no se elige libremente:** sale de la geometría del grano y de la presión, que todavía no están diseñadas. El motor final tendrá que cumplir $F_{riel} \ge F_{riel,min}$.
 
-> Consecuencia: con 1600 N, el impulso de ≈1500 N·s se entrega en menos de 1 s. La salida a 30 m/s obliga a un motor de **empuje alto y combustión corta**.
+> Consecuencia: en la sustitución numérica de este paso, el impulso sale 1491 N·s y el tiempo $t_b = 1491/1600 = 0.93$ s, es decir, menos de 1 s. La salida a 30 m/s obliga a un motor de **empuje alto y combustión corta**.
 
 **Cuánto cambia el impulso según el empuje**
+
+Se repite la fórmula del despeje con tres empujes. **Por qué estos valores:** 1200 N es casi el mínimo si se aprovechara todo el riel; 1600 N es el elegido; 2400 N es un motor 50 % más fuerte. Cada fila se calcula así (ejemplo con 1200 N):
+
+- $I = 1400 / (1 - 98.1/1200) = 1400 / 0.918 = 1525$ N·s
+- $t_b = I/\bar F = 1525/1200 = 1.27$ s
+- Pérdida por gravedad $= m_0 g\,t_b = 98.1 \times 1.27 = 125$ N·s, que es también $I - m_0 v_b = 1525 - 1400$
 
 | $\bar F$ | $I$ | $t_b$ | Pérdida por gravedad $m_0 g\,t_b$ |
 |---|---|---|---|
@@ -694,9 +710,18 @@ Se supone que el cohete sube en línea recta.
 Se supone que el motor empuja siempre $\bar F$ = 1600 N.
 
 - **En la práctica:** el empuje real tiene un arranque, una zona casi constante y una cola.
-- **Por qué se acepta:** para el apogeo importa el impulso total, no su forma. Se comprobó variando el empuje:
+- **Por qué se acepta:** para el apogeo importa sobre todo el impulso total, no su forma.
+- **Cómo se comprobó:** se corrió la simulación completa de este paso (integración + bisección) tres veces, cambiando solo $\bar F$. Se usaron los mismos tres empujes que en S3.4: 1200 N (casi el mínimo con todo el riel), 1600 N (el elegido) y 2400 N (un motor 50 % más fuerte). Cada corrida devuelve su propio $I_{req}$:
 
-> $\bar F$ = 1200 / 1600 / 2400 N → $I_{req}$ = 1813 / 1810 / 1805 N·s (menos de 0.5 %).
+| $\bar F$ | $I_{req}$ (simulado, $C_d$ = 0.5) |
+|---|---|
+| 1200 N | 1813 N·s |
+| 1600 N | 1810 N·s |
+| 2400 N | 1805 N·s |
+
+> La diferencia entre el empuje más bajo y el más alto es (1813 − 1805)/1813 = 0.4 %.
+
+**Por qué cambia menos que en el paso 3 (4 %):** un motor más fuerte pierde menos contra la gravedad, como en S3.4. Pero también alcanza más velocidad cerca del suelo, donde el aire es más denso, y pierde más por arrastre. Los dos efectos casi se cancelan.
 
 </td>
 </tr>
@@ -719,6 +744,8 @@ $$m_p = \frac{I}{I_{sp}\,g_0}$$
 **S4.3 · $I_{sp}$ = 104 s**
 
 En este paso, el $I_{sp}$ solo decide qué tan rápido se aliviana el cohete.
+
+Se repitió la simulación con $I_{sp}$ = 120 s, el valor alto del rango de SP.1.
 
 > Con $I_{sp}$ = 120 s, $I_{req}$ = 1818 N·s (+0.5 %): efecto pequeño.
 
@@ -752,7 +779,8 @@ El aire es menos denso con la altura. La forma exponencial sale del equilibrio h
 
 Es un valor típico de cohetes amateur, que suelen estar entre 0.4 y 0.75. Sin túnel de viento ni CFD no se conoce mejor.
 
-- **Cómo se maneja:** se prueban tres valores (tabla de resultados).
+- **Cómo se maneja:** se corre la simulación con tres valores: 0.5 y ±20 % (0.4 y 0.6). Ese ±20 % representa la incertidumbre típica de estimar $C_d$ sin ensayos. Los resultados están en la tabla de resultados.
+- **Por qué la tabla incluye $C_d$ = 0:** no es un valor posible; sirve para aislar el efecto del aire y compararlo con el cálculo a mano del paso 3, que no tenía aire.
 
 > ±20 % en $C_d$ → −6 % / +7 % en $I_{req}$.
 
@@ -760,7 +788,9 @@ Es un valor típico de cohetes amateur, que suelen estar entre 0.4 y 0.75. Sin t
 
 Se usa $\rho_0$ = 1.225 kg/m³, el aire más denso posible: es el caso conservador.
 
-> Desde un sitio alto (~1700 m, $\rho_0 \approx$ 1.0 kg/m³): $I_{req}$ = 1706 N·s (−6 %).
+Para ver cuánto importa, se repitió la simulación con $\rho_0$ = 1.0 kg/m³, que corresponde a un sitio de lanzamiento a unos 1700 m de altitud.
+
+> $\rho_0$ = 1.0 kg/m³: $I_{req}$ = 1706 N·s (−6 %).
 
 **S4.6 · Atmósfera exponencial**
 
@@ -915,7 +945,7 @@ Unidades: N·s / (m/s) = (kg·m/s) / (m/s) = kg.
 
 **S5.2 · Qué tanto depende de $I_{sp}$**
 
-La masa de propelente es inversamente proporcional al $I_{sp}$.
+La masa de propelente es inversamente proporcional al $I_{sp}$. Se usan los mismos tres valores de SP.1 (95, 104 y 120 s) y la misma fórmula, $m_p = 2172/(I_{sp} \times 9.81)$.
 
 | $I_{sp}$ | $m_p$ |
 |---|---|
@@ -962,6 +992,59 @@ Es un motor de cohetería de **alta potencia**. Antes de volarlo hacen falta:
 > **Resultado del paso 5:** $I_{dis}$ = **2172 N·s** (clase K), $m_p$ = **2.129 kg** de propelente.
 >
 > **Con este resultado →** sabemos cuánto propelente lleva el motor. El paso 6 verifica si **cabe en el presupuesto de 10 kg** junto con la estructura del motor y el resto del cohete.
+
+---
+
+## Resumen de estimaciones
+
+Pasos 1 a 5. Hasta aquí aparecieron varias cifras de impulso, empuje, tiempo y masa. Algunas son **estimaciones intermedias**, que sirvieron para entender el problema o comprobar el método. Otras son los **valores de diseño**, que pasan a los pasos siguientes. Este cuadro las reúne y dice para qué sirve cada una.
+
+**Impulso**
+
+| Valor | Dónde | Qué es | Uso |
+|---|---|---|---|
+| 1491 N·s | Paso 3 | A mano, sin aire, masa constante de 10 kg | Referencia |
+| 1376 N·s | Paso 3, S3.5 | A mano, sin aire, masa media de 9.27 kg | Referencia |
+| 1346 N·s | Paso 4 | Simulado sin aire ($C_d$ = 0) | Comprobación del método |
+| 1698–1933 N·s | Paso 4 | Simulado con $C_d$ entre 0.4 y 0.6 | Rango de incertidumbre |
+| 1810 N·s | Paso 4 | **$I_{req}$**: simulado con $C_d$ = 0.5, justo para 1000 m | Lo que exige la misión |
+| **2172 N·s** | Paso 5 | **$I_{dis}$** = 1.20 × 1810, con margen | ✅ **Diseño del motor** |
+
+**Empuje**
+
+| Valor | Dónde | Qué es | Uso |
+|---|---|---|---|
+| 490 N | Paso 1 | Mínimo por la regla práctica $F/W \ge 5$ | Superado por el criterio de LASC |
+| 1504 N | Paso 3 | Mínimo para salir del riel a 30 m/s con 3.2 m guiados | Requisito |
+| **1600 N** | Paso 3 | Empuje elegido, $\bar F = F_{riel}$ | ✅ **Diseño (provisional)** |
+
+**Tiempo de combustión** ($t_b = I/\bar F$)
+
+| Valor | Dónde | Qué es | Uso |
+|---|---|---|---|
+| 0.93 s | Paso 3 | 1491 / 1600 | Referencia |
+| 1.13 s | Paso 4 | 1810 / 1600 | Lo que exige la misión |
+| **1.36 s** | Este cuadro | 2172 / 1600, con el impulso de diseño | ✅ **Diseño** |
+
+**Velocidad**
+
+| Valor | Dónde | Qué es | Uso |
+|---|---|---|---|
+| 140 m/s | Paso 2 | Velocidad de apagado sin aire | Cota inferior |
+| 181 m/s | Paso 4 | Velocidad máxima simulada con aire | Resultado del vuelo |
+| 31 m/s | Paso 3 | Salida del riel con 1600 N | Cumple LASC (≥ 30 m/s) |
+
+**Masa**
+
+| Valor | Dónde | Qué es | Uso |
+|---|---|---|---|
+| 10 kg | Paso 1 | Masa al despegue $m_0$ | Requisito |
+| 9.27 kg | Paso 3, S3.5 | Masa media durante la combustión | Referencia |
+| 1.46 kg | Paso 3, S3.5 | Propelente estimado a mano | Referencia |
+| 1.77 kg | Paso 4 | Propelente para $I_{req}$, sin margen | Referencia |
+| **2.129 kg** | Paso 5 | Propelente para $I_{dis}$ | ✅ **Diseño del motor** |
+
+Los valores marcados con ✅ son los que usan los pasos 6 y 7 y los ejemplos.
 
 ---
 
@@ -1045,6 +1128,8 @@ $$A_{par} = \frac{2 \times 7.87 \times 9.81}{1.225 \times 1.5 \times 5.5^2} = 2.
 
 Es una velocidad de aterrizaje segura habitual. Equivale a dejar caer el cohete desde ≈1.5 m.
 
+**Por qué estos valores:** se varía ±1 m/s alrededor de 5.5 m/s para ver cuánto cambia el tamaño del paracaídas si el equipo decide bajar más lento (más seguro) o más rápido (paracaídas más chico).
+
 | $v_{desc}$ | Diámetro del paracaídas |
 |---|---|
 | 4.5 m/s | 2.30 m |
@@ -1080,6 +1165,8 @@ Masa máxima de la estructura del motor: $5.05 - 2.129 = 2.92$ kg.
 **S6.4 · Qué tanto depende de $m_{resto}$**
 
 Si el resto del cohete pesa más, queda menos masa para el motor y este tiene que ser más eficiente.
+
+**Por qué estos valores:** las masas del resto son estimaciones. Se prueba 200 g menos y 200 g más (error típico de estimación) y 500 g más (por ejemplo, si se agrega una carga útil).
 
 | $m_{resto}$ | $\zeta_{min}$ |
 |---|---|
@@ -1130,7 +1217,7 @@ Es la definición de densidad: masa por unidad de volumen. 1217 cm³ es casi lo 
 
 **S7.1 · Hereda la densidad del 95 %**
 
-El volumen depende directamente de la densidad supuesta (SP.2).
+El volumen depende directamente de la densidad supuesta (SP.2). Se prueba un colado peor (90 %) y uno mejor (98 %) que el supuesto.
 
 > Con 90 %: 1285 cm³ (+5.6 %). Con 98 %: 1180 cm³ (−3 %).
 
