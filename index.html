@@ -14,9 +14,15 @@ main { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; 
 h1 { font-family: "Space Grotesk", system-ui, sans-serif; font-size: 2rem; margin: 0; }
 p { margin: 0; color: var(--tenue); }
 .eyebrow { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--tenue); }
-a.doc { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; background: var(--hoja); border: 1px solid var(--linea); border-radius: 8px; color: var(--tinta); text-decoration: none; }
+.doc { display: flex; flex-direction: column; gap: 4px; padding: 18px 20px; background: var(--hoja); border: 1px solid var(--linea); border-radius: 8px; color: var(--tinta); text-decoration: none; }
 a.doc:hover, a.doc:focus-visible { border-color: var(--acento); outline: none; }
-a.doc b { font-family: "Space Grotesk", system-ui, sans-serif; color: var(--acento); font-size: 1.1rem; }
+.doc b { font-family: "Space Grotesk", system-ui, sans-serif; color: var(--acento); font-size: 1.1rem; }
+.grupo { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--tenue); margin-top: 8px; }
+.tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.doc.pend { opacity: .65; border-style: dashed; cursor: default; }
+.estado { align-self: flex-start; font-size: .72rem; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--linea); color: var(--tenue); }
+.estado.listo { border-color: var(--acento); color: var(--acento); }
+.doc span.d { font-size: .92rem; }
 </style>
 </head>
 <body>
@@ -24,10 +30,30 @@ a.doc b { font-family: "Space Grotesk", system-ui, sans-serif; color: var(--acen
   <div class="eyebrow">Atlas X · Propulsión</div>
   <h1>Motor sólido KNSB</h1>
   <p>Documentación del diseño del motor del cohete Atlas X: misión de 10 kg a 1000 m de apogeo, fuselaje de 150 mm, propelente KNSB.</p>
+  <div class="grupo">Paso común</div>
   <a class="doc" href="ejemplos/mision_comun.html">
+    <span class="estado listo">Disponible</span>
     <b>Misión común: pasos 1 a 7</b>
-    <span>Del apogeo al impulso, la masa y el volumen de propelente. Resolución y suposiciones lado a lado, con animación interactiva del vuelo.</span>
+    <span class="d">Del apogeo al impulso, la masa y el volumen de propelente. Resolución y suposiciones lado a lado, con animación interactiva del vuelo.</span>
   </a>
+  <div class="grupo">Ejemplos aplicados: pasos 8 a 12</div>
+  <div class="tarjetas">
+    <div class="doc pend" aria-disabled="true">
+      <span class="estado">En preparación</span>
+      <b>Ejemplo 1</b>
+      <span class="d">Grano BATES + carcasa de acero AISI 304.</span>
+    </div>
+    <div class="doc pend" aria-disabled="true">
+      <span class="estado">En preparación</span>
+      <b>Ejemplo 2</b>
+      <span class="d">Grano BATES + carcasa de aluminio 6061-T6.</span>
+    </div>
+    <div class="doc pend" aria-disabled="true">
+      <span class="estado">En preparación</span>
+      <b>Ejemplo 3</b>
+      <span class="d">Grano Finocyl + carcasa de acero AISI 304.</span>
+    </div>
+  </div>
   <p>Código fuente y documentos en el repositorio <a href="https://github.com/ATLASX-ROCKETRY/motor-solido">ATLASX-ROCKETRY/motor-solido</a>.</p>
 </main>
 </body>
