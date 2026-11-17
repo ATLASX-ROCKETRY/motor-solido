@@ -1307,7 +1307,7 @@ El motor ocupa más espacio que esto, porque el grano tiene un núcleo hueco por
 
 Esta sección solo funciona en la **versión web** del documento: https://atlasx-rocketry.github.io/motor-solido/ejemplos/mision_comun.html#animacion-interactiva
 
-Muestra el vuelo del cohete con los vectores de empuje, arrastre y peso en cada instante, y tiene deslizantes para cambiar los datos de la misión ($m_0$, $h_{ap}$, $D_{cohete}$, $\bar F$, $L_{ef}$, $C_d$, $\rho_0$, $I_{sp}$ y $\mu$). Con cada cambio recalcula los resultados de los pasos 2 a 5 e indica el origen de cada uno:
+Muestra el vuelo del cohete con los vectores de empuje, arrastre y peso en cada instante, gráficas de altura, velocidad y fuerzas (con aire y sin aire) sincronizadas con el vuelo, la escalera de estimaciones del cálculo preliminar al de diseño, y verificaciones que se marcan en rojo cuando algo falla (salida del riel, apogeo, empuje/peso). Tiene deslizantes para cambiar los datos de la misión ($m_0$, $h_{ap}$, $D_{cohete}$, $\bar F$, $L_{ef}$, $C_d$, $\rho_0$, $I_{sp}$ y $\mu$). Con cada cambio recalcula los resultados de los pasos 2 a 5 e indica el origen de cada uno:
 
 - **A mano:** fórmulas de los pasos 2, 3 y 5.
 - **Simulado:** calculado en el navegador con las mismas ecuaciones y el mismo método que `scripts/comun.py` (Euler con pasos de 1 ms y bisección del impulso).

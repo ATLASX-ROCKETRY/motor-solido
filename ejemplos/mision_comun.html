@@ -1604,8 +1604,8 @@ ejemplos.</p>
 .etq-mano { background: var(--acento-suave); color: var(--acento); }
 .etq-sim { background: var(--nota); color: var(--nota-tinta); border: 1px solid var(--nota-borde); }
 .anim-cuerpo { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); border-top: 1px solid var(--linea); }
-.lienzo { position: relative; min-width: 0; background: var(--papel); }
-.lienzo canvas { display: block; width: 100%; height: 480px; }
+.lienzo { position: relative; min-width: 0; min-height: 480px; background: var(--papel); }
+.lienzo canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .lectura { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; border-left: 1px solid var(--linea); }
 .fase { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--acento); }
 .datos { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: .92rem; margin: 0; }
@@ -1633,10 +1633,31 @@ ejemplos.</p>
 .tarjeta .t-val { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 .tarjeta .t-ec { font-family: var(--font-dato); font-size: .76rem; color: var(--tenue); overflow-wrap: anywhere; }
 .ok { color: var(--ok); } .mal { color: #c0392b; }
+.checks { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: .86rem; }
+.checks li { display: flex; gap: 8px; align-items: baseline; padding: 6px 10px; border-radius: 6px; background: var(--papel); border: 1px solid var(--linea); }
+.checks li.falla { border-color: #c0392b; background: rgba(192,57,43,.08); }
+.checks li b { min-width: 1.2em; }
+.checks li.ok-c b { color: var(--ok); } .checks li.falla b { color: #c0392b; }
+.bloque { padding: 18px 20px 22px; border-top: 1px solid var(--linea); display: flex; flex-direction: column; gap: 12px; }
+.bloque > p { color: var(--tenue); max-width: 80ch; margin: 0; }
+.escalera { display: flex; flex-direction: column; gap: 8px; }
+.peldano { display: grid; grid-template-columns: minmax(150px, 15rem) minmax(0, 1fr) 6.5rem; gap: 12px; align-items: center; font-size: .88rem; }
+.peldano .barra { height: 18px; border-radius: 3px; background: var(--acento-suave); border: 1px solid var(--acento); }
+.peldano.sim .barra { background: var(--nota); border-color: var(--nota-borde); }
+.peldano.dis .barra { background: var(--acento); }
+.peldano .n { font-family: var(--font-dato); font-variant-numeric: tabular-nums; text-align: right; }
+.peldano .q { color: var(--tenue); font-size: .8rem; }
+.grupo-esc { font-family: var(--font-dato); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--tenue); margin-top: 6px; }
+.graficas { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.graficas figure { margin: 0; border: 1px solid var(--linea); border-radius: 6px; padding: 10px 12px 8px; background: var(--hoja); min-width: 0; }
+.graficas figcaption { font-size: .85rem; font-weight: 600; margin-bottom: 4px; }
+.graficas canvas { display: block; width: 100%; height: 200px; }
 @media (max-width: 780px) {
+  .peldano { grid-template-columns: minmax(0, 1fr) 5.5rem; }
+  .peldano .barra { grid-column: 1 / -1; grid-row: 2; }
   .anim-cuerpo { grid-template-columns: minmax(0, 1fr); }
   .lectura { border-left: 0; border-top: 1px solid var(--linea); }
-  .lienzo canvas { height: 400px; }
+  .lienzo { min-height: 400px; }
 }
 </style>
 
@@ -1668,6 +1689,8 @@ ejemplos.</p>
         <span style="--c:#7a8494">Peso</span>
       </div>
       <p class="leyenda-f" style="margin:0">Largo de cada flecha ∝ √fuerza, para que las tres se vean. El cohete no está a escala.</p>
+      <h3 style="margin-top:4px">Verificaciones</h3>
+      <ul class="checks" id="checks"></ul>
     </div>
   </div>
 
@@ -1697,6 +1720,22 @@ ejemplos.</p>
   <div class="comparar">
     <h3>Resultados con los valores actuales</h3>
     <div class="tarjetas" id="tarjetas"></div>
+  </div>
+
+  <div class="bloque">
+    <h3>Del cálculo preliminar al de diseño</h3>
+    <p>Es la misma secuencia del resumen de estimaciones (antes del paso 6). Primero se calcula <b>sin aire</b>, a mano y luego simulado, para entender el problema y comprobar el método. Después se agrega el <b>aire</b>, que es lo que más cambia el resultado, y al final el <b>margen</b> de diseño. Cada barra dice qué supuesto cambia respecto de la anterior.</p>
+    <div class="escalera" id="escalera"></div>
+  </div>
+
+  <div class="bloque">
+    <h3>Gráficas del vuelo</h3>
+    <p>Línea continua: vuelo <b>con aire</b>, el mismo de la animación. Línea punteada: el mismo impulso <b>sin aire</b> (cálculo preliminar). La línea vertical avanza con la animación. La zona sombreada es la combustión. La línea roja es el apogeo objetivo: si la curva continua no la alcanza, el cohete no llega.</p>
+    <div class="graficas">
+      <figure><figcaption>Altura [m]</figcaption><canvas id="g-h" aria-label="Altura contra tiempo" role="img"></canvas></figure>
+      <figure><figcaption>Velocidad [m/s]</figcaption><canvas id="g-v" aria-label="Velocidad contra tiempo" role="img"></canvas></figure>
+      <figure><figcaption>Fuerzas [N]: empuje, arrastre y peso</figcaption><canvas id="g-f" aria-label="Fuerzas contra tiempo" role="img"></canvas></figure>
+    </div>
   </div>
 </article>
 
@@ -1736,7 +1775,8 @@ ejemplos.</p>
 
   // ---- física: misma que scripts/comun.py ----
   function area() { return Math.PI / 4 * Math.pow(P.D / 1000, 2); }
-  function volar(I, guardar) {
+  function volar(I, guardar, cdX) {
+    var cd = (cdX === undefined) ? P.cd : cdX;
     var A = area(), mp = I / (P.isp * G0), tb = I / P.F, mdot = mp / tb;
     var h = 0, v = 0, t = 0, m = P.m0, vmax = 0, vriel = null, hb = null, n = 0, tr = [];
     while (true) {
@@ -1744,7 +1784,7 @@ ejemplos.</p>
       var T = quemando ? P.F : 0;
       if (quemando) m -= mdot * DT;
       var rho = P.rho0 * Math.exp(-h / H_ESC);
-      var FD = 0.5 * rho * P.cd * A * v * Math.abs(v);
+      var FD = 0.5 * rho * cd * A * v * Math.abs(v);
       var a = (T - FD) / m - G;
       if (guardar && n % 10 === 0) tr.push([t, h, v, m, T, FD, m * G]);
       v += a * DT; h += v * DT; t += DT; n++;
@@ -1758,11 +1798,11 @@ ejemplos.</p>
       if (t > 600) return { hap: h, vmax: vmax, mp: mp, tb: tb, tr: tr, vriel: vriel, hb: hb, tap: t };
     }
   }
-  function Ireq() {
+  function Ireq(cdX) {
     var lo = 100, hi = 10000;
     for (var i = 0; i < 50; i++) {
       var mid = 0.5 * (lo + hi);
-      if (volar(mid, false).hap < P.hap) lo = mid; else hi = mid;
+      if (volar(mid, false, cdX).hap < P.hap) lo = mid; else hi = mid;
     }
     return 0.5 * (lo + hi);
   }
@@ -1779,11 +1819,16 @@ ejemplos.</p>
     var sel = document.getElementById("s-imp").value;
     var Ivuelo = sel === "req" ? Ir : sel === "man" ? P.Iman : Id;
     var vuelo = volar(Ivuelo, true);
+    var vueloSA = volar(Ivuelo, true, 0);
     var simReq = volar(Ir, false);
-    R = { vb: vb, Imano: Imano, vrielMano: vrielMano, Ir: Ir, Id: Id, mpd: Id / (P.isp * G0), tbd: Id / P.F,
-          vmaxReq: simReq.vmax, Ivuelo: Ivuelo, vuelo: vuelo, W: W };
+    var mp1 = Imano / (P.isp * G0), mm = P.m0 - mp1 / 2;
+    var Imedia = P.F > mm * G ? mm * vb / (1 - mm * G / P.F) : Infinity;
+    var IrSA = Ireq(0);
+    R = { vb: vb, Imano: Imano, Imedia: Imedia, IrSA: IrSA, vrielMano: vrielMano, Ir: Ir, Id: Id,
+          mpd: Id / (P.isp * G0), tbd: Id / P.F, vmaxReq: simReq.vmax, Ivuelo: Ivuelo,
+          vuelo: vuelo, vueloSA: vueloSA, W: W };
     tray = vuelo.tr;
-    tarjetas();
+    tarjetas(); escalera(); verificar(); prepararGraficas();
   }
   function f(x, d) { return isFinite(x) ? x.toLocaleString("es-CO", { minimumFractionDigits: d, maximumFractionDigits: d }) : "—"; }
   function tarjetas() {
@@ -1803,6 +1848,112 @@ ejemplos.</p>
         '</span><span class="t-val">' + c[2] + '</span><span class="t-ec">' + c[3] + '</span></div>';
     }).join("");
   }
+  function escalera() {
+    var filas = [
+      ["g", "Preliminar: sin aire"],
+      ["mano", "Paso 3 · a mano, masa constante", R.Imano, "Fórmula del paso 3 con m₀ todo el tiempo"],
+      ["mano", "Paso 3 · a mano, masa media", R.Imedia, "Corrige la masa (S3.5)"],
+      ["sim", "Paso 4 · simulado sin aire", R.IrSA, "Masa variable y altura ganada al quemar (C_d = 0)"],
+      ["g", "Refinado: con aire"],
+      ["sim", "Paso 4 · simulado con aire", R.Ir, "Agrega el arrastre: I_req"],
+      ["g", "Diseño"],
+      ["dis", "Paso 5 · con margen", R.Id, "I_dis = (1 + μ)·I_req"]
+    ];
+    var max = Math.max(R.Imano, R.Imedia, R.IrSA, R.Ir, R.Id) * 1.02, prev = null;
+    document.getElementById("escalera").innerHTML = filas.map(function (r) {
+      if (r[0] === "g") return '<div class="grupo-esc">' + r[1] + '</div>';
+      var d = "";
+      if (prev !== null && isFinite(r[2]) && isFinite(prev)) { var pc = (r[2] / prev - 1) * 100; d = " (" + (pc >= 0 ? "+" : "") + f(pc, 0) + " %)"; }
+      prev = r[2];
+      var w = isFinite(r[2]) ? Math.max(1, 100 * r[2] / max) : 100;
+      return '<div class="peldano ' + r[0] + '"><span>' + r[1] + '<br><span class="q">' + r[3] + d + '</span></span>' +
+        '<div class="barra" style="width:' + w + '%"></div><span class="n">' + f(r[2], 0) + ' N·s</span></div>';
+    }).join("");
+  }
+
+  var fallas = [];
+  function verificar() {
+    var W = R.W, vr = R.vuelo.vriel;
+    var C = [
+      [P.F > W, "El empuje supera al peso (" + f(P.F, 0) + " N > " + f(W, 0) + " N)", "El empuje no supera al peso: el cohete no despega"],
+      [P.F >= 5 * W, "Empuje/peso = " + f(P.F / W, 1) + " (≥ 5)", "Empuje/peso = " + f(P.F / W, 1) + ": menor que 5"],
+      [vr !== null && vr >= 30, "Sale del riel a " + f(vr || 0, 1) + " m/s (≥ 30, LASC)", "Sale del riel a " + f(vr || 0, 1) + " m/s: LASC exige 30 m/s"],
+      [R.vuelo.hap >= P.hap - 1, "Llega a " + f(R.vuelo.hap, 0) + " m (objetivo " + f(P.hap, 0) + " m)", "Solo llega a " + f(R.vuelo.hap, 0) + " m: no alcanza los " + f(P.hap, 0) + " m"],
+      [Math.abs(R.Imedia / R.IrSA - 1) < 0.15, "A mano y simulado sin aire coinciden (" + f(100 * (R.Imedia / R.IrSA - 1), 0) + " %)", "A mano y simulado sin aire difieren " + f(100 * (R.Imedia / R.IrSA - 1), 0) + " %: revisar supuestos"]
+    ];
+    fallas = C.filter(function (c) { return !c[0]; }).map(function (c) { return c[2]; });
+    document.getElementById("checks").innerHTML = C.map(function (c) {
+      return '<li class="' + (c[0] ? "ok-c" : "falla") + '"><b>' + (c[0] ? "✓" : "✗") + '</b><span>' + (c[0] ? c[1] : c[2]) + '</span></li>';
+    }).join("");
+  }
+
+  var GR = {};
+  function lienzo(id) {
+    var c = document.getElementById(id), r = c.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+    c.width = Math.round(r.width * d); c.height = Math.round(r.height * d);
+    var x = c.getContext("2d"); x.setTransform(d, 0, 0, d, 0, 0);
+    return { c: c, x: x, w: r.width, h: r.height };
+  }
+  function prepararGraficas() {
+    var a = R.vuelo.tr, b = R.vueloSA.tr;
+    var tmax = Math.max(a[a.length - 1][0], b[b.length - 1][0]);
+    GR = {
+      tmax: tmax,
+      h: { k: 1, ymax: Math.max(P.hap, R.vuelo.hap, R.vueloSA.hap) * 1.08, linea: P.hap },
+      v: { k: 2, ymax: Math.max(R.vuelo.vmax, R.vueloSA.vmax) * 1.08 },
+      f: { ymax: P.F * 1.1 }
+    };
+    graficas(0);
+  }
+  function ejes(L, ymax, t) {
+    var x = L.x, m = { l: 44, r: 8, t: 8, b: 22 };
+    var W = L.w - m.l - m.r, H = L.h - m.t - m.b;
+    x.clearRect(0, 0, L.w, L.h);
+    x.strokeStyle = col("--linea"); x.fillStyle = col("--tenue"); x.lineWidth = 1;
+    x.font = "10px " + col("--font-dato"); x.textAlign = "right";
+    var paso = Math.pow(10, Math.floor(Math.log10(ymax))) ; if (ymax / paso < 3) paso /= 2;
+    for (var y = 0; y <= ymax; y += paso) { var py = m.t + H - H * y / ymax; x.beginPath(); x.moveTo(m.l, py); x.lineTo(m.l + W, py); x.stroke(); x.fillText(Math.round(y), m.l - 4, py + 3); }
+    x.textAlign = "center";
+    var pt = GR.tmax > 20 ? 5 : 2;
+    for (var s = 0; s <= GR.tmax; s += pt) { var px = m.l + W * s / GR.tmax; x.fillText(s + " s", px, L.h - 6); }
+    // combustión sombreada
+    var xb = m.l + W * Math.min(R.vuelo.tb, GR.tmax) / GR.tmax;
+    x.fillStyle = "rgba(224,122,31,0.10)"; x.fillRect(m.l, m.t, xb - m.l, H);
+    return { X: function (tt) { return m.l + W * tt / GR.tmax; }, Y: function (v) { return m.t + H - H * v / ymax; }, m: m, W: W, H: H };
+  }
+  function curva(L, A, tr, k, color, punteada) {
+    var x = L.x; x.strokeStyle = color; x.lineWidth = 2; x.setLineDash(punteada ? [5, 4] : []);
+    x.beginPath();
+    for (var i = 0; i < tr.length; i += 3) { var p = tr[i]; var px = A.X(p[0]), py = A.Y(p[k]); if (i === 0) x.moveTo(px, py); else x.lineTo(px, py); }
+    var u = tr[tr.length - 1]; x.lineTo(A.X(u[0]), A.Y(u[k]));
+    x.stroke(); x.setLineDash([]);
+  }
+  function cursor(L, A, t) {
+    var x = L.x, px = A.X(Math.min(t, GR.tmax));
+    x.strokeStyle = col("--tinta"); x.lineWidth = 1; x.beginPath(); x.moveTo(px, A.m.t); x.lineTo(px, A.m.t + A.H); x.stroke();
+  }
+  function graficas(t) {
+    if (!R) return;
+    var acento = col("--acento"), tenue = col("--tenue");
+    var Lh = lienzo("g-h"), Ah = ejes(Lh, GR.h.ymax);
+    Lh.x.strokeStyle = "#c0392b"; Lh.x.setLineDash([4, 3]); Lh.x.beginPath(); Lh.x.moveTo(Ah.m.l, Ah.Y(P.hap)); Lh.x.lineTo(Ah.m.l + Ah.W, Ah.Y(P.hap)); Lh.x.stroke(); Lh.x.setLineDash([]);
+    curva(Lh, Ah, R.vueloSA.tr, 1, tenue, true);
+    curva(Lh, Ah, R.vuelo.tr, 1, R.vuelo.hap >= P.hap - 1 ? acento : "#c0392b", false);
+    cursor(Lh, Ah, t);
+    var Lv = lienzo("g-v"), Av = ejes(Lv, GR.v.ymax);
+    Lv.x.strokeStyle = R.vuelo.vriel >= 30 ? "rgba(44,122,75,.6)" : "#c0392b"; Lv.x.setLineDash([2, 3]);
+    Lv.x.beginPath(); Lv.x.moveTo(Av.m.l, Av.Y(30)); Lv.x.lineTo(Av.m.l + Av.W, Av.Y(30)); Lv.x.stroke(); Lv.x.setLineDash([]);
+    Lv.x.fillStyle = tenue; Lv.x.textAlign = "left"; Lv.x.fillText("30 m/s (riel)", Av.m.l + 4, Av.Y(30) - 4);
+    curva(Lv, Av, R.vueloSA.tr.filter(function (p) { return p[2] >= 0; }), 2, tenue, true);
+    curva(Lv, Av, R.vuelo.tr, 2, acento, false);
+    cursor(Lv, Av, t);
+    var Lf = lienzo("g-f"), Af = ejes(Lf, GR.f.ymax);
+    curva(Lf, Af, R.vuelo.tr, 4, "#e07a1f", false);
+    curva(Lf, Af, R.vuelo.tr, 5, "#2f80c8", false);
+    curva(Lf, Af, R.vuelo.tr, 6, "#7a8494", false);
+    cursor(Lf, Af, t);
+  }
+
   var temporizador = null;
   function programar() {
     clearTimeout(temporizador);
@@ -1906,6 +2057,12 @@ ejemplos.</p>
     document.getElementById("o-F").textContent = f(T, 0) + " N";
     document.getElementById("o-D").textContent = f(FD, 0) + " N";
     document.getElementById("o-W").textContent = f(Wf, 0) + " N";
+    if (fallas.length) {
+      cx.fillStyle = "rgba(192,57,43,0.92)"; cx.fillRect(12, 12, Math.min(w - 90, 420), 26 + 16 * (fallas.length - 1));
+      cx.fillStyle = "#fff"; cx.font = "600 12px " + col("--font-texto"); cx.textAlign = "left";
+      fallas.forEach(function (t2, i2) { cx.fillText("✗ " + t2, 22, 30 + 16 * i2); });
+    }
+    graficas(e[0]);
     var vr = R.vuelo.vriel;
     document.getElementById("o-vr").innerHTML = (h >= P.Lef && vr !== null) ? '<span class="' + (vr >= 30 ? "ok" : "mal") + '">' + f(vr, 1) + " m/s</span>" : "—";
   }
