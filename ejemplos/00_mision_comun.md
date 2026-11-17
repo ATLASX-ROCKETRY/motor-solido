@@ -5,7 +5,7 @@ exigen la masa, el apogeo y el arrastre. Se calculan una vez y los usan los tres
 ejemplos.
 
 Ecuaciones: [`docs/01_mision_a_geometria.md`](../docs/01_mision_a_geometria.md).
-Cálculo: `python3 scripts/comun.py`.
+Valores simulados del paso 4: `python3 scripts/paso4_simulacion.py` (ver el recuadro del paso 4).
 
 ## Cómo leer este documento
 
@@ -645,7 +645,27 @@ Por eso el resultado de este paso se da como un **rango**: 1491 N·s con masa co
 
 **Viene de:** $m_0$ y $D_{cohete}$ (paso 1), $\bar F$ = 1600 N y el rango de 1376 a 1491 N·s (paso 3), $I_{sp}$ = 104 s (propelente).
 
-Cálculo: `python3 scripts/comun.py`
+**Valores simulados en este paso.** Las ecuaciones de este paso no se pueden resolver a mano, así que se resuelven con un programa de computador.
+
+- **Quién y con qué:** un programa en Python escrito por Claude (asistente de IA) para este documento. Cualquiera puede ejecutarlo y obtener los mismos números.
+- **Dónde está:** en el repositorio, `scripts/paso4_simulacion.py`. Usa las funciones `apogeo` e `impulso_requerido` y los valores base definidos al inicio de `scripts/comun.py`.
+- **Cómo se ejecuta:** `python3 scripts/paso4_simulacion.py`. Imprime una tabla con 10 casos numerados.
+- **Qué se varía:** cada caso cambia **una sola variable** respecto del caso base ($C_d$ = 0.5, $\bar F$ = 1600 N, $I_{sp}$ = 104 s, $\rho_0$ = 1.225 kg/m³, paso de tiempo de 1 ms).
+
+| Caso | Qué cambia respecto del caso base |
+|---|---|
+| 1 | Nada: caso base |
+| 2 | $C_d$ = 0 (sin aire) |
+| 3 | $C_d$ = 0.4 |
+| 4 | $C_d$ = 0.6 |
+| 5 | $\bar F$ = 1200 N |
+| 6 | $\bar F$ = 2400 N |
+| 7 | $I_{sp}$ = 120 s |
+| 8 | $\rho_0$ = 1.0 kg/m³ |
+| 9 | Paso de tiempo de 0.2 ms |
+| 10 | Apogeo con el impulso de diseño del paso 5 |
+
+Todo valor marcado **(simulado, caso N)** sale de esa tabla.
 
 <table>
 <tr><th width="60%">Resolución</th><th width="40%">Suposición y análisis</th></tr>
@@ -711,13 +731,13 @@ Se supone que el motor empuja siempre $\bar F$ = 1600 N.
 
 - **En la práctica:** el empuje real tiene un arranque, una zona casi constante y una cola.
 - **Por qué se acepta:** para el apogeo importa sobre todo el impulso total, no su forma.
-- **Cómo se comprobó:** se corrió la simulación completa de este paso (integración + bisección) tres veces, cambiando solo $\bar F$. Se usaron los mismos tres empujes que en S3.4: 1200 N (casi el mínimo con todo el riel), 1600 N (el elegido) y 2400 N (un motor 50 % más fuerte). Cada corrida devuelve su propio $I_{req}$:
+- **Cómo se comprobó (simulado, casos 5, 1 y 6):** en `scripts/paso4_simulacion.py` se cambió solo el empuje y se repitió la simulación completa (integración + bisección). Se usaron los mismos tres empujes que en S3.4: 1200 N (casi el mínimo con todo el riel), 1600 N (el elegido) y 2400 N (un motor 50 % más fuerte). Cada corrida devuelve su propio $I_{req}$:
 
-| $\bar F$ | $I_{req}$ (simulado, $C_d$ = 0.5) |
-|---|---|
-| 1200 N | 1813 N·s |
-| 1600 N | 1810 N·s |
-| 2400 N | 1805 N·s |
+| Caso | $\bar F$ | $I_{req}$ simulado |
+|---|---|---|
+| 5 | 1200 N | 1813 N·s |
+| 1 | 1600 N | 1810 N·s |
+| 6 | 2400 N | 1805 N·s |
 
 > La diferencia entre el empuje más bajo y el más alto es (1813 − 1805)/1813 = 0.4 %.
 
@@ -745,7 +765,7 @@ $$m_p = \frac{I}{I_{sp}\,g_0}$$
 
 En este paso, el $I_{sp}$ solo decide qué tan rápido se aliviana el cohete.
 
-Se repitió la simulación con $I_{sp}$ = 120 s, el valor alto del rango de SP.1.
+**Simulado, caso 7:** se cambió solo $I_{sp}$ a 120 s, el valor alto del rango de SP.1.
 
 > Con $I_{sp}$ = 120 s, $I_{req}$ = 1818 N·s (+0.5 %): efecto pequeño.
 
@@ -770,7 +790,7 @@ $$\rho(h) = \rho_0\,e^{-h/H}$$
 
 El aire es menos denso con la altura. La forma exponencial sale del equilibrio hidrostático con temperatura constante.
 
-**Orden de magnitud:** a 181 m/s, $F_D = \tfrac12 (1.225)(181)^2(0.5)(0.0177) \approx$ 177 N, que sobre unos 8 kg frena con ≈2.2 g adicionales.
+**Orden de magnitud:** a 181 m/s (la velocidad máxima simulada, caso 1), $F_D = \tfrac12 (1.225)(181)^2(0.5)(0.0177) \approx$ 177 N, que sobre unos 8 kg frena con ≈2.2 g adicionales.
 
 </td>
 <td valign="top">
@@ -779,8 +799,8 @@ El aire es menos denso con la altura. La forma exponencial sale del equilibrio h
 
 Es un valor típico de cohetes amateur, que suelen estar entre 0.4 y 0.75. Sin túnel de viento ni CFD no se conoce mejor.
 
-- **Cómo se maneja:** se corre la simulación con tres valores: 0.5 y ±20 % (0.4 y 0.6). Ese ±20 % representa la incertidumbre típica de estimar $C_d$ sin ensayos. Los resultados están en la tabla de resultados.
-- **Por qué la tabla incluye $C_d$ = 0:** no es un valor posible; sirve para aislar el efecto del aire y compararlo con el cálculo a mano del paso 3, que no tenía aire.
+- **Cómo se maneja (simulado, casos 3, 1 y 4):** se corre la simulación con tres valores: 0.5 y ±20 % (0.4 y 0.6). Ese ±20 % representa la incertidumbre típica de estimar $C_d$ sin ensayos. Los resultados están en la tabla de resultados.
+- **Por qué la tabla incluye $C_d$ = 0 (simulado, caso 2):** no es un valor posible; sirve para aislar el efecto del aire y compararlo con el cálculo a mano del paso 3, que no tenía aire.
 
 > ±20 % en $C_d$ → −6 % / +7 % en $I_{req}$.
 
@@ -788,7 +808,7 @@ Es un valor típico de cohetes amateur, que suelen estar entre 0.4 y 0.75. Sin t
 
 Se usa $\rho_0$ = 1.225 kg/m³, el aire más denso posible: es el caso conservador.
 
-Para ver cuánto importa, se repitió la simulación con $\rho_0$ = 1.0 kg/m³, que corresponde a un sitio de lanzamiento a unos 1700 m de altitud.
+**Simulado, caso 8:** para ver cuánto importa, se cambió solo $\rho_0$ a 1.0 kg/m³, que corresponde a un sitio de lanzamiento a unos 1700 m de altitud.
 
 > $\rho_0$ = 1.0 kg/m³: $I_{req}$ = 1706 N·s (−6 %).
 
@@ -818,13 +838,13 @@ Con cada $I$: $t_b = I/\bar F$ y $\dot m = m_p/t_b$.
 
 **S4.7 · ¿Es suficientemente fino el paso de tiempo?**
 
-Un método numérico solo vale si el resultado no depende del paso de tiempo. Se repitió con un paso 5 veces más chico.
+Un método numérico solo vale si el resultado no depende del paso de tiempo. **Simulado, casos 1 y 9:** se repitió con un paso 5 veces más chico.
 
 > $\Delta t$ = 1 ms → 1809.6 N·s; $\Delta t$ = 0.2 ms → 1809.9 N·s. El resultado no cambia.
 
 **Comprobación con el paso 3**
 
-Se simuló también **sin aire** ($C_d$ = 0) y dio 1346 N·s.
+Sin aire (**simulado, caso 2**) se obtiene 1346 N·s.
 
 - El paso 3 daba 1376 N·s con masa media. Queda solo un 2 % arriba, porque aún suponía $h_b \approx 0$ (S2.3).
 - La simulación y el cálculo a mano coinciden en el orden de magnitud: el código es coherente.
@@ -838,12 +858,14 @@ Se simuló también **sin aire** ($C_d$ = 0) y dio 1346 N·s.
 
 | $C_d$ | $I_{req}$ [N·s] | $v_{max}$ [m/s] | $m_p$ [kg] | $t_b$ [s] |
 |---|---|---|---|---|
-| 0 (sin aire) | 1346 | 136 | 1.32 | 0.84 |
-| 0.4 | 1698 | 170 | 1.66 | 1.06 |
-| **0.5** | **1810** | **181** | **1.77** | **1.13** |
-| 0.6 | 1933 | 192 | 1.90 | 1.21 |
+| 0 (sin aire), caso 2 | 1346 | 136 | 1.32 | 0.84 |
+| 0.4, caso 3 | 1698 | 170 | 1.66 | 1.06 |
+| **0.5, caso 1** | **1810** | **181** | **1.77** | **1.13** |
+| 0.6, caso 4 | 1933 | 192 | 1.90 | 1.21 |
 
-- $I_{req}$: impulso con el que el cohete llega justo a 1000 m (salida de la bisección).
+Todos los valores de esta tabla son **simulados** con `scripts/paso4_simulacion.py`.
+
+- $I_{req}$: impulso con el que el cohete llega justo a 1000 m (resultado de la bisección).
 - $v_{max}$: velocidad máxima; ocurre al apagarse el motor.
 - $m_p = I_{req}/(I_{sp}\,g_0)$. Ejemplo: 1810 / (104 × 9.80665) = 1.77 kg.
 - $t_b = I_{req}/\bar F$. Ejemplo: 1810 / 1600 = 1.13 s.
@@ -855,14 +877,14 @@ Se simuló también **sin aire** ($C_d$ = 0) y dio 1346 N·s.
 
 - **El aire cuesta +34 %:** sin aire bastan 1346 N·s; con aire hacen falta 1810.
 - **Con aire, $v_{max}$ = 181 m/s y no 140:** el aire frena al cohete en la subida libre, así que debe apagarse más rápido. Confirma S2.1.
-- **Sin aire, $v_{max}$ = 136 m/s y no 140:** el cohete sube ≈100 m mientras quema y necesita menos velocidad. Confirma S2.3.
+- **Sin aire, $v_{max}$ = 136 m/s y no 140:** el cohete sube 56 m mientras quema (simulado, caso 2) y necesita menos velocidad. Confirma S2.3.
 - **El supuesto más incierto ($C_d$) mueve poco el resultado:** un error razonable en $C_d$ no compromete el diseño.
 
 </td>
 </tr>
 </table>
 
-> **Resultado del paso 4:** $I_{req}$ = **1810 N·s** ($C_d$ = 0.5; $v_{max}$ = 181 m/s; $t_b$ = 1.13 s).
+> **Resultado del paso 4:** $I_{req}$ = **1810 N·s** ($C_d$ = 0.5; $v_{max}$ = 181 m/s; $t_b$ = 1.13 s), simulado, caso 1.
 >
 > **Con este resultado →** tenemos el impulso que la misión **exige**. El paso 5 le suma un **margen de diseño** para cubrir los supuestos de este paso y, con $I_{sp}$, obtiene la **masa de propelente** que debe cargar el motor.
 
@@ -889,6 +911,8 @@ Se simuló también **sin aire** ($C_d$ = 0) y dio 1346 N·s.
 | $m_p$ | Masa de propelente | kg |
 | $I_{sp}$ | Impulso específico | s |
 | $g_0$ | Gravedad estándar, 9.80665 | m/s² |
+| $\bar F$ | Empuje medio (del paso 3) | N |
+| $t_{b,dis}$ | Tiempo de combustión de diseño | s |
 
 </td>
 <td valign="top">
@@ -960,6 +984,33 @@ La masa de propelente es inversamente proporcional al $I_{sp}$. Se usan los mism
 <tr>
 <td valign="top">
 
+**Tiempo de combustión de diseño**
+
+Con la definición de empuje medio del paso 3, $t_b = I/\bar F$, aplicada al impulso de diseño:
+
+$$t_{b,dis} = \frac{I_{dis}}{\bar F} = \frac{2172\ \text{N·s}}{1600\ \text{N}} = 1.36\ \text{s}$$
+
+- $I_{dis}$: impulso de diseño, de este paso.
+- $\bar F$: empuje medio elegido en el paso 3 para salir del riel a 30 m/s.
+- $t_{b,dis}$: cuánto tiempo debe quemar el motor para entregar $I_{dis}$ con ese empuje.
+
+Unidades: N·s / N = s.
+
+</td>
+<td valign="top">
+
+**S5.4 · El margen se entrega quemando más tiempo**
+
+El empuje de 1600 N se mantiene porque lo fija la salida del riel (paso 3). Por eso el 20 % extra de impulso no se consigue empujando más fuerte, sino **quemando más tiempo**.
+
+- **Comparación:** para $I_{req}$ hacían falta $1810/1600$ = 1.13 s; con el margen, 1.36 s.
+- **Supuesto heredado:** empuje constante (S4.2). En el motor real el empuje variará y este tiempo es un valor medio.
+
+</td>
+</tr>
+<tr>
+<td valign="top">
+
 **Clase del motor**
 
 Los motores se clasifican por impulso total. Cada letra duplica el rango de la anterior:
@@ -972,7 +1023,7 @@ Los motores se clasifican por impulso total. Cada letra duplica el rango de la a
 
 Con 2172 N·s el motor es **clase K**.
 
-**Apogeo con el margen:** simulando el vuelo del paso 4 con $I_{dis}$, el cohete llega a **1242 m**. Los 242 m de exceso son el margen expresado en altura.
+**Apogeo con el margen (simulado, caso 10):** con el mismo programa del paso 4 y el impulso $I_{dis}$, el cohete llega a **1242 m**. Los 242 m de exceso son el margen expresado en altura.
 
 </td>
 <td valign="top">
@@ -989,7 +1040,7 @@ Es un motor de cohetería de **alta potencia**. Antes de volarlo hacen falta:
 </tr>
 </table>
 
-> **Resultado del paso 5:** $I_{dis}$ = **2172 N·s** (clase K), $m_p$ = **2.129 kg** de propelente.
+> **Resultado del paso 5:** $I_{dis}$ = **2172 N·s** (clase K), $m_p$ = **2.129 kg** de propelente, $t_{b,dis}$ = **1.36 s** con 1600 N.
 >
 > **Con este resultado →** sabemos cuánto propelente lleva el motor. El paso 6 verifica si **cabe en el presupuesto de 10 kg** junto con la estructura del motor y el resto del cohete.
 
@@ -1005,9 +1056,9 @@ Pasos 1 a 5. Hasta aquí aparecieron varias cifras de impulso, empuje, tiempo y 
 |---|---|---|---|
 | 1491 N·s | Paso 3 | A mano, sin aire, masa constante de 10 kg | Referencia |
 | 1376 N·s | Paso 3, S3.5 | A mano, sin aire, masa media de 9.27 kg | Referencia |
-| 1346 N·s | Paso 4 | Simulado sin aire ($C_d$ = 0) | Comprobación del método |
-| 1698–1933 N·s | Paso 4 | Simulado con $C_d$ entre 0.4 y 0.6 | Rango de incertidumbre |
-| 1810 N·s | Paso 4 | **$I_{req}$**: simulado con $C_d$ = 0.5, justo para 1000 m | Lo que exige la misión |
+| 1346 N·s | Paso 4 (simulado, caso 2) | Sin aire ($C_d$ = 0) | Comprobación del método |
+| 1698–1933 N·s | Paso 4 (simulado, casos 3 y 4) | Con $C_d$ entre 0.4 y 0.6 | Rango de incertidumbre |
+| 1810 N·s | Paso 4 (simulado, caso 1) | **$I_{req}$**: con $C_d$ = 0.5, justo para 1000 m | Lo que exige la misión |
 | **2172 N·s** | Paso 5 | **$I_{dis}$** = 1.20 × 1810, con margen | ✅ **Diseño del motor** |
 
 **Empuje**
@@ -1023,15 +1074,15 @@ Pasos 1 a 5. Hasta aquí aparecieron varias cifras de impulso, empuje, tiempo y 
 | Valor | Dónde | Qué es | Uso |
 |---|---|---|---|
 | 0.93 s | Paso 3 | 1491 / 1600 | Referencia |
-| 1.13 s | Paso 4 | 1810 / 1600 | Lo que exige la misión |
-| **1.36 s** | Este cuadro | 2172 / 1600, con el impulso de diseño | ✅ **Diseño** |
+| 1.13 s | Paso 4 (simulado, caso 1) | 1810 / 1600 | Lo que exige la misión |
+| **1.36 s** | Paso 5 | 2172 / 1600, con el impulso de diseño | ✅ **Diseño** |
 
 **Velocidad**
 
 | Valor | Dónde | Qué es | Uso |
 |---|---|---|---|
 | 140 m/s | Paso 2 | Velocidad de apagado sin aire | Cota inferior |
-| 181 m/s | Paso 4 | Velocidad máxima simulada con aire | Resultado del vuelo |
+| 181 m/s | Paso 4 (simulado, caso 1) | Velocidad máxima con aire | Resultado del vuelo |
 | 31 m/s | Paso 3 | Salida del riel con 1600 N | Cumple LASC (≥ 30 m/s) |
 
 **Masa**
@@ -1041,10 +1092,10 @@ Pasos 1 a 5. Hasta aquí aparecieron varias cifras de impulso, empuje, tiempo y 
 | 10 kg | Paso 1 | Masa al despegue $m_0$ | Requisito |
 | 9.27 kg | Paso 3, S3.5 | Masa media durante la combustión | Referencia |
 | 1.46 kg | Paso 3, S3.5 | Propelente estimado a mano | Referencia |
-| 1.77 kg | Paso 4 | Propelente para $I_{req}$, sin margen | Referencia |
+| 1.77 kg | Paso 4 (simulado, caso 1) | Propelente para $I_{req}$, sin margen | Referencia |
 | **2.129 kg** | Paso 5 | Propelente para $I_{dis}$ | ✅ **Diseño del motor** |
 
-Los valores marcados con ✅ son los que usan los pasos 6 y 7 y los ejemplos.
+Los valores marcados con ✅ son los que usan los pasos 6 y 7 y los ejemplos. Los marcados como **simulado** salen de `scripts/paso4_simulacion.py` (caso indicado); el resto sale de cálculos escritos en cada paso.
 
 ---
 
