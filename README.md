@@ -2,8 +2,12 @@
 
 Diseño de un motor cohete de propelente sólido para el cohete Atlas X.
 
-**Ver los documentos como página:** https://atlasx-rocketry.github.io/motor-solido/
-(requiere el repositorio público y GitHub Pages activado: Settings → Pages → rama `main`, carpeta `/ (root)`).
+## 🌐 Página web
+
+- **Portada:** https://atlasx-rocketry.github.io/motor-solido/
+- **Misión común (con animación interactiva):** https://atlasx-rocketry.github.io/motor-solido/ejemplos/mision_comun.html
+
+Publicada con GitHub Pages desde la rama `main`.
 
 ## Contenido
 
@@ -39,7 +43,7 @@ python3 scripts/ejemplo_finocyl.py          # ejemplo 3 (~25 s, búsqueda de geo
 Para regenerar la página HTML después de editar el `.md` (requiere `pip install markdown`):
 
 ```bash
-python3 scripts/md_a_html.py ejemplos/00_mision_comun.md ejemplos/mision_comun.html
+python3 scripts/md_a_html.py ejemplos/00_mision_comun.md ejemplos/mision_comun.html ejemplos/mision_comun_animacion.html
 ```
 
 ## Resumen de resultados

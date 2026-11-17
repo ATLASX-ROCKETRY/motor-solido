@@ -1,0 +1,347 @@
+<!-- Fragmento: animación interactiva de la misión común.
+     scripts/md_a_html.py lo inserta en el lugar de la sección "Animación interactiva" del .md.
+     La física replica scripts/comun.py: Euler con Δt = 1 ms y bisección del impulso. -->
+<style>
+.anim { background: var(--hoja); border: 1px solid var(--linea); border-radius: 8px; overflow: hidden; }
+.anim .paso-cab p { max-width: 80ch; }
+.anim-etq { display: inline-block; font-family: var(--font-dato); font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; vertical-align: 1px; }
+.etq-mano { background: var(--acento-suave); color: var(--acento); }
+.etq-sim { background: var(--nota); color: var(--nota-tinta); border: 1px solid var(--nota-borde); }
+.anim-cuerpo { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); border-top: 1px solid var(--linea); }
+.lienzo { position: relative; min-width: 0; background: var(--papel); }
+.lienzo canvas { display: block; width: 100%; height: 480px; }
+.lectura { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; border-left: 1px solid var(--linea); }
+.fase { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--acento); }
+.datos { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: .92rem; margin: 0; }
+.datos dt { color: var(--tenue); }
+.datos dd { margin: 0; font-family: var(--font-dato); font-variant-numeric: tabular-nums; text-align: right; }
+.leyenda-f { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .82rem; color: var(--tenue); }
+.leyenda-f span::before { content: ""; display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: 3px; background: var(--c); }
+.mandos { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 14px 20px; border-top: 1px solid var(--linea); }
+.mandos button { font: inherit; font-weight: 600; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--acento); background: var(--acento); color: var(--hoja); cursor: pointer; }
+.mandos button.sec { background: transparent; color: var(--acento); }
+.mandos button:focus-visible, .mandos select:focus-visible, .deslizantes input:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+.mandos label { font-size: .88rem; color: var(--tenue); display: flex; gap: 6px; align-items: center; }
+.mandos select { font: inherit; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--linea); background: var(--hoja); color: var(--tinta); }
+.deslizantes { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px 22px; padding: 18px 20px; border-top: 1px solid var(--linea); }
+.deslizantes label { display: flex; flex-direction: column; gap: 4px; font-size: .88rem; }
+.deslizantes .fila-d { display: flex; justify-content: space-between; gap: 8px; }
+.deslizantes output { font-family: var(--font-dato); font-variant-numeric: tabular-nums; color: var(--acento); }
+.deslizantes input[type=range] { width: 100%; accent-color: var(--acento); }
+.deslizantes small { color: var(--tenue); font-size: .78rem; }
+.comparar { padding: 18px 20px 22px; border-top: 1px solid var(--linea); display: flex; flex-direction: column; gap: 12px; }
+.tarjetas { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.tarjeta { border: 1px solid var(--linea); border-radius: 6px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; background: var(--hoja); }
+.tarjeta.sim { background: var(--nota); border-color: var(--nota-borde); }
+.tarjeta .t-tit { font-size: .82rem; color: var(--tenue); }
+.tarjeta .t-val { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tarjeta .t-ec { font-family: var(--font-dato); font-size: .76rem; color: var(--tenue); overflow-wrap: anywhere; }
+.ok { color: var(--ok); } .mal { color: #c0392b; }
+@media (max-width: 780px) {
+  .anim-cuerpo { grid-template-columns: minmax(0, 1fr); }
+  .lectura { border-left: 0; border-top: 1px solid var(--linea); }
+  .lienzo canvas { height: 400px; }
+}
+</style>
+
+<article class="anim" id="animacion-interactiva">
+  <div class="paso-cab">
+    <div class="eyebrow">Animación interactiva</div>
+    <h2>La misión en movimiento</h2>
+    <p>El cohete vuela con las ecuaciones del paso 4. Las flechas muestran las tres fuerzas en cada instante: el <b>empuje</b> solo existe mientras quema el motor, el <b>arrastre</b> crece con la velocidad y el <b>peso</b> baja a medida que se consume el propelente. Mueve los deslizantes y observa cómo cambian el vuelo y los resultados.</p>
+    <p>Cada resultado lleva su origen: <span class="anim-etq etq-mano">a mano</span> sale de una fórmula de los pasos 2, 3 o 5; <span class="anim-etq etq-sim">simulado</span> se calcula en tu navegador con las mismas ecuaciones y el mismo método que <code>scripts/comun.py</code> (Euler con pasos de 1 ms y bisección del impulso).</p>
+  </div>
+
+  <div class="anim-cuerpo">
+    <div class="lienzo"><canvas id="cv" aria-label="Animación del vuelo del cohete con vectores de fuerza" role="img"></canvas></div>
+    <div class="lectura">
+      <div class="fase" id="fase">En el riel</div>
+      <dl class="datos">
+        <dt>Tiempo</dt><dd id="o-t">0.00 s</dd>
+        <dt>Altura</dt><dd id="o-h">0 m</dd>
+        <dt>Velocidad</dt><dd id="o-v">0 m/s</dd>
+        <dt>Masa</dt><dd id="o-m">10.00 kg</dd>
+        <dt>Empuje</dt><dd id="o-F">0 N</dd>
+        <dt>Arrastre</dt><dd id="o-D">0 N</dd>
+        <dt>Peso</dt><dd id="o-W">0 N</dd>
+        <dt>Salida del riel</dt><dd id="o-vr">—</dd>
+      </dl>
+      <div class="leyenda-f">
+        <span style="--c:#e07a1f">Empuje</span>
+        <span style="--c:#2f80c8">Arrastre</span>
+        <span style="--c:#7a8494">Peso</span>
+      </div>
+      <p class="leyenda-f" style="margin:0">Largo de cada flecha ∝ √fuerza, para que las tres se vean. El cohete no está a escala.</p>
+    </div>
+  </div>
+
+  <div class="mandos">
+    <button id="b-play" type="button">▶ Lanzar</button>
+    <button id="b-reset" class="sec" type="button">↺ Reiniciar</button>
+    <label for="s-vel">Velocidad
+      <select id="s-vel">
+        <option value="0.25">0.25×</option>
+        <option value="0.5">0.5×</option>
+        <option value="1" selected>1×</option>
+        <option value="2">2×</option>
+        <option value="4">4×</option>
+      </select>
+    </label>
+    <label for="s-imp">Impulso del vuelo
+      <select id="s-imp">
+        <option value="dis" selected>I de diseño (con margen)</option>
+        <option value="req">I requerido (justo para el apogeo)</option>
+        <option value="man">Manual (deslizante)</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="deslizantes" id="deslizantes"></div>
+
+  <div class="comparar">
+    <h3>Resultados con los valores actuales</h3>
+    <div class="tarjetas" id="tarjetas"></div>
+  </div>
+</article>
+
+<script>
+(function () {
+  "use strict";
+  var G = 9.81, G0 = 9.80665, H_ESC = 8500, DT = 1e-3;
+
+  // ---- deslizantes: [id, etiqueta, mín, máx, paso, valor base, unidad, decimales, nota] ----
+  var DEF = [
+    ["m0", "Masa al despegue m₀", 6, 14, 0.1, 10, "kg", 1, "Paso 1"],
+    ["hap", "Apogeo objetivo h_ap", 500, 1500, 50, 1000, "m", 0, "Paso 1"],
+    ["D", "Diámetro del fuselaje", 100, 200, 5, 150, "mm", 0, "Paso 1"],
+    ["F", "Empuje medio F̄", 600, 2400, 50, 1600, "N", 0, "Paso 3"],
+    ["Lef", "Recorrido guiado en el riel", 3, 4, 0.1, 3.2, "m", 1, "Paso 3"],
+    ["cd", "Coeficiente de arrastre C_d", 0, 0.8, 0.05, 0.5, "", 2, "Paso 4 (0 = sin aire)"],
+    ["rho0", "Densidad del aire ρ₀", 0.9, 1.25, 0.005, 1.225, "kg/m³", 3, "Paso 4"],
+    ["isp", "Impulso específico I_sp", 90, 130, 1, 104, "s", 0, "Propelente"],
+    ["mu", "Margen de diseño μ", 0, 40, 5, 20, "%", 0, "Paso 5"],
+    ["Iman", "Impulso manual", 800, 3500, 1, 2172, "N·s", 0, "Solo con 'Manual'"]
+  ];
+  var P = {};
+  var cont = document.getElementById("deslizantes");
+  DEF.forEach(function (d) {
+    P[d[0]] = d[5];
+    var lab = document.createElement("label");
+    lab.setAttribute("for", "r-" + d[0]);
+    lab.innerHTML = '<span class="fila-d"><span>' + d[1] + '</span><output id="v-' + d[0] + '"></output></span>' +
+      '<input type="range" id="r-' + d[0] + '" min="' + d[2] + '" max="' + d[3] + '" step="' + d[4] + '" value="' + d[5] + '">' +
+      '<small>' + d[8] + ' · base: ' + d[5] + (d[6] ? " " + d[6] : "") + '</small>';
+    cont.appendChild(lab);
+    var inp = lab.querySelector("input"), out = lab.querySelector("output");
+    function pinta() { out.textContent = Number(inp.value).toFixed(d[7]) + (d[6] ? " " + d[6] : ""); }
+    pinta();
+    inp.addEventListener("input", function () { P[d[0]] = Number(inp.value); pinta(); programar(); });
+  });
+
+  // ---- física: misma que scripts/comun.py ----
+  function area() { return Math.PI / 4 * Math.pow(P.D / 1000, 2); }
+  function volar(I, guardar) {
+    var A = area(), mp = I / (P.isp * G0), tb = I / P.F, mdot = mp / tb;
+    var h = 0, v = 0, t = 0, m = P.m0, vmax = 0, vriel = null, hb = null, n = 0, tr = [];
+    while (true) {
+      var quemando = t < tb;
+      var T = quemando ? P.F : 0;
+      if (quemando) m -= mdot * DT;
+      var rho = P.rho0 * Math.exp(-h / H_ESC);
+      var FD = 0.5 * rho * P.cd * A * v * Math.abs(v);
+      var a = (T - FD) / m - G;
+      if (guardar && n % 10 === 0) tr.push([t, h, v, m, T, FD, m * G]);
+      v += a * DT; h += v * DT; t += DT; n++;
+      if (v > vmax) vmax = v;
+      if (vriel === null && h >= P.Lef) vriel = v;
+      if (hb === null && !(t < tb)) hb = h;
+      if (!quemando && v < 0) {
+        if (guardar) tr.push([t, h, 0, m, 0, 0, m * G]);
+        return { hap: h, vmax: vmax, mp: mp, tb: tb, tr: tr, vriel: vriel, hb: hb, tap: t };
+      }
+      if (t > 600) return { hap: h, vmax: vmax, mp: mp, tb: tb, tr: tr, vriel: vriel, hb: hb, tap: t };
+    }
+  }
+  function Ireq() {
+    var lo = 100, hi = 10000;
+    for (var i = 0; i < 50; i++) {
+      var mid = 0.5 * (lo + hi);
+      if (volar(mid, false).hap < P.hap) lo = mid; else hi = mid;
+    }
+    return 0.5 * (lo + hi);
+  }
+
+  // ---- resultados ----
+  var R = null, tray = null;
+  function calcular() {
+    var W = P.m0 * G;
+    var vb = Math.sqrt(2 * G * P.hap);
+    var Imano = P.F > W ? P.m0 * vb / (1 - W / P.F) : Infinity;
+    var vrielMano = P.F > W ? Math.sqrt(2 * P.Lef * (P.F / P.m0 - G)) : 0;
+    var Ir = Ireq();
+    var Id = (1 + P.mu / 100) * Ir;
+    var sel = document.getElementById("s-imp").value;
+    var Ivuelo = sel === "req" ? Ir : sel === "man" ? P.Iman : Id;
+    var vuelo = volar(Ivuelo, true);
+    var simReq = volar(Ir, false);
+    R = { vb: vb, Imano: Imano, vrielMano: vrielMano, Ir: Ir, Id: Id, mpd: Id / (P.isp * G0), tbd: Id / P.F,
+          vmaxReq: simReq.vmax, Ivuelo: Ivuelo, vuelo: vuelo, W: W };
+    tray = vuelo.tr;
+    tarjetas();
+  }
+  function f(x, d) { return isFinite(x) ? x.toLocaleString("es-CO", { minimumFractionDigits: d, maximumFractionDigits: d }) : "—"; }
+  function tarjetas() {
+    var ok30 = R.vrielMano >= 30;
+    var T = [
+      ["mano", "Paso 2 · velocidad sin aire", f(R.vb, 0) + " m/s", "v_b = √(2·g·h_ap)"],
+      ["mano", "Paso 3 · impulso a mano", f(R.Imano, 0) + " N·s", "I = m₀·v_b / (1 − m₀g/F̄)"],
+      ["mano", "Paso 3 · salida del riel", '<span class="' + (ok30 ? "ok" : "mal") + '">' + f(R.vrielMano, 1) + " m/s " + (ok30 ? "✓" : "✗ < 30") + "</span>", "v = √(2·L_ef·(F̄/m₀ − g)); LASC exige ≥ 30 m/s"],
+      ["sim", "Paso 4 · impulso requerido", f(R.Ir, 0) + " N·s", "Bisección hasta h_ap; v_max = " + f(R.vmaxReq, 0) + " m/s"],
+      ["mano", "Paso 5 · impulso de diseño", f(R.Id, 0) + " N·s", "I_dis = (1 + μ)·I_req"],
+      ["mano", "Paso 5 · propelente y tiempo", f(R.mpd, 3) + " kg · " + f(R.tbd, 2) + " s", "m_p = I_dis/(I_sp·g₀); t_b = I_dis/F̄"],
+      ["sim", "Vuelo animado · apogeo", f(R.vuelo.hap, 0) + " m", "Con I = " + f(R.Ivuelo, 0) + " N·s; h al apagarse = " + f(R.vuelo.hb, 0) + " m"]
+    ];
+    document.getElementById("tarjetas").innerHTML = T.map(function (c) {
+      return '<div class="tarjeta' + (c[0] === "sim" ? " sim" : "") + '"><span class="t-tit"><span class="anim-etq ' +
+        (c[0] === "sim" ? "etq-sim" : "etq-mano") + '">' + (c[0] === "sim" ? "simulado" : "a mano") + '</span> ' + c[1] +
+        '</span><span class="t-val">' + c[2] + '</span><span class="t-ec">' + c[3] + '</span></div>';
+    }).join("");
+  }
+  var temporizador = null;
+  function programar() {
+    clearTimeout(temporizador);
+    temporizador = setTimeout(function () { calcular(); reiniciar(); }, 150);
+  }
+  document.getElementById("s-imp").addEventListener("change", programar);
+
+  // ---- dibujo ----
+  var cv = document.getElementById("cv"), cx = cv.getContext("2d");
+  var nubes = [];
+  for (var i = 0; i < 18; i++) nubes.push({ alt: 120 + i * 75 + (i * 37 % 40), x: (i * 0.37 % 1), s: 0.6 + (i * 0.23 % 0.6) });
+  function col(nombre) { return getComputedStyle(document.documentElement).getPropertyValue(nombre).trim() || "#888"; }
+  function medir() {
+    var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
+    cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+    cx.setTransform(d, 0, 0, d, 0, 0);
+  }
+  function flecha(x, y, dy, color, txt, izq) {
+    if (Math.abs(dy) < 2) return;
+    cx.strokeStyle = color; cx.fillStyle = color; cx.lineWidth = 4; cx.lineCap = "round";
+    cx.beginPath(); cx.moveTo(x, y); cx.lineTo(x, y + dy); cx.stroke();
+    var s = dy > 0 ? 1 : -1;
+    cx.beginPath(); cx.moveTo(x, y + dy + s * 10); cx.lineTo(x - 8, y + dy - s * 2); cx.lineTo(x + 8, y + dy - s * 2); cx.closePath(); cx.fill();
+    cx.font = "600 12px " + col("--font-dato"); cx.textAlign = izq ? "right" : "left";
+    cx.fillText(txt, x + (izq ? -14 : 14), y + dy * 0.6 + 4);
+  }
+  function dibujar(e) {
+    var w = cv.clientWidth, hgt = cv.clientHeight;
+    var h = e[1], v = e[2], m = e[3], T = e[4], FD = e[5], Wf = e[6];
+    var oscuro = matchMedia("(prefers-color-scheme: dark)").matches && document.documentElement.getAttribute("data-theme") !== "light" || document.documentElement.getAttribute("data-theme") === "dark";
+    var k = Math.min(1, h / 1400);
+    var g1 = cx.createLinearGradient(0, 0, 0, hgt);
+    if (oscuro) { g1.addColorStop(0, "rgb(" + (16 - 6 * k) + "," + (24 - 8 * k) + "," + (40 - 10 * k) + ")"); g1.addColorStop(1, "#1c2a42"); }
+    else { g1.addColorStop(0, "rgb(" + Math.round(150 - 60 * k) + "," + Math.round(195 - 60 * k) + "," + Math.round(235 - 30 * k) + ")"); g1.addColorStop(1, "#e8f1fb"); }
+    cx.fillStyle = g1; cx.fillRect(0, 0, w, hgt);
+
+    var cohY = hgt - 150;                  // posición fija del centro del cohete en pantalla
+    var PPM = 30;                           // px por metro cerca del suelo (escena)
+    // nubes (paralaje)
+    nubes.forEach(function (n) {
+      var y = cohY - (n.alt - h) * 0.5;
+      if (y < -40 || y > hgt + 40) return;
+      var x = 30 + n.x * (w - 160);
+      cx.fillStyle = oscuro ? "rgba(200,210,230,0.10)" : "rgba(255,255,255,0.8)";
+      cx.beginPath(); cx.ellipse(x, y, 34 * n.s, 12 * n.s, 0, 0, 7); cx.ellipse(x + 22 * n.s, y - 6, 24 * n.s, 11 * n.s, 0, 0, 7); cx.fill();
+    });
+    // suelo y riel
+    var suelo = cohY + 40 + h * PPM;
+    if (suelo < hgt + 10) {
+      cx.fillStyle = oscuro ? "#24301f" : "#8fb36b"; cx.fillRect(0, suelo, w, hgt - suelo + 10);
+      cx.fillStyle = col("--tenue");
+      cx.fillRect(w * 0.4 - 3, suelo - 4 * PPM, 4, 4 * PPM);
+      cx.font = "11px " + col("--font-dato"); cx.textAlign = "right";
+      cx.fillText("riel 4 m", w * 0.4 - 8, suelo - 4 * PPM + 12);
+    }
+    // cohete
+    var x = w * 0.4 + 12, L = 60, R2 = 9, top = cohY - L / 2;
+    if (T > 0) {
+      var fl = 18 + 14 * Math.random();
+      cx.fillStyle = "#ffb347"; cx.beginPath(); cx.moveTo(x - 6, top + L); cx.lineTo(x + 6, top + L); cx.lineTo(x, top + L + fl); cx.closePath(); cx.fill();
+    }
+    cx.fillStyle = oscuro ? "#d9dee7" : "#ffffff"; cx.strokeStyle = col("--tinta"); cx.lineWidth = 1.5;
+    cx.beginPath(); cx.rect(x - R2, top + 14, 2 * R2, L - 14); cx.fill(); cx.stroke();
+    cx.beginPath(); cx.moveTo(x - R2, top + 14); cx.quadraticCurveTo(x, top - 10, x + R2, top + 14); cx.closePath(); cx.fillStyle = "#c0392b"; cx.fill(); cx.stroke();
+    cx.fillStyle = col("--acento");
+    cx.beginPath(); cx.moveTo(x - R2, top + L - 16); cx.lineTo(x - R2 - 9, top + L + 2); cx.lineTo(x - R2, top + L); cx.closePath(); cx.fill();
+    cx.beginPath(); cx.moveTo(x + R2, top + L - 16); cx.lineTo(x + R2 + 9, top + L + 2); cx.lineTo(x + R2, top + L); cx.closePath(); cx.fill();
+    // paracaídas en el apogeo
+    if (e === tray[tray.length - 1] && tray.length > 1) {
+      cx.strokeStyle = col("--tenue"); cx.lineWidth = 1;
+      cx.beginPath(); cx.moveTo(x, top - 4); cx.lineTo(x - 30, top - 48); cx.moveTo(x, top - 4); cx.lineTo(x + 30, top - 48); cx.stroke();
+      cx.fillStyle = "#e07a1f"; cx.beginPath(); cx.arc(x, top - 46, 32, Math.PI, 0); cx.closePath(); cx.fill();
+    }
+    // vectores (largo ∝ √F)
+    var K = 3.0, cy = cohY + 4;
+    flecha(x + 34, cy, -K * Math.sqrt(T), "#e07a1f", T > 0 ? Math.round(T) + " N" : "");
+    flecha(x + 64, cy, K * Math.sqrt(FD) * (v >= 0 ? 1 : -1), "#2f80c8", FD > 1 ? Math.round(FD) + " N" : "");
+    flecha(x - 34, cy, K * Math.sqrt(Wf), "#7a8494", Math.round(Wf) + " N", true);
+
+    // altímetro
+    var ax = w - 46, ay0 = 24, ay1 = hgt - 24, hmax = Math.max(1400, P.hap * 1.4, R ? R.vuelo.hap * 1.1 : 0);
+    function Y(z) { return ay1 - (ay1 - ay0) * z / hmax; }
+    cx.strokeStyle = col("--tenue"); cx.lineWidth = 1; cx.beginPath(); cx.moveTo(ax, ay0); cx.lineTo(ax, ay1); cx.stroke();
+    cx.font = "10px " + col("--font-dato"); cx.textAlign = "right"; cx.fillStyle = col("--tenue");
+    for (var z = 0; z <= hmax; z += hmax > 2000 ? 500 : 200) { cx.fillText(z + "", ax - 6, Y(z) + 3); cx.beginPath(); cx.moveTo(ax - 3, Y(z)); cx.lineTo(ax + 3, Y(z)); cx.stroke(); }
+    cx.strokeStyle = "#c0392b"; cx.setLineDash([4, 3]); cx.beginPath(); cx.moveTo(ax - 14, Y(P.hap)); cx.lineTo(ax + 14, Y(P.hap)); cx.stroke(); cx.setLineDash([]);
+    cx.fillStyle = col("--acento"); cx.beginPath(); cx.arc(ax, Y(h), 6, 0, 7); cx.fill();
+    cx.textAlign = "center"; cx.fillStyle = col("--tenue"); cx.fillText("altura [m]", ax - 6, ay0 - 8);
+
+    // lecturas
+    var tb = R.vuelo.tb, fase;
+    if (e === tray[tray.length - 1] && tray.length > 1) fase = "Apogeo: " + f(R.vuelo.hap, 0) + " m";
+    else if (h < P.Lef && e[0] < tb) fase = "En el riel";
+    else if (e[0] < tb) fase = "Combustión";
+    else fase = "Subida libre (motor apagado)";
+    document.getElementById("fase").textContent = fase;
+    document.getElementById("o-t").textContent = f(e[0], 2) + " s";
+    document.getElementById("o-h").textContent = f(h, 0) + " m";
+    document.getElementById("o-v").textContent = f(v, 0) + " m/s";
+    document.getElementById("o-m").textContent = f(m, 2) + " kg";
+    document.getElementById("o-F").textContent = f(T, 0) + " N";
+    document.getElementById("o-D").textContent = f(FD, 0) + " N";
+    document.getElementById("o-W").textContent = f(Wf, 0) + " N";
+    var vr = R.vuelo.vriel;
+    document.getElementById("o-vr").innerHTML = (h >= P.Lef && vr !== null) ? '<span class="' + (vr >= 30 ? "ok" : "mal") + '">' + f(vr, 1) + " m/s</span>" : "—";
+  }
+
+  // ---- animación ----
+  var idx = 0, corriendo = false, tAnim = 0, ult = 0;
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function reiniciar() {
+    corriendo = false; idx = 0; tAnim = 0;
+    document.getElementById("b-play").textContent = "▶ Lanzar";
+    medir(); if (tray && tray.length) dibujar(tray[0]);
+  }
+  function cuadro(ts) {
+    if (!corriendo) return;
+    var dt = ult ? (ts - ult) / 1000 : 0; ult = ts;
+    tAnim += dt * Number(document.getElementById("s-vel").value);
+    while (idx < tray.length - 1 && tray[idx + 1][0] <= tAnim) idx++;
+    dibujar(tray[idx]);
+    if (idx >= tray.length - 1) { corriendo = false; document.getElementById("b-play").textContent = "▶ Lanzar"; return; }
+    requestAnimationFrame(cuadro);
+  }
+  document.getElementById("b-play").addEventListener("click", function () {
+    if (corriendo) { corriendo = false; this.textContent = "▶ Continuar"; return; }
+    if (idx >= tray.length - 1) { idx = 0; tAnim = 0; }
+    if (reduce) { idx = tray.length - 1; dibujar(tray[idx]); return; }
+    corriendo = true; ult = 0; this.textContent = "❚❚ Pausa";
+    requestAnimationFrame(cuadro);
+  });
+  document.getElementById("b-reset").addEventListener("click", reiniciar);
+  window.addEventListener("resize", function () { medir(); if (tray) dibujar(tray[idx]); });
+
+  calcular(); reiniciar();
+  window.__mision = { volar: volar, Ireq: Ireq, P: P };
+})();
+</script>

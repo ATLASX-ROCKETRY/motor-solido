@@ -9,10 +9,17 @@ puede abrir en el navegador o publicar con GitHub Pages. El estilo está en
 scripts/hoja.css. Hay que volver a ejecutar este script cada vez que cambie
 el .md, para que la página quede igual al documento.
 """
-import re, sys, html
+import re, sys, html, unicodedata
+
+def slug(t):
+    t = unicodedata.normalize("NFKD", t.lower()).encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", "-", t).strip("-")
 import markdown
 
-src, salida = sys.argv[1:3]
+args = [a for a in sys.argv[1:] if not a.startswith("--")]
+src, salida = args[0], args[1]
+fragmento = open(args[2], encoding="utf-8").read() if len(args) > 2 else ""
+sin_envoltura = "--sin-envoltura" in sys.argv
 md = open(src, encoding="utf-8").read()
 import os
 estilo = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "hoja.css"), encoding="utf-8").read()
@@ -64,14 +71,17 @@ for sec in secciones:
     cuerpo = cuerpo.replace("\n---\n", "\n").strip()
     if cuerpo.endswith("---"):
         cuerpo = cuerpo[:-3]
-    ident = re.sub(r"[^a-z0-9]+", "-", titulo.lower().split("—")[0].strip()).strip("-")
+    ident = slug(titulo.split("—")[0])
 
     if titulo.startswith("Cómo leer"):
         out.append('<section class="leyenda" aria-label="Cómo leer"><div><b>Resolución</b><span>Qué se calcula, con qué ecuación, qué significa cada término y el resultado.</span></div>'
                    '<div class="l-nota"><b>Suposición y análisis</b><span>Cada simplificación o dato supuesto, por qué se acepta y cuánto cambia el resultado si no se cumple. Solo usa lo calculado hasta ese paso.</span></div></section>')
         seq = re.search(r"\*\*Secuencia:\*\*(.*)", cuerpo).group(1)
-        chips = "".join(f'<a href="#{re.sub(r"[^a-z0-9]+","-",c.strip().lower().split("(")[0].strip()).strip("-")}">{html.escape(c.strip())}</a><i>→</i>' for c in seq.split("→"))
+        chips = "".join(f'<a href="#{slug(c.split("(")[0])}">{html.escape(c.strip())}</a><i>→</i>' for c in seq.split("→"))
         out.append(f'<nav class="flujo" aria-label="Secuencia">{chips[:-8]}</nav>')
+        continue
+    if titulo.startswith("Animación"):
+        out.append(fragmento if fragmento else f'<section class="resumen" id="{ident}"><h2>{html.escape(titulo)}</h2>{md2h(cuerpo)}</section>')
         continue
     if titulo.startswith("Resumen"):
         out.append(f'<section class="resumen" id="{ident}"><h2>{html.escape(titulo)}</h2>{envolver_tablas(md2h(cuerpo))}</section>')
@@ -134,5 +144,12 @@ window.MathJax = {{ tex: {{ inlineMath: [['$', '$']], displayMath: [['$$', '$$']
 </body>
 </html>
 """
+if sin_envoltura:
+    # versión para incrustar en otra página: sin doctype, html, head ni body
+    for etq in ['<!doctype html>\n', '<html lang="es">\n', '<head>\n', '<meta charset="utf-8">\n',
+                '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n',
+                '</head>\n', '<body>\n', '</body>\n', '</html>\n']:
+        pagina = pagina.replace(etq, "", 1)
+    pagina = pagina.replace("</title>", '</title>\n<meta name="claude:viewport-fit-sides" content="cover">', 1)
 open(salida, "w", encoding="utf-8").write(pagina)
 print("ok", len(out), "bloques;", len(math), "fórmulas")
