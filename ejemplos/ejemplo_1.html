@@ -176,7 +176,7 @@ td strong { color: var(--acento); }
   <p>Este ejemplo toma los resultados de la misión común y diseña la geometría de un motor con grano BATES y carcasa de acero inoxidable AISI 304. Aplica las ecuaciones de <a href="../docs/01_mision_a_geometria.md"><code>docs/01_mision_a_geometria.md</code></a> y <a href="../docs/02_numero_de_granos.md"><code>docs/02_numero_de_granos.md</code></a>.</p>
 <p>Cálculo: <code>python3 scripts/ejemplo1_bates.py</code>. Todas las cuentas son fórmulas escritas en cada paso; el script solo las evalúa para que los números se puedan reproducir. <strong>En este ejemplo no hay valores simulados.</strong></p>
 </header>
-<section class="leyenda" aria-label="Cómo leer"><div><b>Resolución</b><span>Qué se calcula, con qué ecuación, qué significa cada término y el resultado.</span></div><div class="l-nota"><b>Suposición y análisis</b><span>Cada simplificación o dato supuesto, por qué se acepta y cuánto cambia el resultado si no se cumple. Solo usa lo calculado hasta ese paso.</span></div></section><nav class="flujo" aria-label="Secuencia"><a href="#datos-de-entrada">Datos de entrada</a><i>→</i><a href="#paso-6">Paso 6 (presupuesto con acero)</a><i>→</i><a href="#paso-8">Paso 8 (geometría BATES)</a><i>→</i><a href="#paso-9">Paso 9 (neutralidad)</a><i>→</i><a href="#paso-10">Paso 10 (alma requerida)</a><i>→</i><a href="#paso-11">Paso 11 (núcleo y segmentos)</a><i>→</i><a href="#paso-12">Paso 12 (tubo del motor)</a><i>→</i><a href="#resumen-del-ejemplo">Resumen del ejemplo</a></nav><article class="paso" id="datos-de-entrada"><div class="paso-cab"><div class="eyebrow">Datos de entrada</div><h2>Datos de entrada — De la misión común y del material</h2><p class="pregunta"><strong>Pregunta:</strong> ¿con qué datos empieza este ejemplo y de dónde sale cada uno?</p><div class="aclara"><p><strong>Qué se obtiene:</strong> la lista de valores heredados de la misión común y las propiedades del acero que se usarán más adelante.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>Valores que llegan de la misión común</h4>
+<section class="leyenda" aria-label="Cómo leer"><div><b>Resolución</b><span>Qué se calcula, con qué ecuación, qué significa cada término y el resultado.</span></div><div class="l-nota"><b>Suposición y análisis</b><span>Cada simplificación o dato supuesto, por qué se acepta y cuánto cambia el resultado si no se cumple. Solo usa lo calculado hasta ese paso.</span></div></section><nav class="flujo" aria-label="Secuencia"><a href="#datos-de-entrada">Datos de entrada</a><i>→</i><a href="#paso-6">Paso 6 (presupuesto con acero)</a><i>→</i><a href="#paso-8">Paso 8 (geometría BATES)</a><i>→</i><a href="#paso-9">Paso 9 (neutralidad)</a><i>→</i><a href="#paso-10">Paso 10 (alma requerida)</a><i>→</i><a href="#paso-11">Paso 11 (núcleo y segmentos)</a><i>→</i><a href="#paso-12">Paso 12 (tubo del motor)</a><i>→</i><a href="#resumen-del-ejemplo">Resumen del ejemplo</a><i>→</i><a href="#animacion-interactiva">Animación interactiva</a></nav><article class="paso" id="datos-de-entrada"><div class="paso-cab"><div class="eyebrow">Datos de entrada</div><h2>Datos de entrada — De la misión común y del material</h2><p class="pregunta"><strong>Pregunta:</strong> ¿con qué datos empieza este ejemplo y de dónde sale cada uno?</p><div class="aclara"><p><strong>Qué se obtiene:</strong> la lista de valores heredados de la misión común y las propiedades del acero que se usarán más adelante.</p></div></div><div class="colcab"><div>Resolución</div><div>Suposición y análisis</div></div><div class="fila"><div class="res"><h4>Valores que llegan de la misión común</h4>
 <p>Estos números ya se calcularon y justificaron en <a href="00_mision_comun.md"><code>00_mision_comun.md</code></a>. Aquí solo se reúnen, con el paso donde se obtuvo cada uno.</p>
 <div class="tabla"><table>
 <thead>
@@ -1148,7 +1148,421 @@ td strong { color: var(--acento); }
 <li><strong>Modelo de cámara:</strong> calcular la presión y la garganta de la tobera. Debe confirmar que la presión queda dentro de la meseta (S10.1) y el flujo másico (S11.4).</li>
 <li><strong>Espesor de pared:</strong> con $\sigma_y$ = 205 MPa y un factor de seguridad de 1.5 a 2.</li>
 <li><strong>Masa real de la estructura:</strong> debe ser 2.92 kg o menos para que el cohete quepa en 10 kg.</li>
-</ol></section>
+</ol></section><!-- Fragmento: constructor interactivo del grano BATES (ejemplo 1).
+     scripts/md_a_html.py lo inserta en el lugar de la sección "Animación interactiva" del .md.
+     Las ecuaciones son las de los pasos 8 a 12 del ejemplo 1. -->
+<style>
+.gr { background: var(--hoja); border: 1px solid var(--linea); border-radius: 8px; overflow: hidden; }
+.gr .paso-cab p { max-width: 80ch; }
+.gr-etapas { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 20px; border-top: 1px solid var(--linea); }
+.gr-etapas button { font: inherit; font-size: .85rem; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--linea); background: var(--hoja); color: var(--tenue); cursor: pointer; }
+.gr-etapas button.on { border-color: var(--acento); background: var(--acento-suave); color: var(--acento); font-weight: 600; }
+.gr-etapas button:focus-visible, .gr-mandos button:focus-visible, .gr-mandos select:focus-visible, .gr-desl input:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+.gr-explica { margin: 0 20px 14px; padding: 12px 16px; border-left: 3px solid var(--acento); background: var(--acento-suave); border-radius: 0 6px 6px 0; font-size: .95rem; line-height: 1.55; }
+.gr-explica b { color: var(--acento); }
+.gr-vistas { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 0; border-top: 1px solid var(--linea); }
+.gr-vista { padding: 12px 14px; min-width: 0; background: var(--papel); }
+.gr-vista + .gr-vista { border-left: 1px solid var(--linea); }
+.gr-vista h4 { margin: 0 0 6px; font-family: var(--font-dato); font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--tenue); }
+.gr-vista svg { display: block; width: 100%; height: auto; }
+.gr-svg-grano { fill: #d9a441; stroke: #8a6418; stroke-width: .6; }
+.gr-svg-quemado { fill: color-mix(in srgb, #e07a1f 22%, transparent); }
+.gr-svg-liner { fill: color-mix(in srgb, var(--tenue) 28%, transparent); }
+.gr-svg-tubo { fill: none; stroke: var(--tinta); stroke-width: 1.2; }
+.gr-svg-llama { stroke: #e0571f; stroke-width: 2; fill: none; }
+.gr-svg-cota { stroke: var(--acento); stroke-width: 1; fill: none; }
+.gr-svg-cota-t { fill: var(--acento); font: 600 11px var(--font-dato); }
+.gr-svg-tenue-t { fill: var(--tenue); font: 10px var(--font-dato); }
+.gr-svg-eje { stroke: var(--linea); stroke-width: 1; }
+.gr-svg-curva { stroke: var(--acento); stroke-width: 2; fill: none; }
+.gr-oculto { opacity: 0; }
+.gr-svg-capa { transition: opacity .35s ease; }
+@media (prefers-reduced-motion: reduce) { .gr-svg-capa { transition: none; } }
+.gr-mandos { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 14px 20px; border-top: 1px solid var(--linea); }
+.gr-mandos button { font: inherit; font-weight: 600; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--acento); background: var(--acento); color: var(--hoja); cursor: pointer; }
+.gr-mandos button.sec { background: transparent; color: var(--acento); }
+.gr-mandos label { font-size: .88rem; color: var(--tenue); display: flex; gap: 6px; align-items: center; }
+.gr-mandos select { font: inherit; padding: 6px 8px; border-radius: 6px; border: 1px solid var(--linea); background: var(--hoja); color: var(--tinta); }
+.gr-desl { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px 22px; padding: 18px 20px; border-top: 1px solid var(--linea); }
+.gr-desl label { display: flex; flex-direction: column; gap: 4px; font-size: .88rem; }
+.gr-desl .fila-d { display: flex; justify-content: space-between; gap: 8px; }
+.gr-desl output { font-family: var(--font-dato); font-variant-numeric: tabular-nums; color: var(--acento); }
+.gr-desl input[type=range] { width: 100%; accent-color: var(--acento); }
+.gr-desl input:disabled { opacity: .4; }
+.gr-desl small { color: var(--tenue); font-size: .78rem; }
+.gr-abajo { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); border-top: 1px solid var(--linea); }
+.gr-abajo > div { padding: 16px 20px; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+.gr-abajo > div + div { border-left: 1px solid var(--linea); }
+.gr-tabla { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.gr-tabla td { padding: 5px 8px; border-bottom: 1px solid var(--linea); }
+.gr-tabla td:last-child { text-align: right; font-family: var(--font-dato); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gr-tabla td small { color: var(--tenue); }
+.gr-checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: .86rem; }
+.gr-checks li { display: flex; gap: 8px; align-items: baseline; padding: 6px 10px; border-radius: 6px; background: var(--papel); border: 1px solid var(--linea); }
+.gr-checks li b { min-width: 1.2em; }
+.gr-checks li.ok-c b { color: var(--ok); }
+.gr-checks li.falla { border-color: #c0392b; background: rgba(192,57,43,.08); }
+.gr-checks li.falla b { color: #c0392b; }
+@media (max-width: 860px) {
+  .gr-vistas, .gr-abajo { grid-template-columns: minmax(0, 1fr); }
+  .gr-vista + .gr-vista, .gr-abajo > div + div { border-left: 0; border-top: 1px solid var(--linea); }
+}
+</style>
+
+<article class="gr" id="animacion-interactiva">
+  <div class="paso-cab">
+    <div class="eyebrow">Animación interactiva</div>
+    <h2>Constructor del grano</h2>
+    <p>Pon las medidas y mira cómo se arma el grano, en el mismo orden de los pasos 10, 11 y 12: primero el <b>alma</b>, después el <b>núcleo y el diámetro</b>, el <b>largo</b> de cada segmento, el <b>número de segmentos</b> y por último el <b>tubo</b>. Con «Quemar» se ve cómo el núcleo crece y las caras retroceden, y cómo cambia el área de quemado.</p>
+    <p>Todas las cuentas son las fórmulas escritas en este ejemplo (no hay simulación). Las verificaciones se marcan en rojo cuando una medida no cumple.</p>
+  </div>
+
+  <div class="gr-etapas" id="gr-etapas" role="tablist" aria-label="Etapas de la construcción"></div>
+  <p class="gr-explica" id="gr-explica"></p>
+
+  <div class="gr-vistas">
+    <div class="gr-vista">
+      <h4>Corte transversal de un segmento</h4>
+      <svg id="gr-corte" viewBox="0 0 300 300" role="img" aria-label="Corte transversal del grano"></svg>
+    </div>
+    <div class="gr-vista">
+      <h4>Vista lateral del motor (corte por el eje)</h4>
+      <svg id="gr-lado" viewBox="0 0 600 300" role="img" aria-label="Vista lateral de los segmentos dentro del tubo"></svg>
+    </div>
+  </div>
+
+  <div class="gr-mandos">
+    <button id="gr-construir" type="button">▶ Construir paso a paso</button>
+    <button id="gr-quemar" class="sec" type="button">🔥 Quemar</button>
+    <button id="gr-ejemplo" class="sec" type="button">↺ Valores del ejemplo</button>
+    <label for="gr-modo">Modo
+      <select id="gr-modo">
+        <option value="guiado" selected>Guiado: alma desde el tiempo de combustión</option>
+        <option value="libre">Libre: elijo todas las medidas</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="gr-desl" id="gr-desl"></div>
+
+  <div class="gr-abajo">
+    <div>
+      <h3 style="margin:0">Medidas y resultados</h3>
+      <table class="gr-tabla" id="gr-tabla"></table>
+    </div>
+    <div>
+      <h3 style="margin:0">Área de quemado</h3>
+      <svg id="gr-curva" viewBox="0 0 320 170" role="img" aria-label="Área de quemado contra espesor quemado"></svg>
+      <h3 style="margin:4px 0 0">Verificaciones</h3>
+      <ul class="gr-checks" id="gr-checks"></ul>
+    </div>
+  </div>
+</article>
+
+<script>
+(function () {
+  "use strict";
+  // ---- datos fijos (misión común y propelente) ----
+  var VP = 1217.4;          // cm3, misión común paso 7
+  var RHO = 1749;           // kg/m3
+  var TB_MISION = 2172 / 1600;
+  var E_LINER = 1.0, DELTA = 0.25, SEP = 2.0;   // mm
+  var D_FUS = 150;          // mm
+  function rVieille(P) {    // mm/s, tabla de Nakka (misión común)
+    var T = [[0.101, 0.807, 10.708, 0.625], [0.807, 1.503, 8.763, -0.314], [1.503, 3.792, 7.852, -0.013], [3.792, 7.033, 3.907, 0.535], [7.033, 10.67, 9.653, 0.064]];
+    for (var i = 0; i < T.length; i++) if (P >= T[i][0] && P <= T[i][1]) return T[i][2] * Math.pow(P, T[i][3]);
+    return 7.76;
+  }
+
+  // ---- deslizantes ----
+  var DEF = {
+    guiado: [
+      ["tb", "Tiempo de combustión t_b", 0.8, 2.5, 0.01, TB_MISION, "s", 2, "Paso 10 · misión: " + TB_MISION.toFixed(2) + " s"],
+      ["P", "Presión de cámara supuesta", 1.6, 3.7, 0.1, 2.5, "MPa", 1, "Paso 10 · meseta: 1.5 a 3.8 MPa"],
+      ["k", "Fracción de núcleo k = d₀/D", 0.4, 0.8, 0.001, 0.693, "", 3, "Paso 11 · ejemplo: 0.693"],
+      ["N", "Número de segmentos N", 1, 16, 1, 5, "", 0, "Paso 11 · ejemplo: 5"]
+    ],
+    libre: [
+      ["D", "Diámetro del grano D", 30, 120, 0.5, 68.6, "mm", 1, "Paso 11 · ejemplo: 68.6 mm"],
+      ["d0", "Diámetro del núcleo d₀", 5, 100, 0.5, 47.6, "mm", 1, "Paso 11 · ejemplo: 47.6 mm"],
+      ["L0", "Largo de cada segmento L₀", 20, 250, 0.5, 126.7, "mm", 1, "Paso 9 · neutralidad: (3D + d₀)/2"],
+      ["N", "Número de segmentos N", 1, 16, 1, 5, "", 0, "Paso 11 · ejemplo: 5"],
+      ["P", "Presión de cámara supuesta", 1.6, 3.7, 0.1, 2.5, "MPa", 1, "Para el tiempo de combustión"]
+    ]
+  };
+  var V = {}, modo = "guiado";
+  var cont = document.getElementById("gr-desl");
+  function armarDeslizantes() {
+    cont.innerHTML = "";
+    DEF[modo].forEach(function (d) {
+      if (V[d[0]] === undefined) V[d[0]] = d[5];
+      var lab = document.createElement("label");
+      lab.setAttribute("for", "gr-r-" + d[0]);
+      lab.innerHTML = '<span class="fila-d"><span>' + d[1] + '</span><output></output></span>' +
+        '<input type="range" id="gr-r-' + d[0] + '" min="' + d[2] + '" max="' + d[3] + '" step="' + d[4] + '" value="' + V[d[0]] + '">' +
+        '<small>' + d[8] + '</small>';
+      cont.appendChild(lab);
+      var inp = lab.querySelector("input"), out = lab.querySelector("output");
+      function pinta() { out.textContent = Number(inp.value).toFixed(d[7]) + (d[6] ? " " + d[6] : ""); }
+      pinta();
+      inp.addEventListener("input", function () { V[d[0]] = Number(inp.value); pinta(); calcular(); dibujar(); });
+    });
+    if (modo === "libre") {
+      var lab = document.createElement("label");
+      lab.style.flexDirection = "row"; lab.style.alignItems = "center"; lab.style.gap = "8px";
+      lab.innerHTML = '<input type="checkbox" id="gr-neutro" checked> <span>Calcular L₀ por neutralidad (paso 9)</span>';
+      cont.appendChild(lab);
+      lab.querySelector("input").addEventListener("change", function () { calcular(); dibujar(); });
+    }
+  }
+
+  // ---- geometría (ecuaciones de los pasos 8 a 12) ----
+  var G = {};
+  function Ab(x) {
+    var d = G.d0 + 2 * x, L = G.L0 - 2 * x;
+    if (L <= 0 || d >= G.D) return 0;
+    return G.N * (Math.PI * d * L + Math.PI / 2 * (G.D * G.D - d * d));
+  }
+  function calcular() {
+    var r = rVieille(V.P);
+    if (modo === "guiado") {
+      var w = r * V.tb;
+      G.D = 2 * w / (1 - V.k); G.d0 = V.k * G.D; G.L0 = (3 * G.D + G.d0) / 2; G.N = V.N; G.w = w;
+    } else {
+      if (V.d0 > V.D - 2) V.d0 = V.D - 2;
+      G.D = V.D; G.d0 = V.d0; G.N = V.N;
+      var neutro = document.getElementById("gr-neutro");
+      G.L0 = (neutro && neutro.checked) ? (3 * G.D + G.d0) / 2 : V.L0;
+      G.w = (G.D - G.d0) / 2;
+      var sl = document.getElementById("gr-r-L0"); if (sl) sl.disabled = !!(neutro && neutro.checked);
+      var sd = document.getElementById("gr-r-d0"); if (sd) sd.max = (G.D - 2).toFixed(1);
+    }
+    G.r = r;
+    G.k = G.d0 / G.D;
+    G.Vseg = Math.PI / 4 * (G.D * G.D - G.d0 * G.d0) * G.L0 / 1000;   // cm3
+    G.Vtot = G.N * G.Vseg;
+    G.xfin = Math.min(G.w, G.L0 / 2);
+    G.tb = G.xfin / r;
+    var mn = Infinity, mx = 0, s = 0, n = 200;
+    G.curva = [];
+    for (var i = 0; i <= n; i++) { var x = G.xfin * Math.min(i / n, 0.999), a = Ab(x); G.curva.push([x, a]); if (i < n) { mn = Math.min(mn, a); mx = Math.max(mx, a); s += a; } }
+    G.Abmin = mn; G.Abmax = mx; G.Abmed = s / n;
+    G.var = (mx / mn - 1) * 100;
+    G.Aport = Math.PI / 4 * G.d0 * G.d0;
+    G.Gflux = RHO * (r / 1000) * (mx * 1e-6) / (G.Aport * 1e-6);
+    G.Dint = G.D + 2 * E_LINER + 2 * DELTA;
+    G.Lgr = G.N * G.L0 + (G.N - 1) * SEP;
+    G.carga = G.Vtot * 1000 / (Math.PI / 4 * G.D * G.D * G.Lgr) * 100;
+    G.mp = G.Vtot * 1e-6 * RHO;
+    G.F = G.mp * 104 * 9.80665 / G.tb;
+    tabla(); verificar();
+  }
+
+  function f(x, d) { return isFinite(x) ? x.toLocaleString("es-CO", { minimumFractionDigits: d, maximumFractionDigits: d }) : "—"; }
+  function tabla() {
+    var dif = (G.Vtot / VP - 1) * 100;
+    var filas = [
+      ["Alma w = (D − d₀)/2", f(G.w, 2) + " mm"],
+      ["Diámetro del grano D", f(G.D, 1) + " mm"],
+      ["Diámetro del núcleo d₀ <small>(k = " + f(G.k, 3) + ")</small>", f(G.d0, 1) + " mm"],
+      ["Largo de cada segmento L₀", f(G.L0, 1) + " mm"],
+      ["Volumen de un segmento", f(G.Vseg, 1) + " cm³"],
+      ["Volumen total (N × V_seg) <small>(misión: " + f(VP, 0) + " cm³)</small>", f(G.Vtot, 0) + " cm³ (" + (dif >= 0 ? "+" : "") + f(dif, 1) + " %)"],
+      ["Tiempo de combustión w/r <small>(r = " + f(G.r, 2) + " mm/s)</small>", f(G.tb, 2) + " s"],
+      ["Empuje medio aproximado <small>(m_p · I_sp · g₀ / t_b)</small>", f(G.F, 0) + " N"],
+      ["Variación del área de quemado", f(G.var, 1) + " %"],
+      ["Flujo másico G (preliminar)", f(G.Gflux, 0) + " kg/m²s"],
+      ["Diámetro interior del tubo", f(G.Dint, 1) + " mm"],
+      ["Largo de granos", f(G.Lgr, 0) + " mm"],
+      ["Carga volumétrica", f(G.carga, 0) + " %"]
+    ];
+    document.getElementById("gr-tabla").innerHTML = filas.map(function (r) { return "<tr><td>" + r[0] + "</td><td>" + r[1] + "</td></tr>"; }).join("");
+  }
+  var fallas = [];
+  function verificar() {
+    var dif = (G.Vtot / VP - 1) * 100;
+    var C = [
+      [Math.abs(dif) <= 2, "El volumen total coincide con el de la misión (" + f(dif, 1) + " %)", "El volumen total difiere " + f(dif, 1) + " % del de la misión: cambia N o k"],
+      [Math.abs(G.tb / TB_MISION - 1) <= 0.03, "Quema en " + f(G.tb, 2) + " s (misión: " + f(TB_MISION, 2) + " s)", "Quema en " + f(G.tb, 2) + " s: la misión necesita " + f(TB_MISION, 2) + " s para dar 1600 N"],
+      [G.L0 / 2 > G.w, "Termina por el alma: L₀/2 = " + f(G.L0 / 2, 1) + " mm > w", "Las caras se acaban antes que el alma (L₀/2 ≤ w)"],
+      [G.Gflux <= 1400, "Flujo másico " + f(G.Gflux, 0) + " ≤ 1400 kg/m²s", "Flujo másico " + f(G.Gflux, 0) + " kg/m²s: riesgo de combustión erosiva"],
+      [G.var <= 10, "Área casi neutra: varía " + f(G.var, 1) + " %", "El área varía " + f(G.var, 1) + " %: empuje poco parejo"],
+      [G.N <= 8, G.N + " segmentos: cantidad manejable", G.N + " segmentos: demasiadas piezas para fabricar y cargar"],
+      [G.Dint + 10 < D_FUS, "El tubo (" + f(G.Dint, 0) + " mm) cabe en el fuselaje de 150 mm", "El tubo no cabe en el fuselaje de 150 mm"]
+    ];
+    fallas = C.filter(function (c) { return !c[0]; });
+    document.getElementById("gr-checks").innerHTML = C.map(function (c) {
+      return '<li class="' + (c[0] ? "ok-c" : "falla") + '"><b>' + (c[0] ? "✓" : "✗") + '</b><span>' + (c[0] ? c[1] : c[2]) + '</span></li>';
+    }).join("");
+  }
+
+  // ---- etapas de la construcción ----
+  var ETAPAS = [
+    ["alma", "1 · Alma", function () { return modo === "guiado"
+      ? "<b>Paso 10 · Alma.</b> El grano debe quemarse en t_b = " + f(V.tb, 2) + " s. Con r = " + f(G.r, 2) + " mm/s, el espesor que se alcanza a quemar es <b>w = r · t_b = " + f(G.w, 2) + " mm</b>. Es la pared de propelente (en naranja) entre el núcleo y el liner."
+      : "<b>Alma.</b> Con las medidas elegidas, el espesor de propelente es <b>w = (D − d₀)/2 = " + f(G.w, 2) + " mm</b>. Quemarlo tarda w/r = " + f(G.tb, 2) + " s."; }],
+    ["nucleo", "2 · Núcleo y diámetro", function () { return "<b>Paso 11 · Núcleo y diámetro.</b> Con un núcleo que ocupa k = " + f(G.k, 3) + " del diámetro, la pared de " + f(G.w, 1) + " mm da <b>D = 2w/(1 − k) = " + f(G.D, 1) + " mm</b> y <b>d₀ = k·D = " + f(G.d0, 1) + " mm</b>. Núcleo más grande → diámetro más grande con la misma pared."; }],
+    ["largo", "3 · Largo del segmento", function () { return "<b>Paso 9 · Neutralidad.</b> Para que el área que quema empiece y termine igual, cada segmento mide <b>L₀ = (3D + d₀)/2 = " + f(G.L0, 1) + " mm</b>. Las flechas de llama muestran las tres superficies que queman: el núcleo y las dos caras."; }],
+    ["segmentos", "4 · Segmentos", function () { return "<b>Paso 11 · Segmentos.</b> Cada segmento tiene " + f(G.Vseg, 1) + " cm³. Para llegar a los " + f(VP, 0) + " cm³ de la misión hacen falta " + f(VP / G.Vseg, 2) + " segmentos; con <b>N = " + G.N + "</b> se cargan " + f(G.Vtot, 0) + " cm³."; }],
+    ["tubo", "5 · Tubo", function () { return "<b>Paso 12 · Tubo.</b> Sumando liner (1 mm) y holgura (0.25 mm) por cada lado, el tubo necesita <b>" + f(G.Dint, 1) + " mm</b> de diámetro interior y <b>" + f(G.Lgr, 0) + " mm</b> de largo para los granos. El propelente ocupa el " + f(G.carga, 0) + " % del espacio."; }]
+  ];
+  var etapa = 4;
+  var barra = document.getElementById("gr-etapas");
+  ETAPAS.forEach(function (e, i) {
+    var b = document.createElement("button");
+    b.type = "button"; b.textContent = e[1]; b.setAttribute("role", "tab");
+    b.addEventListener("click", function () { parar(); etapa = i; x = 0; dibujar(); });
+    barra.appendChild(b);
+  });
+
+  // ---- dibujo ----
+  var x = 0;
+  function el(tag, at, padre) { var e = document.createElementNS("http://www.w3.org/2000/svg", tag); for (var k in at) e.setAttribute(k, at[k]); if (padre) padre.appendChild(e); return e; }
+  function texto(padre, x0, y0, t, cls, anchor) { var e = el("text", { x: x0, y: y0, "class": cls, "text-anchor": anchor || "middle" }, padre); e.textContent = t; return e; }
+  function capa(svg, visible) { return el("g", { "class": "gr-svg-capa" + (visible ? "" : " gr-oculto") }, svg); }
+  function cotaH(g, x1, x2, y, t) {
+    el("line", { x1: x1, y1: y, x2: x2, y2: y, "class": "gr-svg-cota", "marker-start": "url(#gr-fl)", "marker-end": "url(#gr-fl)" }, g);
+    texto(g, (x1 + x2) / 2, y - 4, t, "gr-svg-cota-t");
+  }
+  function marcadores(svg) {
+    var defs = el("defs", {}, svg);
+    var m = el("marker", { id: "gr-fl", viewBox: "0 0 10 10", refX: 5, refY: 5, markerWidth: 6, markerHeight: 6, orient: "auto-start-reverse" }, defs);
+    el("path", { d: "M0,0 L10,5 L0,10 z", fill: "currentColor", style: "color:var(--acento)" }, m);
+  }
+
+  function dibujarCorte() {
+    var svg = document.getElementById("gr-corte"); svg.innerHTML = ""; marcadores(svg);
+    var c = 150, R = 120, s = R / ((G.Dint) / 2);
+    var Dl = (G.D / 2 + E_LINER) * s, Dg = G.D / 2 * s, d = (G.d0 / 2 + x) * s, dI = G.d0 / 2 * s;
+    // liner y tubo (etapa 5)
+    var gt = capa(svg, etapa >= 4);
+    el("circle", { cx: c, cy: c, r: G.Dint / 2 * s, "class": "gr-svg-tubo" }, gt);
+    el("circle", { cx: c, cy: c, r: Dl, "class": "gr-svg-liner" }, gt);
+    // grano
+    el("circle", { cx: c, cy: c, r: Dg, "class": "gr-svg-grano" }, svg);
+    if (x > 0) el("circle", { cx: c, cy: c, r: Math.min(d, Dg), "class": "gr-svg-quemado" }, svg);
+    el("circle", { cx: c, cy: c, r: Math.min(d, Dg), fill: "var(--papel)", stroke: x > 0 ? "#e0571f" : "#8a6418", "stroke-width": x > 0 ? 2 : .6 }, svg);
+    if (x > 0) el("circle", { cx: c, cy: c, r: dI, fill: "none", stroke: "var(--tenue)", "stroke-dasharray": "3 3", "stroke-width": 1 }, svg);
+    // cotas
+    var g1 = capa(svg, etapa >= 0);
+    el("line", { x1: c + dI, y1: c, x2: c + Dg, y2: c, "class": "gr-svg-cota", "marker-start": "url(#gr-fl)", "marker-end": "url(#gr-fl)" }, g1);
+    texto(g1, c + (dI + Dg) / 2, c - 6, "w " + f(G.w, 1), "gr-svg-cota-t");
+    var g2 = capa(svg, etapa >= 1);
+    cotaH(g2, c - Dg, c + Dg, c + Dg + 14, "D = " + f(G.D, 1) + " mm");
+    cotaH(g2, c - dI, c + dI, c + 18, "d₀ = " + f(G.d0, 1));
+    var g5 = capa(svg, etapa >= 4);
+    texto(g5, c, 16, "tubo Ø " + f(G.Dint, 1) + " mm", "gr-svg-tenue-t");
+    if (x > 0) texto(svg, c, c - 30, "quemado x = " + f(x, 1) + " mm", "gr-svg-tenue-t");
+  }
+
+  function dibujarLado() {
+    var svg = document.getElementById("gr-lado"); svg.innerHTML = ""; marcadores(svg);
+    var W = 600, H = 300, cy = 140;
+    var nVis = etapa >= 3 ? G.N : 1;
+    var Lvis = nVis * G.L0 + (nVis - 1) * SEP;
+    var sx = Math.min((W - 90) / Math.max(Lvis, 1), 200 / G.Dint);
+    var sy = Math.min(200 / G.Dint, 3 * sx);
+    var exag = sy / sx;
+    var s = sx;
+    var x0 = (W - Lvis * sx) / 2 + 14;
+    var Rg = G.D / 2 * sy, Ri = (G.d0 / 2 + x) * sy, Rl = (G.D / 2 + E_LINER) * sy, Rt = G.Dint / 2 * sy;
+    el("line", { x1: 10, y1: cy, x2: W - 10, y2: cy, stroke: "var(--linea)", "stroke-dasharray": "6 4" }, svg);
+    var gt = capa(svg, etapa >= 4);
+    el("rect", { x: x0 - 8, y: cy - Rt, width: Lvis * s + 16, height: 2 * Rt, "class": "gr-svg-tubo" }, gt);
+    el("rect", { x: x0 - 8, y: cy - Rl, width: Lvis * s + 16, height: Rl - Rg, "class": "gr-svg-liner" }, gt);
+    el("rect", { x: x0 - 8, y: cy + Rg, width: Lvis * s + 16, height: Rl - Rg, "class": "gr-svg-liner" }, gt);
+    for (var i = 0; i < nVis; i++) {
+      var xc = x0 + (i * (G.L0 + SEP) + G.L0 / 2) * s;
+      var L = Math.max(G.L0 - 2 * x, 0) * s;
+      if (L <= 0 || Ri >= Rg) continue;
+      var xa = xc - L / 2;
+      if (x > 0) {   // zona quemada (contorno original)
+        el("rect", { x: xc - G.L0 * s / 2, y: cy - Rg, width: G.L0 * s, height: Rg - G.d0 / 2 * sy, "class": "gr-svg-quemado" }, svg);
+        el("rect", { x: xc - G.L0 * s / 2, y: cy + G.d0 / 2 * sy, width: G.L0 * s, height: Rg - G.d0 / 2 * sy, "class": "gr-svg-quemado" }, svg);
+      }
+      el("rect", { x: xa, y: cy - Rg, width: L, height: Rg - Ri, "class": "gr-svg-grano" }, svg);
+      el("rect", { x: xa, y: cy + Ri, width: L, height: Rg - Ri, "class": "gr-svg-grano" }, svg);
+      if (etapa >= 2) {  // superficies que queman
+        var gl = capa(svg, true);
+        el("path", { d: "M" + xa + "," + (cy - Ri) + " H" + (xa + L) + " M" + xa + "," + (cy + Ri) + " H" + (xa + L), "class": "gr-svg-llama" }, gl);
+        el("path", { d: "M" + xa + "," + (cy - Rg) + " V" + (cy - Ri) + " M" + xa + "," + (cy + Ri) + " V" + (cy + Rg) +
+          " M" + (xa + L) + "," + (cy - Rg) + " V" + (cy - Ri) + " M" + (xa + L) + "," + (cy + Ri) + " V" + (cy + Rg), "class": "gr-svg-llama" }, gl);
+      }
+    }
+    // cotas
+    var gD = capa(svg, etapa >= 1);
+    var xr = x0 - 16;
+    el("line", { x1: xr, y1: cy - Rg, x2: xr, y2: cy + Rg, "class": "gr-svg-cota", "marker-start": "url(#gr-fl)", "marker-end": "url(#gr-fl)" }, gD);
+    texto(gD, xr - 4, cy + 4, "D", "gr-svg-cota-t", "end");
+    var gL = capa(svg, etapa >= 2);
+    cotaH(gL, x0, x0 + G.L0 * s, cy - Rt - 14, "L₀ = " + f(G.L0, 1) + " mm");
+    var gN = capa(svg, etapa >= 3);
+    cotaH(gN, x0, x0 + Lvis * s, cy + Rt + 26, (etapa >= 3 ? G.N + " segmentos · " : "") + f(Lvis, 0) + " mm");
+    var nota = [];
+    if (etapa < 3) nota.push("Un segmento (los demás aparecen en la etapa 4)");
+    if (exag > 1.05) nota.push("Escala radial ampliada ×" + f(exag, 1) + " para que se vea el grano");
+    if (nota.length) texto(svg, W / 2, H - 8, nota.join(" · "), "gr-svg-tenue-t");
+  }
+
+  function dibujarCurva() {
+    var svg = document.getElementById("gr-curva"); svg.innerHTML = "";
+    var m = { l: 52, r: 10, t: 24, b: 28 }, W = 320 - m.l - m.r, H = 170 - m.t - m.b;
+    var ymax = G.Abmax * 1.15 || 1;
+    function X(v) { return m.l + W * v / (G.xfin || 1); }
+    function Y(v) { return m.t + H - H * v / ymax; }
+    for (var j = 0; j <= 4; j++) {
+      var yv = ymax * j / 4;
+      el("line", { x1: m.l, y1: Y(yv), x2: m.l + W, y2: Y(yv), "class": "gr-svg-eje" }, svg);
+      texto(svg, m.l - 4, Y(yv) + 3, f(yv / 1000, 0) + "k", "gr-svg-tenue-t", "end");
+    }
+    texto(svg, m.l + W / 2, 168, "espesor quemado x [mm] → hasta " + f(G.xfin, 1), "gr-svg-tenue-t");
+    texto(svg, 4, 12, "A_b [mm²]", "gr-svg-tenue-t", "start");
+    var p = G.curva.map(function (q, i) { return (i ? "L" : "M") + X(q[0]).toFixed(1) + "," + Y(q[1]).toFixed(1); }).join(" ");
+    el("path", { d: p, "class": "gr-svg-curva" }, svg);
+    var a = Ab(Math.min(x, G.xfin - 1e-9));
+    el("line", { x1: X(x), y1: m.t, x2: X(x), y2: m.t + H, stroke: "var(--tinta)", "stroke-width": 1 }, svg);
+    el("circle", { cx: X(x), cy: Y(a), r: 4, fill: "#e0571f" }, svg);
+  }
+
+  function dibujar() {
+    var bs = barra.querySelectorAll("button");
+    for (var i = 0; i < bs.length; i++) { bs[i].classList.toggle("on", i === etapa); bs[i].setAttribute("aria-selected", i === etapa); }
+    document.getElementById("gr-explica").innerHTML = ETAPAS[etapa][2]() +
+      (fallas.length ? ' <span style="color:#c0392b;font-weight:600">· ' + fallas.length + " verificación(es) no cumple(n): revisa la lista de abajo.</span>" : "");
+    dibujarCorte(); dibujarLado(); dibujarCurva();
+  }
+
+  // ---- animaciones ----
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches, timer = null, raf = null;
+  function parar() { clearInterval(timer); timer = null; cancelAnimationFrame(raf); raf = null; }
+  document.getElementById("gr-construir").addEventListener("click", function () {
+    parar(); x = 0; etapa = 0; dibujar();
+    if (reduce) { etapa = 4; dibujar(); return; }
+    timer = setInterval(function () { if (etapa >= 4) { parar(); return; } etapa++; dibujar(); }, 1800);
+  });
+  document.getElementById("gr-quemar").addEventListener("click", function () {
+    parar(); etapa = 4;
+    if (reduce) { x = G.xfin * 0.999; dibujar(); return; }
+    var t0 = null, dur = 4000;
+    function paso(ts) { if (t0 === null) t0 = ts; var u = Math.min((ts - t0) / dur, 1); x = G.xfin * u * 0.999; dibujar(); if (u < 1) raf = requestAnimationFrame(paso); else raf = null; }
+    raf = requestAnimationFrame(paso);
+  });
+  document.getElementById("gr-ejemplo").addEventListener("click", function () {
+    parar(); V = {}; x = 0; etapa = 4; modo = "guiado"; document.getElementById("gr-modo").value = "guiado";
+    armarDeslizantes(); calcular(); dibujar();
+  });
+  document.getElementById("gr-modo").addEventListener("change", function () {
+    parar(); var viejo = { D: G.D, d0: G.d0, L0: G.L0, N: G.N, P: V.P };
+    modo = this.value; x = 0;
+    if (modo === "libre") { V.D = +viejo.D.toFixed(1); V.d0 = +viejo.d0.toFixed(1); V.L0 = +viejo.L0.toFixed(1); }
+    armarDeslizantes(); calcular(); dibujar();
+  });
+
+  armarDeslizantes(); calcular(); dibujar();
+  window.__grano = { G: G, V: V };
+})();
+</script>
+
 </main>
 </body>
 </html>

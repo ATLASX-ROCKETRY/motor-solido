@@ -15,7 +15,7 @@ Cada paso es una hoja dividida en dos columnas:
 
 Al final de cada paso se indica el **resultado** y qué permite calcular en el **paso siguiente**.
 
-**Secuencia:** Datos de entrada → Paso 6 (presupuesto con acero) → Paso 8 (geometría BATES) → Paso 9 (neutralidad) → Paso 10 (alma requerida) → Paso 11 (núcleo y segmentos) → Paso 12 (tubo del motor) → Resumen del ejemplo
+**Secuencia:** Datos de entrada → Paso 6 (presupuesto con acero) → Paso 8 (geometría BATES) → Paso 9 (neutralidad) → Paso 10 (alma requerida) → Paso 11 (núcleo y segmentos) → Paso 12 (tubo del motor) → Resumen del ejemplo → Animación interactiva
 
 ---
 
@@ -873,3 +873,18 @@ Grano BATES y carcasa de acero AISI 304. Todos los valores salen de fórmulas es
 1. **Modelo de cámara:** calcular la presión y la garganta de la tobera. Debe confirmar que la presión queda dentro de la meseta (S10.1) y el flujo másico (S11.4).
 2. **Espesor de pared:** con $\sigma_y$ = 205 MPa y un factor de seguridad de 1.5 a 2.
 3. **Masa real de la estructura:** debe ser 2.92 kg o menos para que el cohete quepa en 10 kg.
+
+---
+
+## Animación interactiva
+
+Esta sección solo funciona en la **versión web**: https://atlasx-rocketry.github.io/motor-solido/ejemplos/ejemplo_1.html#animacion-interactiva
+
+Es un **constructor del grano**: se ponen las medidas y se ve cómo se arma, en el orden de los pasos 10, 11 y 12 (alma, núcleo y diámetro, largo, segmentos y tubo), con el corte transversal, la vista lateral y la curva de área de quemado. Con «Quemar» se ve cómo el núcleo crece y las caras retroceden. Las verificaciones se marcan en rojo cuando una medida no cumple.
+
+Tiene dos modos:
+
+- **Guiado:** se eligen el tiempo de combustión, la presión, la fracción de núcleo $k$ y el número de segmentos $N$, como en este ejemplo.
+- **Libre:** se eligen directamente $D$, $d_0$, $L_0$ y $N$.
+
+Todas las cuentas son las fórmulas de este ejemplo; no hay simulación. El código está en `ejemplos/ejemplo_1_animacion.html`.

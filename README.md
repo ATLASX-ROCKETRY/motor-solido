@@ -45,7 +45,7 @@ Para regenerar la página HTML después de editar el `.md` (requiere `pip instal
 
 ```bash
 python3 scripts/md_a_html.py ejemplos/00_mision_comun.md ejemplos/mision_comun.html ejemplos/mision_comun_animacion.html
-python3 scripts/md_a_html.py ejemplos/ejemplo_1_bates_acero304.md ejemplos/ejemplo_1.html
+python3 scripts/md_a_html.py ejemplos/ejemplo_1_bates_acero304.md ejemplos/ejemplo_1.html ejemplos/ejemplo_1_animacion.html
 ```
 
 ## Resumen de resultados
